@@ -80,7 +80,7 @@ void init_scene(Scene *scene)
 
     TexturedBrick wooden_brick;
     wooden_brick.rotation_angle = 0;
-    wooden_brick.position = create_vec3(-25, 26, 0);
+    wooden_brick.position = create_vec3(-25, 25, 0);
     wooden_brick.size = create_vec3(51, 1, 3);
     wooden_brick.texture = scene->wooden_texture;
     wooden_brick.material = scene->wooden_material;
@@ -90,6 +90,18 @@ void init_scene(Scene *scene)
     wooden_brick.texture_size[1] = 4096;
     scene->bricks[2] = wooden_brick;
 
+    wooden_brick.position = create_vec3(25, -26, 0);
+    wooden_brick.size = create_vec3(1, 51, 3);
+    scene->bricks[3] = wooden_brick;
+
+    wooden_brick.position = create_vec3(-26, -26, 0);
+    wooden_brick.size = create_vec3(51, 1, 3);
+    scene->bricks[4] = wooden_brick;
+
+    wooden_brick.position = create_vec3(-26, -25, 0);
+    // Direkt 1 magasságú, hogy tesztelni lehessen, mi van ha OOB a labda.
+    wooden_brick.size = create_vec3(1, 26, 1);
+    scene->bricks[5] = wooden_brick;
 }
 
 void set_lighting(const Scene *scene)
