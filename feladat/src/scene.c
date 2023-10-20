@@ -587,7 +587,7 @@ void write_char_to_screen(char character, GLuint ascii_map, int x, int y, int si
     glPushMatrix();
     glBindTexture(GL_TEXTURE_2D, ascii_map);
     float sd2 = size / 2;
-    glTranslatef(x, 0, y);
+    glTranslatef(x, y, 0);
 
     ArrayUV4 uv4;
     ArrayUV tiles, index;
@@ -619,7 +619,7 @@ void write_char_to_screen(char character, GLuint ascii_map, int x, int y, int si
 void write_text_to_screen(const char* text, GLuint ascii_map, int x, int y, int size)
 {
     unsigned int i;
-    for(i = 0; i < strlen(text) - 1; ++i)
+    for(i = 0; i < strlen(text); ++i)
     {
         write_char_to_screen(text[i], ascii_map, x + (i * size), y, size);
     }
