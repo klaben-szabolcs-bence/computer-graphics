@@ -63,12 +63,7 @@ void passive_motion(int x, int y)
 {
     mouse_position.x = x;
     mouse_position.y = y;
-    if (camera.freecam)
-    {
-        rotate_camera(&camera, (mouse_position.x - 640 / 2) / 10.0, -(mouse_position.y - 480 / 2) / 10.0);
-    } else {
-        rotate_camera(&camera, (mouse_position.x - 640 / 2) / 10.0, -(mouse_position.y - 480 / 2) / 10.0);
-    }
+    rotate_camera(&camera, (mouse_position.x - 640 / 2) / 10.0, -(mouse_position.y - 480 / 2) / 10.0);
     glutWarpPointer(640 / 2, 480 / 2);
     glutPostRedisplay();
 }

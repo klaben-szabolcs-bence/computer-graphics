@@ -16,7 +16,7 @@ void init_camera(Camera *camera)
     camera->speed.x = 0.0;
     camera->speed.y = 0.0;
     camera->speed.z = 0.0;
-    camera->follow_distance = 10;
+    camera->follow_distance = 100;
 
     camera->freecam = false;
     is_preview_visible = FALSE;
@@ -26,20 +26,30 @@ void update_camera(Camera *camera, double time, Scene *scene)
 {
     if (!camera->freecam)
     {
-        camera->position = create_vec3((camera->rotation.x) * camera->follow_distance, cos(camera->rotation.y) * camera->follow_distance, sin(camera->rotation.z) * camera->follow_distance );
+        double angle;
+        double up_angle;
+
+        angle = degree_to_radian(camera->rotation.z);
+        up_angle = degree_to_radian(camera->rotation.x);
+
+        camera->position = create_vec3(sin(angle) * sqrt(camera->follow_distance), sin(up_angle) * cbrt(camera->follow_distance), cos(angle) * sqrt(camera->follow_distance));
     }
     else
     {
         double angle;
         double side_angle;
+        double up_angle;
 
-        angle = degree_to_radian(camera->rotation.z);
-        side_angle = degree_to_radian(camera->rotation.z + 90);
+        angle = degree_to_radian(camera->rotation.z + 90);
+        side_angle = degree_to_radian(camera->rotation.z);
+        up_angle = degree_to_radian(camera->rotation.x - 45);
 
-        camera->position.x -= cos(angle) * camera->speed.y * time;
-        camera->position.y -= sin(angle) * camera->speed.y * time;
-        camera->position.x -= cos(side_angle) * camera->speed.x * time;
-        camera->position.y -= sin(side_angle) * camera->speed.x * time;
+        camera->position.x -= sin(angle) * camera->speed.y * time;
+        camera->position.y -= cos(angle) * camera->speed.y * time;
+        camera->position.x -= sin(side_angle) * camera->speed.x * time;
+        camera->position.y -= cos(side_angle) * camera->speed.x * time;
+        camera->position.z += sin(up_angle) * camera->speed.y * time;
+        camera->position.z += cos(up_angle) * camera->speed.y * time;
     }
     
 }
@@ -66,25 +76,27 @@ void rotate_camera(Camera *camera, double horizontal, double vertical)
     camera->rotation.z += horizontal;
     camera->rotation.x += vertical;
 
+    
     if (camera->rotation.z < 0)
     {
-        camera->rotation.z += 360.0;
+        camera->rotation.z += 720.0;
     }
 
-    if (camera->rotation.z > 360.0)
+    if (camera->rotation.z > 720.0)
     {
-        camera->rotation.z -= 360.0;
+        camera->rotation.z -= 720.0;
     }
 
     if (camera->rotation.x < 0)
     {
-        camera->rotation.x += 360.0;
+        camera->rotation.x += 720.0;
     }
 
-    if (camera->rotation.x > 360.0)
+    if (camera->rotation.x > 720.0)
     {
-        camera->rotation.x -= 360.0;
+        camera->rotation.x -= 720.0;
     }
+    
 }
 
 void set_camera_speed(Camera *camera, double speed)
