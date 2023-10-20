@@ -13,6 +13,6 @@ A mini-golf demo game. Enjoy shooting the ball around the map, while enjoying ch
  - [x] An in-game help with <kbd>F1</kbd>.
  - [x] A GUI to show how to reach in-game help and the power bar for how strong the ball will be hit.
  - [x] Resetting the ball when *Out of Bounds* or when pressing <kbd>r</kbd>.
- - [ ] A golf hole, in which the ball goes, the ball gets reset, and a celebration is shown.
- - [ ] Counter for number of hits. Try to get par!
+ - [x] A golf hole, in which the ball goes, the ball gets stuck, and a celebration is shown.
+ - [x] Counter for number of hits. Try to get par!
  - [ ] Cherry blossoms for atmosphere via a particle system.
