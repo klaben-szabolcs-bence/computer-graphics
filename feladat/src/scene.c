@@ -102,7 +102,7 @@ void init_scene(Scene *scene)
 
     wooden_brick.position = create_vec3(-26, -25, 0);
     // Direkt 1 magasságú, hogy tesztelni lehessen, mi van ha OOB a labda.
-    wooden_brick.size = create_vec3(1, 26, 1);
+    wooden_brick.size = create_vec3(1, 51, 1);
     scene->bricks[5] = wooden_brick;
 
     scene->ascii_texture = load_ogl_texture("ascii.png");
@@ -526,10 +526,12 @@ void update_game(Scene *scene, double delta)
             if (scene->golfball.direction_vector.x < 0)
             {
                 scene->golfball.position.x = scene->bricks[colliding_brick].position.x - 1.0f;
+                printf("Colliding with %d on LEFT\n", colliding_brick);
             }
             else
             {
                 scene->golfball.position.x = scene->bricks[colliding_brick].position.x + scene->bricks[colliding_brick].size.x + 1.0f;
+                printf("Colliding with %d on RIGHT\n", colliding_brick);
             }
         }
         else if (min_distance == abs(distance[2]) || min_distance == abs(distance[3]))
@@ -542,10 +544,12 @@ void update_game(Scene *scene, double delta)
             if (scene->golfball.direction_vector.y < 0)
             {
                 scene->golfball.position.y = scene->bricks[colliding_brick].position.y - 1.0f;
+                printf("Colliding with %d on FRONT\n", colliding_brick);
             }
             else
             {
                 scene->golfball.position.y = scene->bricks[colliding_brick].position.y + scene->bricks[colliding_brick].size.y + 1.0f;
+                printf("Colliding with %d on BACK\n", colliding_brick);
             }
         }
         else
@@ -557,10 +561,12 @@ void update_game(Scene *scene, double delta)
             if (scene->golfball.direction_vector.z < 0)
             {
                 scene->golfball.position.z = scene->bricks[colliding_brick].position.z - 1.0f;
+                printf("Colliding with %d on BOTTOM\n", colliding_brick);
             }
             else
             {
                 scene->golfball.position.z = scene->bricks[colliding_brick].position.z + scene->bricks[colliding_brick].size.z + 1.0f;
+                printf("Colliding with %d on TOP\n", colliding_brick);
             }
         }
     }
