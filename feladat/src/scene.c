@@ -70,7 +70,7 @@ void draw_scene(const Scene* scene)
     //draw_model(&(scene->cube));
     glPushMatrix();
     glTranslatef(scene->golfball.position.x, scene->golfball.position.y, scene->golfball.position.z);
-    glutSolidSphere(2, 36, 36);
+    glutSolidSphere(1, 36, 36);
     glPopMatrix();
 }
 
