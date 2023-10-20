@@ -16,7 +16,7 @@ void init_camera(Camera *camera)
     camera->speed.x = 0.0;
     camera->speed.y = 0.0;
     camera->speed.z = 0.0;
-    camera->follow_distance = 100;
+    camera->follow_distance = 10;
 
     camera->freecam = false;
     is_preview_visible = FALSE;
@@ -32,7 +32,12 @@ void update_camera(Camera *camera, double time, Scene *scene)
         angle = degree_to_radian(camera->rotation.z);
         up_angle = degree_to_radian(camera->rotation.x);
 
-        camera->position = create_vec3(sin(angle) * sqrt(camera->follow_distance), sin(up_angle) * cbrt(camera->follow_distance), cos(angle) * sqrt(camera->follow_distance));
+        double x = cos(angle) * 36;
+        double y = sin(angle) * 36;
+        double z = camera->follow_distance;
+
+
+        camera->position = create_vec3(x, y, z);
     }
     else
     {
@@ -60,7 +65,7 @@ void set_view(const Camera *camera, const Scene *scene)
     glLoadIdentity();
     if (!camera->freecam)
     {
-        gluLookAt(camera->position.x, camera->position.y, camera->position.z, scene->golfball.position.x, scene->golfball.position.y, scene->golfball.position.z, 0, 1, 0);
+        gluLookAt(camera->position.x, camera->position.y, camera->position.z, scene->golfball.position.x, scene->golfball.position.y, scene->golfball.position.z, 0, 0, 1);
     }
     else
     {
@@ -79,22 +84,22 @@ void rotate_camera(Camera *camera, double horizontal, double vertical)
     
     if (camera->rotation.z < 0)
     {
-        camera->rotation.z += 720.0;
+        camera->rotation.z += 360.0;
     }
 
-    if (camera->rotation.z > 720.0)
+    if (camera->rotation.z > 360.0)
     {
-        camera->rotation.z -= 720.0;
+        camera->rotation.z -= 360.0;
     }
 
     if (camera->rotation.x < 0)
     {
-        camera->rotation.x += 720.0;
+        camera->rotation.x += 360.0;
     }
 
-    if (camera->rotation.x > 720.0)
+    if (camera->rotation.x > 360.0)
     {
-        camera->rotation.x -= 720.0;
+        camera->rotation.x -= 360.0;
     }
     
 }
