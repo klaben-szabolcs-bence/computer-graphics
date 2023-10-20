@@ -46,7 +46,7 @@ void push_matrix(struct stack* pt, T_MATRIX m)
         exit(EXIT_FAILURE);
     }
 
-    pt->items[++pt->top] = m;
+    copy_matrix(pt->items[++pt->top], m);
 }
 
 void pop_matrix(struct stack* pt, T_MATRIX m)
@@ -58,5 +58,5 @@ void pop_matrix(struct stack* pt, T_MATRIX m)
         exit(EXIT_FAILURE);
     }
 
-    m = pt->items[pt->top--];
+    copy_matrix(m, pt->items[pt->top--]);
 }
