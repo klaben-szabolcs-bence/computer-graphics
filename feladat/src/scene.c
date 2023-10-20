@@ -14,7 +14,8 @@ void init_scene(Scene *scene)
     Color diffuse_material = create_color(0.755, 0.755, 0, 1);
     Color specular_material = create_color(0, 0.755, 0.755, 1);
     Color emission_material = create_color(0, 0, 0, 1);
-    scene->invalid_material = create_material(ambient_material, diffuse_material, specular_material, 32.0, emission_material);
+    scene->invalid_material =
+    create_material(ambient_material, diffuse_material, specular_material, 32.0, emission_material);
 
     GolfBall ball;
     ball.position = create_vec3(10, 0, 0);
@@ -24,13 +25,15 @@ void init_scene(Scene *scene)
     diffuse_material = create_color(0.55, 0.55, 0.55, 1);
     specular_material = create_color(0.77, 0.77, 0.77, 1);
     emission_material = create_color(0, 0, 0, 1);
-    scene->golfball.material = create_material(ambient_material, diffuse_material, specular_material, 1.0, emission_material);
+    scene->golfball.material =
+    create_material(ambient_material, diffuse_material, specular_material, 1.0, emission_material);
 
     ambient_material = create_color(1, 1, 1, 1);
     diffuse_material = create_color(0, 0, 0, 1);
     specular_material = create_color(0, 0, 0, 1);
     emission_material = create_color(0, 0, 0, 1);
-    scene->null_material = create_material(ambient_material, diffuse_material, specular_material, 0.0, emission_material);
+    scene->null_material =
+    create_material(ambient_material, diffuse_material, specular_material, 0.0, emission_material);
 
     TexturedBrick unplayable_ground;
     unplayable_ground.rotation_angle = 0;
@@ -40,7 +43,9 @@ void init_scene(Scene *scene)
     ambient_material = create_color(0.0215f,0.1745f,0.0215f,1.0f);
     diffuse_material = create_color(0.07568f,0.61424f,0.07568f,1.0f);
     specular_material = create_color(0.633f,0.727811f,0.633f,1.0f);
-    unplayable_ground.material = create_material(ambient_material, diffuse_material, specular_material, 76.8f, emission_material);
+    unplayable_ground.material =
+    create_material(ambient_material, diffuse_material, specular_material, 76.8f, emission_material);
+    
     unplayable_ground.wrap_3d = false;
     unplayable_ground.texture_size[0] = 900;
     unplayable_ground.texture_size[1] = 901;
