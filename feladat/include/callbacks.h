@@ -19,8 +19,6 @@ Scene scene;
  */
 Camera camera;
 
-
-
 /**
  * Call when need to display the graphical content.
  */
@@ -66,10 +64,7 @@ void special_keyboard(int key, int x, int y);
  */
 void idle();
 
-/**
- * Make the ball move, once we have finalized drag distance
- */
-void make_ball_move();
+
 
 
 

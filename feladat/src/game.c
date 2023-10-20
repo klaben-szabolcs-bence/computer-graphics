@@ -74,6 +74,38 @@ void update_game(Scene *scene, double delta)
     prevent_colliding(scene);
 }
 
+void make_ball_move(Scene* scene, Camera* camera, double drag_distance)
+{
+    //Create vector between camera and ball
+    vec3 look = create_vec3(
+        scene->golfball.position.x - camera->position.x,
+        scene->golfball.position.y - camera->position.y,
+        scene->golfball.position.z - camera->position.z);
+
+    //Make the velocity the drag distance
+    scene->golfball.velocity = drag_distance;
+
+    double cam_dist = sqrt(pow(look.x, 2) + pow(look.y, 2));
+
+    //Normalize the vectors
+    look.x = (look.x / cam_dist);
+    look.y = (look.y / cam_dist);
+
+    //Set the vectors
+    scene->golfball.direction_vector.x = look.x;
+    scene->golfball.direction_vector.y = look.y;
+
+    //The direction vector may be inf, if we are looking at the ball from the top, so we just set it to 0
+    if (scene->golfball.direction_vector.x > 1)
+        scene->golfball.direction_vector.x = 0;
+    if (scene->golfball.direction_vector.y > 1)
+        scene->golfball.direction_vector.y = 0;
+    if (scene->golfball.direction_vector.x < -1)
+        scene->golfball.direction_vector.x = 0;
+    if (scene->golfball.direction_vector.y < -1)
+        scene->golfball.direction_vector.y = 0;
+}
+
 void reset_ball(GolfBall *ball)
 {
     ball->position.x = 0;

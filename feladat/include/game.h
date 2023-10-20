@@ -2,11 +2,17 @@
 #define GAME_H
 
 #include "scene.h"
+#include "camera.h"
 
 /**
  * Updates game objects
  */
 void update_game(Scene* scene, double delta);
+
+/**
+ * Make the ball move, once we have finalized drag distance
+ */
+void make_ball_move(Scene* scene, Camera* camera, double drag_distance);
 
 /**
  * Reset the ball
