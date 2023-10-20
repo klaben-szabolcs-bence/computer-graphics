@@ -263,10 +263,15 @@ void make_ball_move()
     //Make the velocity the drag distance
     scene.golfball.velocity = drag_distance;
 
-    double cam_dist = sqrt(pow(look.x, 2) + pow(look.y, 2));
-    //Make the look vector the direction vector of the ball after normalizing
-    scene.golfball.direction_vector.x = look.x / cam_dist;
-    scene.golfball.direction_vector.y = look.y / cam_dist;
+    double cam_dist = sqrt(pow(look.x, 2) + pow(look.y, 2) + pow(look.z, 2));
+
+    //Normalize the vectors
+    look.x = (look.x / cam_dist);
+    look.y = (look.y / cam_dist);
+
+    //Set the vectors
+    scene.golfball.direction_vector.x = look.x;
+    scene.golfball.direction_vector.y = look.y;
 
     //The direction vector may be inf, if we are looking at the ball from the top, so we just set it to 0
     if (scene.golfball.direction_vector.x > 1)
