@@ -426,8 +426,8 @@ void draw_textured_brick(const TexturedBrick *brick, const Scene *scene)
 
 void update_game(Scene *scene, double delta)
 {
-    printf("Speed: %f %f %f\n", scene->golfball.speed.x, scene->golfball.speed.y, scene->golfball.speed.z);
-    printf("Pos: %f %f %f\n", scene->golfball.position.x, scene->golfball.position.y, scene->golfball.position.z);
+    //printf("Speed: %f %f %f\n", scene->golfball.speed.x, scene->golfball.speed.y, scene->golfball.speed.z);
+    //printf("Pos: %f %f %f\n", scene->golfball.position.x, scene->golfball.position.y, scene->golfball.position.z);
 
     //Basic forces
     scene->golfball.position.x += scene->golfball.speed.x * delta;
@@ -541,7 +541,6 @@ void update_game(Scene *scene, double delta)
             else
             {
                 printf("Collision with %d on TOP.\n", colliding_brick);
-                printf("Distance: %f\n", distance[5]);
                 scene->golfball.position.z -= distance[5] - 0.5f;
                 if (abs(scene->golfball.speed.z) < 0.1f)
                 {
