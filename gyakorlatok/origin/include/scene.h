@@ -23,5 +23,10 @@ void draw_scene(const Scene* scene);
  */
 void draw_origin();
 
+/**
+ * @brief Draw a pyramid
+ */
+void draw_pyramid(double x, double y, double z, double width, double height);
+
 #endif /* SCENE_H */
 
