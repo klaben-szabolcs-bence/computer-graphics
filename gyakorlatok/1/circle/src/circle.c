@@ -2,7 +2,7 @@
 
 #include <math.h>
 
-double set_circle_data(Circle* circle, double x, double y, double radius)
+void set_circle_data(Circle* circle, double x, double y, double radius)
 {
 	circle->x = x;
 	circle->y = y;

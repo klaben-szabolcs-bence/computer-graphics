@@ -14,7 +14,7 @@ typedef struct Circle
 /**
  * Set the data of the circle
  */
-double set_circle_data(Circle* circle, double x, double y, double radius);
+void set_circle_data(Circle* circle, double x, double y, double radius);
 
 /**
  * Calculate the area of the circle.
