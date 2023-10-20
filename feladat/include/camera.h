@@ -29,7 +29,7 @@ void init_camera(Camera* camera);
 /**
  * Update the position of the camera.
  */
-void update_camera(Camera* camera, double time);
+void update_camera(Camera* camera, double time, Scene* scene);
 
 /**
  * Apply the camera settings to the view transformation.

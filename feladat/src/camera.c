@@ -9,7 +9,7 @@ void init_camera(Camera *camera)
 {
     camera->position.x = 0.0;
     camera->position.y = 0.0;
-    camera->position.z = 1.0;
+    camera->position.z = 0.0;
     camera->rotation.x = 0.0;
     camera->rotation.y = 0.0;
     camera->rotation.z = 0.0;
@@ -21,19 +21,26 @@ void init_camera(Camera *camera)
     is_preview_visible = FALSE;
 }
 
-void update_camera(Camera *camera, double time)
+void update_camera(Camera *camera, double time, Scene *scene)
 {
 
-    double angle;
-    double side_angle;
+    if (!camera->freecam)
+    {
+        camera->rotation = create_vec3(0, 0, 0);
+    }
+    else
+    {
+        double angle;
+        double side_angle;
 
-    angle = degree_to_radian(camera->rotation.z);
-    side_angle = degree_to_radian(camera->rotation.z + 90.0);
+        angle = degree_to_radian(camera->rotation.z);
+        side_angle = degree_to_radian(camera->rotation.z + 90.0);
 
-    camera->position.x += cos(angle) * camera->speed.y * time;
-    camera->position.y += sin(angle) * camera->speed.y * time;
-    camera->position.x += cos(side_angle) * camera->speed.x * time;
-    camera->position.y += sin(side_angle) * camera->speed.x * time;
+        camera->position.x += cos(angle) * camera->speed.y * time;
+        camera->position.y += sin(angle) * camera->speed.y * time;
+        camera->position.x += cos(side_angle) * camera->speed.x * time;
+        camera->position.y += sin(side_angle) * camera->speed.x * time;
+    }
 }
 
 void set_view(const Camera *camera, const Scene *scene)
@@ -47,6 +54,7 @@ void set_view(const Camera *camera, const Scene *scene)
     else
     {
         glRotatef(-(camera->rotation.x + 90), 1.0, 0, 0);
+        glRotatef(-(camera->rotation.y - 90), 0, 1.0, 0);
         glRotatef(-(camera->rotation.z - 90), 0, 0, 1.0);
         glTranslatef(-camera->position.x, -camera->position.y, -camera->position.z);
     }
