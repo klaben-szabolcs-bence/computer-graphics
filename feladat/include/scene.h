@@ -1,8 +1,8 @@
 #ifndef SCENE_H
 #define SCENE_H
 
-#include "camera.h"
 #include "texture.h"
+#include "utils.h"
 
 #include <obj/model.h>
 

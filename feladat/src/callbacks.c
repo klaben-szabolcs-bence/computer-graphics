@@ -14,7 +14,7 @@ void display()
     glMatrixMode(GL_MODELVIEW);
 
     glPushMatrix();
-    set_view(&camera);
+    set_view(&camera, &scene);
     draw_scene(&scene);
     glPopMatrix();
 

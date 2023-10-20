@@ -2,6 +2,8 @@
 #define CAMERA_H
 
 #include "utils.h"
+#include "stdbool.h"
+#include "scene.h"
 
 /**
  * Camera, as a moving point with direction
@@ -11,6 +13,7 @@ typedef struct Camera
     vec3 position;
     vec3 rotation;
     vec3 speed;
+    bool freecam;
 } Camera;
 
 /**
@@ -31,7 +34,7 @@ void update_camera(Camera* camera, double time);
 /**
  * Apply the camera settings to the view transformation.
  */
-void set_view(const Camera* camera);
+void set_view(const Camera* camera, const Scene* scene);
 
 /**
  * Set the horizontal and vertical rotation of the view angle.
