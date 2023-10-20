@@ -15,37 +15,38 @@ void init_scene(Scene *scene)
     Color specular_material = create_color(0, 0.755, 0.755, 1);
     Color emission_material = create_color(0, 0, 0, 1);
     scene->invalid_material =
-    create_material(ambient_material, diffuse_material, specular_material, 32.0, emission_material);
+        create_material(ambient_material, diffuse_material, specular_material, 32.0, emission_material);
 
     GolfBall ball;
     ball.position = create_vec3(10, 0, 2);
     scene->golfball = ball;
     scene->golfball.glow = false;
+    ball.speed = create_vec3(0, 0, 0);
     ambient_material = create_color(0, 0, 0, 1);
     diffuse_material = create_color(0.55, 0.55, 0.55, 1);
     specular_material = create_color(0.77, 0.77, 0.77, 1);
     emission_material = create_color(0, 0, 0, 1);
     scene->golfball.material =
-    create_material(ambient_material, diffuse_material, specular_material, 1.0, emission_material);
+        create_material(ambient_material, diffuse_material, specular_material, 1.0, emission_material);
 
     ambient_material = create_color(1, 1, 1, 1);
     diffuse_material = create_color(0, 0, 0, 1);
     specular_material = create_color(0, 0, 0, 1);
     emission_material = create_color(0, 0, 0, 1);
     scene->null_material =
-    create_material(ambient_material, diffuse_material, specular_material, 0.0, emission_material);
+        create_material(ambient_material, diffuse_material, specular_material, 0.0, emission_material);
 
     TexturedBrick unplayable_ground;
     unplayable_ground.rotation_angle = 0;
     unplayable_ground.position = create_vec3(-900, -900, -1);
     unplayable_ground.size = create_vec3(1800, 1800, 1);
     unplayable_ground.texture = load_texture("unplayable_ground.jpg");
-    ambient_material = create_color(0.0215f,0.1745f,0.0215f,1.0f);
-    diffuse_material = create_color(0.07568f,0.61424f,0.07568f,1.0f);
-    specular_material = create_color(0.633f,0.727811f,0.633f,1.0f);
+    ambient_material = create_color(0.0215f, 0.1745f, 0.0215f, 1.0f);
+    diffuse_material = create_color(0.07568f, 0.61424f, 0.07568f, 1.0f);
+    specular_material = create_color(0.633f, 0.727811f, 0.633f, 1.0f);
     unplayable_ground.material =
-    create_material(ambient_material, diffuse_material, specular_material, 76.8f, emission_material);
-    
+        create_material(ambient_material, diffuse_material, specular_material, 76.8f, emission_material);
+
     unplayable_ground.wrap_3d = false;
     unplayable_ground.texture_size[0] = 900;
     unplayable_ground.texture_size[1] = 900;
@@ -53,18 +54,18 @@ void init_scene(Scene *scene)
     scene->bricks[0] = unplayable_ground;
 
     scene->playable_ground_texture = load_texture("playable_ground.jpg");
-    ambient_material = create_color(0.1215f,0.2745f,0.1215f,1.0f);
-    diffuse_material = create_color(0.17568f,0.71424f,0.17568f,1.0f);
-    specular_material = create_color(0.733f,0.827811f,0.733f,1.0f);
+    ambient_material = create_color(0.1215f, 0.2745f, 0.1215f, 1.0f);
+    diffuse_material = create_color(0.17568f, 0.71424f, 0.17568f, 1.0f);
+    specular_material = create_color(0.733f, 0.827811f, 0.733f, 1.0f);
     scene->playable_ground_material =
-    create_material(ambient_material, diffuse_material, specular_material, 76.8f, emission_material);
+        create_material(ambient_material, diffuse_material, specular_material, 76.8f, emission_material);
 
     scene->wooden_texture = load_texture("wood.png");
     ambient_material = create_color(0.1f, 0.1f, 0.1f, 1.0f);
     diffuse_material = create_color(0.63529f, 0.4705f, 0.3843f, 1.0f);
     specular_material = create_color(0.63529f, 0.4705f, 0.3843f, 1.0f);
     scene->wooden_material =
-    create_material(ambient_material, diffuse_material, specular_material, 160.0f, emission_material);
+        create_material(ambient_material, diffuse_material, specular_material, 160.0f, emission_material);
 
     TexturedBrick playable_ground;
     playable_ground.rotation_angle = 0;
@@ -286,8 +287,8 @@ void draw_textured_brick(const TexturedBrick *brick, const Scene *scene)
 {
     if (brick->tiled_texture)
     {
-        glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_WRAP_S,GL_REPEAT);
-        glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_WRAP_T,GL_REPEAT);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
     }
     set_material(&(brick->material));
     glBindTexture(GL_TEXTURE_2D, brick->texture);
@@ -360,7 +361,7 @@ void draw_textured_brick(const TexturedBrick *brick, const Scene *scene)
         glVertex3f(0, 0, 0);
         glTexCoord2f(right_U, -top_V_on_top);
         glVertex3f(brick->size.x, 0, 0);
-        glTexCoord2f(right_U,0);
+        glTexCoord2f(right_U, 0);
         glVertex3f(brick->size.x, brick->size.y, 0);
         glTexCoord2f(0, 0);
         glVertex3f(0, brick->size.y, 0);
@@ -372,7 +373,7 @@ void draw_textured_brick(const TexturedBrick *brick, const Scene *scene)
         glVertex3f(0, 0, brick->size.z);
         glTexCoord2f(right_U, top_V_on_sides);
         glVertex3f(brick->size.x, 0, brick->size.z);
-        glTexCoord2f(right_U,0);
+        glTexCoord2f(right_U, 0);
         glVertex3f(brick->size.x, 0, 0);
         glTexCoord2f(0, 0);
         glVertex3f(0, 0, 0);
@@ -384,7 +385,7 @@ void draw_textured_brick(const TexturedBrick *brick, const Scene *scene)
         glVertex3f(0, brick->size.y, brick->size.z);
         glTexCoord2f(right_U, top_V_on_sides);
         glVertex3f(0, 0, brick->size.z);
-        glTexCoord2f(right_U,0);
+        glTexCoord2f(right_U, 0);
         glVertex3f(0, 0, 0);
         glTexCoord2f(0, 0);
         glVertex3f(0, brick->size.y, 0);
@@ -396,7 +397,7 @@ void draw_textured_brick(const TexturedBrick *brick, const Scene *scene)
         glVertex3f(brick->size.x, 0, brick->size.z);
         glTexCoord2f(right_U, top_V_on_sides);
         glVertex3f(brick->size.x, brick->size.y, brick->size.z);
-        glTexCoord2f(right_U,0);
+        glTexCoord2f(right_U, 0);
         glVertex3f(brick->size.x, brick->size.y, 0);
         glTexCoord2f(0, 0);
         glVertex3f(brick->size.x, 0, 0);
@@ -408,7 +409,7 @@ void draw_textured_brick(const TexturedBrick *brick, const Scene *scene)
         glVertex3f(brick->size.x, brick->size.y, brick->size.z);
         glTexCoord2f(right_U, top_V_on_sides);
         glVertex3f(0, brick->size.y, brick->size.z);
-        glTexCoord2f(right_U,0);
+        glTexCoord2f(right_U, 0);
         glVertex3f(0, brick->size.y, 0);
         glTexCoord2f(0, 0);
         glVertex3f(brick->size.x, brick->size.y, 0);
@@ -418,5 +419,39 @@ void draw_textured_brick(const TexturedBrick *brick, const Scene *scene)
     set_material(&(scene->invalid_material));
     glBindTexture(GL_TEXTURE_2D, 0);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP);
+}
+
+void update_game(Scene *scene, double delta, double current)
+{
+
+    //Basic forces
+    scene->golfball.position.x += scene->golfball.speed.x * delta;
+    scene->golfball.position.y += scene->golfball.speed.y * delta;
+    scene->golfball.position.z += scene->golfball.speed.z * delta;
+
+    scene->golfball.speed.x /= 2.0f;
+    scene->golfball.speed.y /= 2.0f;
+
+    if (scene->golfball.speed.x < 0.1f)
+        scene->golfball.speed.x = 0.0f;
+    if (scene->golfball.speed.y < 0.1f)
+        scene->golfball.speed.y = 0.0f;
+    if (scene->golfball.speed.z > -10.0f)
+        scene->golfball.speed.z += -2.0f;
+    if (scene->golfball.speed.z > 100000.0f)
+        scene->golfball.speed.z = 0.0f;
+
+    // Out of Out of Bounds
+    if (scene->golfball.position.x > 900 || scene->golfball.position.x < -900 ||
+        scene->golfball.position.y > 900 || scene->golfball.position.y < -900 ||
+        scene->golfball.position.z < -1.0f || scene->golfball.position.z > 900)
+    {
+        scene->golfball.position.x = 0;
+        scene->golfball.position.y = 0;
+        scene->golfball.position.z = 10;
+    }
+    printf("Time: Delta: %f Current: %f\n", delta, current);
+    printf("Speed: %f %f %f\n", scene->golfball.speed.x, scene->golfball.speed.y, scene->golfball.speed.z);
+    printf("Pos: %f %f %f\n", scene->golfball.position.x, scene->golfball.position.y, scene->golfball.position.z);
 }

@@ -24,6 +24,7 @@ typedef struct GolfBall
     Material material;
     vec3 position;
     bool glow;
+    vec3 speed;
 } GolfBall;
 
 #define N_BRICKS 6
@@ -75,5 +76,10 @@ void draw_skybox(const Scene* scene);
  * Draws a TexturedBrick.
  */
 void draw_textured_brick(const TexturedBrick *brick, const Scene *scene);
+
+/**
+ * Updates game objects
+ */
+void update_game(Scene* scene, double delta, double current);
 
 #endif /* SCENE_H */

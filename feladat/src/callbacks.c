@@ -156,5 +156,6 @@ void idle()
     last_frame_time = current_time;
 
     update_camera(&camera, elapsed_time, &scene);
+    update_game(&scene, elapsed_time, current_time);
     glutPostRedisplay();
 }
