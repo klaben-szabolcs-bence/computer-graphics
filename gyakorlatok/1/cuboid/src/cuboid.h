@@ -1,9 +1,7 @@
 #ifndef CUBOID_H
 #define CUBOID_H
 
-/**
- * Data of a cuboid object in Descartes coordinate system
- */
+/// Data of a cuboid object in Descartes coordinate system
 typedef struct Cuboid
 {
 	double width;
