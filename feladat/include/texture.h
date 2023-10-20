@@ -17,4 +17,3 @@ GLuint load_texture(char* filename);
 GLuint load_ogl_texture(const char* filename);
 
 #endif /* TEXTURE_H */
-

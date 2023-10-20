@@ -64,8 +64,4 @@ void special_keyboard(int key, int x, int y);
  */
 void idle();
 
-
-
-
-
 #endif /* CALLBACKS_H */

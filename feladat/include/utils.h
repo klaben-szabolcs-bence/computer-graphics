@@ -43,7 +43,6 @@ typedef struct ArrayColor
     float color[4];
 } ArrayColor;
 
-
 /**
  * Two floats in a array. First is u, second is v.
  */
