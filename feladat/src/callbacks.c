@@ -68,16 +68,41 @@ void mouse(int button, int state, int x, int y)
 
 void motion(int x, int y)
 {
+    //Handle moving
+    if (scene.golfball.still && !camera.freecam)
+    {
+        double drag_distance = y - mouse_position.y;
+        if (drag_distance > 0)
+        {
+            //Create vector between camera and ball
+            vec3 look = create_vec3(
+                scene.golfball.position.x - camera.position.x,
+                scene.golfball.position.y - camera.position.y,
+                scene.golfball.position.z - camera.position.z
+                );
+
+            //Normalize it
+            look = create_vec3(look.x / abs(look.x), look.y / abs(look.y), look.z / abs(look.z));
+
+            //Multiply it, by drag distance
+            look = create_vec3(look.x * drag_distance, look.y * drag_distance, look.z * drag_distance);
+
+            //Add it to the speed vector of the ball
+            scene.golfball.speed.x += look.x;
+            scene.golfball.speed.y += look.y;
+            scene.golfball.speed.z += look.z;
+        }
+    }
     mouse_position.x = x;
     mouse_position.y = y;
 }
 
 void passive_motion(int x, int y)
 {
+    rotate_camera(&camera, (x - 640 / 2) / 10.0, -(y - 480 / 2) / 10.0);
+    glutWarpPointer(640 / 2, 480 / 2);
     mouse_position.x = x;
     mouse_position.y = y;
-    rotate_camera(&camera, (mouse_position.x - 640 / 2) / 10.0, -(mouse_position.y - 480 / 2) / 10.0);
-    glutWarpPointer(640 / 2, 480 / 2);
     glutPostRedisplay();
 }
 
