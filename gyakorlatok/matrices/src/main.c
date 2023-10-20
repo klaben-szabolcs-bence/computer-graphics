@@ -3,13 +3,13 @@
 
 int main(int argc, char* argv[])
 {
-	float a[3][3] = {
+	T_MATRIX a = {
         { 1.0f, -2.0f,  3.1f},
         { 5.0f, -3.0f,  0.0f},
         {-2.0f,  1.0f, -4.0f}
     };
-	float b[3][3];
-	float c[3][3];
+	T_MATRIX b;
+	T_MATRIX c;
 
     init_zero_matrix(b);
     b[1][1] =  8.0f;
@@ -37,7 +37,7 @@ int main(int argc, char* argv[])
     printf("The b and c matrices multiplied together and stored in a:\n");
     print_matrix(a);
 
-    point p = {3, 2, 1};
+    T_POINT2D p = {3, 2, 1};
     printf("The p point:\n");
     print_point(p);
 

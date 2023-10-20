@@ -2,7 +2,7 @@
 
 #include <stdio.h>
 
-void init_zero_matrix(matrix m)
+void init_zero_matrix(T_MATRIX m)
 {
     int i;
     int j;
@@ -14,7 +14,7 @@ void init_zero_matrix(matrix m)
     }
 }
 
-void init_identity_matrix(matrix m)
+void init_identity_matrix(T_MATRIX m)
 {
     int i;
     int j;
@@ -31,7 +31,7 @@ void init_identity_matrix(matrix m)
     }
 }
 
-void print_matrix(const matrix m)
+void print_matrix(const T_MATRIX m)
 {
     int i;
     int j;
@@ -44,7 +44,7 @@ void print_matrix(const matrix m)
     }
 }
 
-void print_point(const point p)
+void print_point(const T_POINT2D p)
 {
     int i;
 
@@ -54,7 +54,7 @@ void print_point(const point p)
     printf(" ^ T\n");
 }
 
-void copy_matrix(matrix to, const matrix from)
+void copy_matrix(T_MATRIX to, const T_MATRIX from)
 {
     int i;
     int j;
@@ -66,7 +66,7 @@ void copy_matrix(matrix to, const matrix from)
     }
 }
 
-void copy_point(point to, const point from)
+void copy_point(T_POINT2D to, const T_POINT2D from)
 {
     int i;
     for (i = 0; i < 3; ++i) {
@@ -74,7 +74,7 @@ void copy_point(point to, const point from)
     }
 }
 
-void add_matrices(matrix result, const matrix a, const matrix b)
+void add_matrices(T_MATRIX result, const T_MATRIX a, const T_MATRIX b)
 {
     int i;
     int j;
@@ -86,12 +86,12 @@ void add_matrices(matrix result, const matrix a, const matrix b)
     }
 }
 
-void multiply_matrices(matrix result, const matrix a, const matrix b)
+void multiply_matrices(T_MATRIX result, const T_MATRIX a, const T_MATRIX b)
 {
     int i;
     int j;
     int k;
-    matrix out;
+    T_MATRIX out;
 
     for (i = 0; i < 3; ++i) {
         for (j = 0; j < 3; ++j) {
@@ -106,7 +106,7 @@ void multiply_matrices(matrix result, const matrix a, const matrix b)
     copy_matrix(result, out);
 }
 
-void multiply_scalar_matrix(matrix result, const float scalar, const matrix m)
+void multiply_scalar_matrix(T_MATRIX result, const float scalar, const T_MATRIX m)
 {
     int i;
     int j;
@@ -118,11 +118,11 @@ void multiply_scalar_matrix(matrix result, const float scalar, const matrix m)
     }
 }
 
-void transform_point(point result, const point p, const matrix transformation)
+void transform_point(T_POINT2D result, const T_POINT2D p, const T_MATRIX transformation)
 {
     int i;
     int k;
-    point out;
+    T_POINT2D out;
 
     for (i = 0; i < 3; ++i) {
         int sum = 0;
