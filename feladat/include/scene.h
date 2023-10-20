@@ -3,12 +3,14 @@
 
 #include "texture.h"
 #include "utils.h"
+#include "stdbool.h"
 
 #include <obj/model.h>
 
 typedef struct GolfBall
 {
     vec3 position;
+    bool glow;
 } GolfBall;
 
 typedef struct Scene
@@ -25,7 +27,7 @@ void init_scene(Scene* scene);
 /**
  * Set the lighting of the scene.
  */
-void set_lighting();
+void set_lighting(const Scene* scene);
 
 /**
  * Set the current material.

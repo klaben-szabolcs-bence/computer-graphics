@@ -52,11 +52,16 @@ void reshape(GLsizei width, GLsizei height)
 
 void mouse(int button, int state, int x, int y)
 {
-    printf("Pos: %.2f %.2f %.2f | Rot: %.2f %.2f %.2f\n", camera.position.x, camera.position.y, camera.position.z, camera.rotation.x, camera.rotation.y, camera.rotation.z);
+    mouse_position.x = x;
+    mouse_position.y = y;
+    printf("Pos: %.2f %.2f %.2f | ", camera.position.x, camera.position.y, camera.position.z);
+    printf("Rot: %.2f %.2f %.2f\n", camera.rotation.x, camera.rotation.y, camera.rotation.z);
 }
 
 void motion(int x, int y)
 {
+    mouse_position.x = x;
+    mouse_position.y = y;
 }
 
 void passive_motion(int x, int y)
@@ -101,6 +106,9 @@ void keyboard(unsigned char key, int x, int y)
         break;
     case 27:
         exit(0);
+    case 'f':
+        scene.golfball.glow = !scene.golfball.glow;
+        break;
     }
     
 

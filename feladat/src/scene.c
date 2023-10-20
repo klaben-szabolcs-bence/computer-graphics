@@ -2,6 +2,7 @@
 
 #include <GL/glut.h>
 
+
 #include <obj/load.h>
 #include <obj/draw.h>
 
@@ -20,11 +21,12 @@ void init_scene(Scene* scene)
     GolfBall ball;
     ball.position = create_vec3(10, 0, 0);
     scene->golfball = ball;
+    scene->golfball.glow = false;
 }
 
-void set_lighting()
+void set_lighting(const Scene* scene)
 {
-    float ambient_light[] = { 1.0f, 1.0f, 1.0f, 0.01f };
+    float ambient_light[] = { 1.0f, 1.0f, 1.0f, 0.001f };
     float diffuse_light[] = { 1.0f, 1.0f, 1.0, 0.1f };
     float specular_light[] = { 1.0f, 1.0f, 1.0f, 0.1f };
     float position[] = { 10000.0f, 0.0f, 0.0f, 1.0f };
@@ -33,6 +35,33 @@ void set_lighting()
     glLightfv(GL_LIGHT0, GL_DIFFUSE, diffuse_light);
     glLightfv(GL_LIGHT0, GL_SPECULAR, specular_light);
     glLightfv(GL_LIGHT0, GL_POSITION, position);
+
+    if(scene->golfball.glow)
+    {
+        ambient_light[3] = 1.0f;
+        diffuse_light[3] = 1.0f;
+        specular_light[3] = 1.0f;
+        position[0] = scene->golfball.position.x;
+        position[1] = scene->golfball.position.y + 1.01;
+        position[2] = scene->golfball.position.z;
+
+        glLightfv(GL_LIGHT1, GL_AMBIENT, ambient_light);
+        glLightfv(GL_LIGHT1, GL_DIFFUSE, diffuse_light);
+        glLightfv(GL_LIGHT1, GL_SPECULAR, specular_light);
+        glLightfv(GL_LIGHT1, GL_POSITION, position);
+    } else {
+        ambient_light[3] = 0.0f;
+        diffuse_light[3] = 0.0f;
+        specular_light[3] = 0.0f;
+        position[0] = scene->golfball.position.x;
+        position[1] = scene->golfball.position.y + 1.01;
+        position[2] = scene->golfball.position.z;
+
+        glLightfv(GL_LIGHT1, GL_AMBIENT, ambient_light);
+        glLightfv(GL_LIGHT1, GL_DIFFUSE, diffuse_light);
+        glLightfv(GL_LIGHT1, GL_SPECULAR, specular_light);
+        glLightfv(GL_LIGHT1, GL_POSITION, position);
+    }
 }
 
 void set_material(const Material* material)
@@ -66,7 +95,7 @@ void draw_scene(const Scene* scene)
 {
     draw_origin();
     set_material(&(scene->material));
-    set_lighting();
+    set_lighting(scene);
     //draw_model(&(scene->cube));
     glPushMatrix();
     glTranslatef(scene->golfball.position.x, scene->golfball.position.y, scene->golfball.position.z);
