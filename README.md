@@ -7,7 +7,7 @@ A mini-golf demo game. Enjoy shooting the ball around the map, while enjoying ch
  - [x] Camera centered around the ball or by pressing <kbd>c</kbd> to switch to free-cam mode.
    - [x] In centered view, you can zoom in and out by scrolling.
  - [x] You can make the ball glow (or not) by pressing the <kbd>f</kbd>.
- - [ ] A basic map to explore the demo game's capabilities.
+ - [x] A basic map to explore the demo game's capabilities.
  - [ ] A nice and simple collision and gravity system.
  - [ ] Shoot the ball by holding down <kbd>LMB</kbd> (left mouse button) then moving the mouse to set the power and releasing it!
  - [ ] An in-game help with <kbd>F1</kbd>.
