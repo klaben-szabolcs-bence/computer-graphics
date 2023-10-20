@@ -18,7 +18,7 @@ void init_scene(Scene *scene)
     create_material(ambient_material, diffuse_material, specular_material, 32.0, emission_material);
 
     GolfBall ball;
-    ball.position = create_vec3(10, 0, 5);
+    ball.position = create_vec3(10, 0, 2);
     scene->golfball = ball;
     scene->golfball.glow = false;
     ambient_material = create_color(0, 0, 0, 1);
@@ -130,16 +130,6 @@ void draw_scene(const Scene *scene)
     glPopMatrix();
 
     set_material(&(scene->invalid_material));
-
-    glPushMatrix();
-    glTranslatef(0, 5, 0);
-    glutSolidCube(1);
-    glPopMatrix();
-
-    glPushMatrix();
-    glTranslatef(5, 5, 0);
-    glutSolidCube(2);
-    glPopMatrix();
 }
 
 void draw_origin()
