@@ -19,9 +19,8 @@ void init_scene(Scene *scene)
 
     GolfBall ball;
     ball.position = create_vec3(10, 0, 2);
-    scene->golfball = ball;
     scene->golfball.glow = false;
-    ball.speed = create_vec3(2.0f, 2.0f, 2.0f);
+    ball.speed = 2;
     ball.velocity = create_vec3(0.0, 0.0, 0.0);
     ball.on_ground = false;
     ball.still = false;
@@ -31,6 +30,7 @@ void init_scene(Scene *scene)
     emission_material = create_color(0, 0, 0, 1);
     scene->golfball.material =
         create_material(ambient_material, diffuse_material, specular_material, 1.0, emission_material);
+    scene->golfball = ball;
 
     ambient_material = create_color(1, 1, 1, 1);
     diffuse_material = create_color(0, 0, 0, 1);
@@ -147,7 +147,6 @@ void set_material(const Material *material)
 
 void draw_scene(const Scene *scene)
 {
-
     set_material(&(scene->null_material));
     draw_origin();
     draw_skybox(scene);
@@ -434,28 +433,28 @@ void update_game(Scene *scene, double delta)
     //printf("Pos: %f %f %f\n", scene->golfball.position.x, scene->golfball.position.y, scene->golfball.position.z);
 
     //Basic forces
-    if (abs(scene->golfball.velocity.x) >= abs(scene->golfball.speed.x))
+    if (abs(scene->golfball.velocity.x) >= abs(scene->golfball.speed))
     {
-        scene->golfball.position.x += scene->golfball.speed.x * delta * sgn(scene->golfball.velocity.x);
-        scene->golfball.velocity.x -= scene->golfball.speed.x * delta * sgn(scene->golfball.velocity.x);
+        scene->golfball.position.x += scene->golfball.speed * delta * sgn(scene->golfball.velocity.x);
+        scene->golfball.velocity.x -= scene->golfball.speed * delta * sgn(scene->golfball.velocity.x);
     } else
     {
         scene->golfball.position.x += scene->golfball.velocity.x;
         scene->golfball.velocity.x = 0;
     }
-    if (abs(scene->golfball.velocity.y) >= abs(scene->golfball.speed.y))
+    if (abs(scene->golfball.velocity.y) >= abs(scene->golfball.speed))
     {
-        scene->golfball.position.y += scene->golfball.speed.y * delta * sgn(scene->golfball.velocity.y);
-        scene->golfball.velocity.y -= scene->golfball.speed.y * delta * sgn(scene->golfball.velocity.y);
+        scene->golfball.position.y += scene->golfball.speed * delta * sgn(scene->golfball.velocity.y);
+        scene->golfball.velocity.y -= scene->golfball.speed * delta * sgn(scene->golfball.velocity.y);
     } else
     {
         scene->golfball.position.y += scene->golfball.velocity.y;
         scene->golfball.velocity.y = 0;
     }
-    if (abs(scene->golfball.velocity.z) >= abs(scene->golfball.speed.z))
+    if (abs(scene->golfball.velocity.z) >= abs(scene->golfball.speed))
     {
-        scene->golfball.position.z += scene->golfball.speed.z * delta * sgn(scene->golfball.velocity.z);
-        scene->golfball.velocity.z -= scene->golfball.speed.z * delta * sgn(scene->golfball.velocity.z);
+        scene->golfball.position.z += scene->golfball.speed * delta * sgn(scene->golfball.velocity.z);
+        scene->golfball.velocity.z -= scene->golfball.speed * delta * sgn(scene->golfball.velocity.z);
     } else
     {
         scene->golfball.position.z += scene->golfball.velocity.z;
@@ -469,20 +468,14 @@ void update_game(Scene *scene, double delta)
         scene->golfball.velocity.y = 0.0;
     if (scene->golfball.velocity.z < -100000)
         scene->golfball.velocity.z = 0.0;
-    if (scene->golfball.speed.x > 100000)
-        scene->golfball.speed.x = 2.0f;
-    if (scene->golfball.speed.y > 100000)
-        scene->golfball.speed.y = 2.0f;
-    if (scene->golfball.speed.z > 100000)
-        scene->golfball.speed.z = 2.0f;
+    if (scene->golfball.speed > 100000)
+        scene->golfball.speed = 2.0f;
     if (abs(scene->golfball.velocity.x) < 0.001)
         scene->golfball.velocity.x = 0.0f;
     if (abs(scene->golfball.velocity.y) < 0.001)
         scene->golfball.velocity.y = 0.0f;
 
     // Apply gravity
-    if (scene->golfball.speed.z < 5.0f && !scene->golfball.on_ground)
-        scene->golfball.speed.z += 0.1f;
     if (!scene->golfball.on_ground)
         scene->golfball.velocity.z = -1.0f;
     else scene->golfball.velocity.z = 0.0f;
@@ -572,7 +565,6 @@ void update_game(Scene *scene, double delta)
                 if (abs(scene->golfball.velocity.z) <= 0.1f)
                 {
                     scene->golfball.velocity.z = 0.0f;
-                    scene->golfball.speed.z = 0.0f;
                     scene->golfball.on_ground = true;
                 }
 

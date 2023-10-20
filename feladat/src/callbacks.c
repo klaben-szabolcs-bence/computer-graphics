@@ -56,10 +56,10 @@ void draw_hud()
     char spd_text[64];
     sprintf(pos_text,"Pos: %+07.3f %+07.3f %+07.3f", scene.golfball.position.x, scene.golfball.position.y, scene.golfball.position.z);
     sprintf(vel_text,"Vel: %+07.3f %+07.3f %+07.3f", scene.golfball.velocity.x, scene.golfball.velocity.y, scene.golfball.velocity.z);
-    sprintf(spd_text,"Spd: %+07.3f %+07.3f %+07.3f", scene.golfball.speed.x, scene.golfball.speed.y, scene.golfball.speed.z);
+    sprintf(spd_text,"Speed: %+07.3f", scene.golfball.speed);
     write_text_to_screen(pos_text,scene.ascii_texture, screen.width - 28 * 12, screen.height - 3*12, 12);
     write_text_to_screen(vel_text,scene.ascii_texture, screen.width - 28 * 12, screen.height - 2*12, 12);
-    write_text_to_screen(spd_text,scene.ascii_texture, screen.width - 28 * 12, screen.height - 12, 12);
+    write_text_to_screen(spd_text,scene.ascii_texture, screen.width - 16 * 12, screen.height - 12, 12);
     draw_powerbar(10, screen.height - 60, 100, 50);
     glPopMatrix();
     glEnable(GL_LIGHTING);
