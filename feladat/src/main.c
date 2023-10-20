@@ -35,7 +35,7 @@ int main(int argc, char* argv[])
     glutInitWindowSize(640, 480);     
     glutInitDisplayMode(GLUT_RGBA | GLUT_DOUBLE | GLUT_DEPTH);
 
-    window = glutCreateWindow("Scene with a camera");
+    window = glutCreateWindow("Minigolf Prototype");
     glutSetWindow(window);
     glutSetCursor(GLUT_CURSOR_NONE);
 
