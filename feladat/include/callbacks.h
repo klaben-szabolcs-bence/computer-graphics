@@ -21,7 +21,7 @@ Camera camera;
  * Drag distance with the mouse
  */
 double drag_distance;
-#define MAX_DRAG_DISTANCE 100
+#define MAX_DRAG_DISTANCE 10
 
 /**
  * Toggle for showing help message

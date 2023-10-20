@@ -126,7 +126,7 @@ void motion(int x, int y)
     // Handle moving
     if (scene.golfball.still && !camera.freecam)
     {
-        double raw_drag_distance = (mouse_position.y - y) * 10 * -1;
+        double raw_drag_distance = (mouse_position.y - y) * -1;
         drag_distance += raw_drag_distance;
         
         // Clamp value

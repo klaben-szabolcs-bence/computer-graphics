@@ -21,7 +21,8 @@ void init_scene(Scene *scene)
     ball.position = create_vec3(10, 0, 2);
     scene->golfball = ball;
     scene->golfball.glow = false;
-    ball.speed = create_vec3(0.0f, 0.0f, 0.0f);
+    ball.speed = create_vec3(2.0f, 2.0f, 2.0f);
+    ball.velocity = create_vec3(0.0, 0.0, 0.0);
     ball.on_ground = false;
     ball.still = false;
     ambient_material = create_color(0, 0, 0, 1);
@@ -433,27 +434,58 @@ void update_game(Scene *scene, double delta)
     //printf("Pos: %f %f %f\n", scene->golfball.position.x, scene->golfball.position.y, scene->golfball.position.z);
 
     //Basic forces
-    scene->golfball.position.x += scene->golfball.speed.x * delta;
-    scene->golfball.position.y += scene->golfball.speed.y * delta;
-    scene->golfball.position.z += scene->golfball.speed.z * delta;
-
-    scene->golfball.speed.x /= 2.0f;
-    scene->golfball.speed.y /= 2.0f;
-
-    if (abs(scene->golfball.speed.x) < 0.1f)
-        scene->golfball.speed.x = 0.0f;
-    if (abs(scene->golfball.speed.y) < 0.1f)
-        scene->golfball.speed.y = 0.0f;
-    if (abs(scene->golfball.speed.z) < 0.1f)
-        scene->golfball.speed.z = 0.0f;
+    if (abs(scene->golfball.velocity.x) >= abs(scene->golfball.speed.x))
+    {
+        scene->golfball.position.x += scene->golfball.speed.x * delta * sgn(scene->golfball.velocity.x);
+        scene->golfball.velocity.x -= scene->golfball.speed.x * delta * sgn(scene->golfball.velocity.x);
+    } else
+    {
+        scene->golfball.position.x += scene->golfball.velocity.x;
+        scene->golfball.velocity.x = 0;
+    }
+    if (abs(scene->golfball.velocity.y) >= abs(scene->golfball.speed.y))
+    {
+        scene->golfball.position.y += scene->golfball.speed.y * delta * sgn(scene->golfball.velocity.y);
+        scene->golfball.velocity.y -= scene->golfball.speed.y * delta * sgn(scene->golfball.velocity.x);
+    } else
+    {
+        scene->golfball.position.y += scene->golfball.velocity.y;
+        scene->golfball.velocity.y = 0;
+    }
+    if (abs(scene->golfball.velocity.z) >= abs(scene->golfball.speed.z))
+    {
+        scene->golfball.position.z += scene->golfball.speed.z * delta * sgn(scene->golfball.velocity.z);
+        scene->golfball.velocity.z -= scene->golfball.speed.z * delta * sgn(scene->golfball.velocity.x);
+    } else
+    {
+        scene->golfball.position.z += scene->golfball.velocity.z;
+        scene->golfball.velocity.z = 0;
+    }
     
-    // Apply gravity
-    if (scene->golfball.speed.z > -10.0f && !scene->golfball.on_ground)
-        scene->golfball.speed.z += -1.0f;
+    //Magic fuckery
+    if (scene->golfball.velocity.x < -100000)
+        scene->golfball.velocity.x = 0;
+    if (scene->golfball.velocity.y < -100000)
+        scene->golfball.velocity.y = 0;
+    if (scene->golfball.velocity.z < -100000)
+        scene->golfball.velocity.z = 0;
+    if (scene->golfball.speed.x > 100000)
+        scene->golfball.speed.x = 1;
+    if (scene->golfball.speed.y > 100000)
+        scene->golfball.speed.y = 1;
+    if (scene->golfball.speed.z > 100000)
+        scene->golfball.speed.z = 1;
+    if (abs(scene->golfball.velocity.x) < 0.001)
+        scene->golfball.velocity.x = 0.0;
+    if (abs(scene->golfball.velocity.y) < 0.001)
+        scene->golfball.velocity.y = 0.0;
 
-    // Mitigate weird stuff
-    if (scene->golfball.speed.z > 100000.0f)
-        scene->golfball.speed.z = 0.0f;
+    // Apply gravity
+    if (scene->golfball.speed.z < 5.0f && !scene->golfball.on_ground)
+        scene->golfball.speed.z += 0.1f;
+    if (!scene->golfball.on_ground)
+        scene->golfball.velocity.z = -1.0f;
+    else scene->golfball.velocity.z = 0.0f;
 
     // Out of Out of Bounds
     if (scene->golfball.position.x > 900 || scene->golfball.position.x < -900 ||
@@ -478,8 +510,6 @@ void update_game(Scene *scene, double delta)
         distance[4] = scene->golfball.position.z - scene->bricks[colliding_brick].position.z;
         distance[5] = scene->golfball.position.z - (scene->bricks[colliding_brick].position.z + scene->bricks[colliding_brick].size.z);
 
-        
-
         int min_distance = fmin(abs(distance[0]), abs(distance[1]));
 
         int i;
@@ -493,10 +523,10 @@ void update_game(Scene *scene, double delta)
             // Collission on left side
             // Collission on right side
 
-            scene->golfball.speed.x *= -1.0f;
+            scene->golfball.velocity.x *= -1.0f;
 
             
-            if (scene->golfball.speed.x < 0)
+            if (scene->golfball.velocity.x < 0)
             {
                 scene->golfball.position.x -= distance[0] + 0.5f;
             }
@@ -511,10 +541,10 @@ void update_game(Scene *scene, double delta)
             //Collission on front side
             //Collission on back side
 
-            scene->golfball.speed.y *= -1.0f;
+            scene->golfball.velocity.y *= -1.0f;
 
             
-            if (scene->golfball.speed.y < 0)
+            if (scene->golfball.velocity.y < 0)
             {
                 scene->golfball.position.y -= distance[2] + 0.5f;
             }
@@ -529,18 +559,19 @@ void update_game(Scene *scene, double delta)
             //Collision on bottom side
             //Collision on top side
 
-            scene->golfball.speed.z *= -0.1f;
+            scene->golfball.velocity.z *= -0.1f;
 
             
-            if (scene->golfball.speed.z < 0)
+            if (scene->golfball.velocity.z < 0)
             {
                 scene->golfball.position.z -= distance[4] + 0.5f;
             }
             else
             {
                 scene->golfball.position.z -= distance[5] - 0.5f;
-                if (abs(scene->golfball.speed.z) < 0.1f)
+                if (abs(scene->golfball.velocity.z) <= 0.1f)
                 {
+                    scene->golfball.velocity.z = 0.0f;
                     scene->golfball.speed.z = 0.0f;
                     scene->golfball.on_ground = true;
                 }
@@ -550,7 +581,8 @@ void update_game(Scene *scene, double delta)
         }
     }
 
-    if (scene->golfball.on_ground && scene->golfball.speed.x == 0 && scene->golfball.speed.y == 0)
+    
+    if (scene->golfball.on_ground && scene->golfball.velocity.x == 0.0 && scene->golfball.velocity.y == 0.0)
     {
         scene->golfball.still = true;
     }

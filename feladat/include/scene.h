@@ -25,6 +25,7 @@ typedef struct GolfBall
     vec3 position;
     bool glow;
     vec3 speed;
+    vec3 velocity;
     bool on_ground;
     bool still;
 } GolfBall;
