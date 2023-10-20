@@ -75,10 +75,6 @@ void reshape(GLsizei width, GLsizei height)
     gluPerspective(50.0, (GLdouble)width / (GLdouble)height, 0.01, 10000.0);
 }
 
-void mouseHandler(int button, int state, int x, int y)
-{
-}
-
 void motionHandler(int x, int y)
 {
     rotateX = x;
