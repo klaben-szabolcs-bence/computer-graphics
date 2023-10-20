@@ -39,6 +39,7 @@ int main(int argc, char* argv[])
     init_opengl();
     init_scene(&scene);
     init_camera(&camera);
+    drag_distance = 0.0;
     set_callbacks();
 
     glutMainLoop();

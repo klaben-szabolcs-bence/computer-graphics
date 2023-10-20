@@ -18,6 +18,11 @@ Scene scene;
 Camera camera;
 
 /**
+ * Drag distance with the mouse
+ */
+double drag_distance;
+
+/**
  * Call when need to display the graphical content.
  */
 void display();
@@ -60,6 +65,6 @@ void idle();
 /**
  * Make the ball move, once we have finalized drag distance
  */
-void make_ball_move(double drag_distance);
+void make_ball_move();
 
 #endif /* CALLBACKS_H */

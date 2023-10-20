@@ -56,9 +56,6 @@ void reshape(GLsizei width, GLsizei height)
 
 void mouse(int button, int state, int x, int y)
 {
-    mouse_position.x = x;
-    mouse_position.y = y;
-
     if ((button == 3) || (button == 4)) // It's a wheel event
     {
         if (state == GLUT_UP)
@@ -73,6 +70,15 @@ void mouse(int button, int state, int x, int y)
         if (camera.distance > 50)
             camera.distance = 50;
     }
+
+    if (button == GLUT_LEFT_BUTTON && state == GLUT_UP)
+    {
+        if (drag_distance > 0) make_ball_move();
+        drag_distance = 0.0;
+    }
+
+    mouse_position.x = x;
+    mouse_position.y = y;
 }
 
 void motion(int x, int y)
@@ -80,22 +86,19 @@ void motion(int x, int y)
     //Handle moving
     if (scene.golfball.still && !camera.freecam)
     {
-        double drag_distance = y - mouse_position.y;
-        if (drag_distance > 0)
-        {
-            make_ball_move(drag_distance);
-        }
+        drag_distance += y - mouse_position.y;
     }
     mouse_position.x = x;
     mouse_position.y = y;
+    glutWarpPointer(640 / 2, 480 / 2);
 }
 
 void passive_motion(int x, int y)
 {
     rotate_camera(&camera, (x - 640 / 2) / 10.0, -(y - 480 / 2) / 10.0);
-    glutWarpPointer(640 / 2, 480 / 2);
     mouse_position.x = x;
     mouse_position.y = y;
+    glutWarpPointer(640 / 2, 480 / 2);
     glutPostRedisplay();
 }
 
@@ -185,7 +188,7 @@ void idle()
     glutPostRedisplay();
 }
 
-void make_ball_move(double drag_distance)
+void make_ball_move()
 {
     //Create vector between camera and ball
     vec3 look = create_vec3(
@@ -202,5 +205,5 @@ void make_ball_move(double drag_distance)
     //Add it to the speed vector of the ball
     scene.golfball.speed.x += look.x;
     scene.golfball.speed.y += look.y;
-    scene.golfball.speed.z += look.z;
+    //scene.golfball.speed.z += look.z;
 }
