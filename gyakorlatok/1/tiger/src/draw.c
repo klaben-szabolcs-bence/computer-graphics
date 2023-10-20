@@ -46,7 +46,7 @@ void draw_triangles(const struct Model* model)
 void draw_quads(const struct Model* model)
 {
     int i, k;
-    int vertex_index, texture_index, normal_index;
+    int vertex_index, texture_index;
     double x, y, z, u, v;
 
     glBegin(GL_QUADS);
