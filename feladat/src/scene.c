@@ -9,7 +9,7 @@
 void init_scene(Scene* scene)
 {
     //load_model(&(scene->cube), "golf_ball.obj");
-    scene->skybox_texture = load_texture("tutorial_skybox.png"); 
+    scene->skybox_texture = load_texture("skybox.png"); 
 
     Color ambient_material = create_color(0.55, 0, 0.55, 1);
     Color diffuse_material = create_color(0.755, 0.755, 0, 1);
