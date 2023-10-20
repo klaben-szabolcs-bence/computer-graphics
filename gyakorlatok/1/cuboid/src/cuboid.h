@@ -26,4 +26,9 @@ double calc_volume(const Cuboid* cuboid);
  */
 double calc_surface(const Cuboid* cuboid);
 
+/**
+ * Check if a side is a square
+ */
+int is_a_side_square(const Cuboid* cuboid);
+
 #endif // CUBOID_H

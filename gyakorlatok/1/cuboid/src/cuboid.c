@@ -22,3 +22,11 @@ double calc_surface(const Cuboid* cuboid)
     double top_surface = cuboid->width * cuboid->depth;
     return 2 * (front_surface + side_surface + top_surface);
 }
+
+int is_a_side_square(const Cuboid* cuboid)
+{
+    if (cuboid->width == cuboid->height) return 1;
+    if (cuboid->width == cuboid->depth) return 1;
+    if (cuboid->height == cuboid->depth) return 1;
+    return 0;
+}
