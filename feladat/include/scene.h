@@ -81,6 +81,4 @@ void draw_skybox(const Scene* scene);
  */
 void draw_textured_brick(const TexturedBrick *brick, const Scene *scene);
 
-
-
 #endif /* SCENE_H */
