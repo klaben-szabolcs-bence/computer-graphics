@@ -3,7 +3,8 @@
 #define VIEWPORT_RATIO (4.0 / 3.0)
 #define VIEWPORT_ASPECT 50.0
 
-struct {
+struct
+{
     int x;
     int y;
 } mouse_position;
@@ -18,7 +19,8 @@ void display()
     draw_scene(&scene);
     glPopMatrix();
 
-    if (is_preview_visible) {
+    if (is_preview_visible)
+    {
         show_texture_preview();
     }
 
@@ -31,13 +33,15 @@ void reshape(GLsizei width, GLsizei height)
     double ratio;
 
     ratio = (double)width / height;
-    if (ratio > VIEWPORT_RATIO) {
+    if (ratio > VIEWPORT_RATIO)
+    {
         w = (int)((double)height * VIEWPORT_RATIO);
         h = height;
         x = (width - w) / 2;
         y = 0;
     }
-    else {
+    else
+    {
         w = width;
         h = (int)((double)width / VIEWPORT_RATIO);
         x = 0;
@@ -55,14 +59,19 @@ void mouse(int button, int state, int x, int y)
     mouse_position.x = x;
     mouse_position.y = y;
 
-   if ((button == 3) || (button == 4)) // It's a wheel event
+    if ((button == 3) || (button == 4)) // It's a wheel event
     {
-        if (state == GLUT_UP) return; 
-        if (button == 3) camera.distance--;
-        else camera.distance++;
+        if (state == GLUT_UP)
+            return;
+        if (button == 3)
+            camera.distance--;
+        else
+            camera.distance++;
 
-        if (camera.distance < 5) camera.distance = 5;
-        if (camera.distance > 50) camera.distance = 50;
+        if (camera.distance < 5)
+            camera.distance = 5;
+        if (camera.distance > 50)
+            camera.distance = 50;
     }
 }
 
@@ -74,23 +83,7 @@ void motion(int x, int y)
         double drag_distance = y - mouse_position.y;
         if (drag_distance > 0)
         {
-            //Create vector between camera and ball
-            vec3 look = create_vec3(
-                scene.golfball.position.x - camera.position.x,
-                scene.golfball.position.y - camera.position.y,
-                scene.golfball.position.z - camera.position.z
-                );
-
-            //Normalize it
-            look = create_vec3(look.x / abs(look.x), look.y / abs(look.y), look.z / abs(look.z));
-
-            //Multiply it, by drag distance
-            look = create_vec3(look.x * drag_distance, look.y * drag_distance, look.z * drag_distance);
-
-            //Add it to the speed vector of the ball
-            scene.golfball.speed.x += look.x;
-            scene.golfball.speed.y += look.y;
-            scene.golfball.speed.z += look.z;
+            make_ball_move(drag_distance);
         }
     }
     mouse_position.x = x;
@@ -108,7 +101,8 @@ void passive_motion(int x, int y)
 
 void keyboard(unsigned char key, int x, int y)
 {
-    switch (key) {
+    switch (key)
+    {
     case 'w':
         set_camera_speed(&camera, 1);
         break;
@@ -122,10 +116,12 @@ void keyboard(unsigned char key, int x, int y)
         set_camera_side_speed(&camera, -1);
         break;
     case 't':
-        if (is_preview_visible) {
+        if (is_preview_visible)
+        {
             is_preview_visible = FALSE;
         }
-        else {
+        else
+        {
             is_preview_visible = TRUE;
         }
         break;
@@ -142,21 +138,25 @@ void keyboard(unsigned char key, int x, int y)
     case 'f':
         scene.golfball.glow = !scene.golfball.glow;
 
-        if (scene.golfball.glow) glEnable(GL_LIGHT1);
-        else glDisable(GL_LIGHT1);
-        
-        if (scene.golfball.glow) scene.golfball.material.emission = create_color(1, 1, 1, 1);
-        else scene.golfball.material.emission = create_color(0, 0, 0, 1);
+        if (scene.golfball.glow)
+            glEnable(GL_LIGHT1);
+        else
+            glDisable(GL_LIGHT1);
+
+        if (scene.golfball.glow)
+            scene.golfball.material.emission = create_color(1, 1, 1, 1);
+        else
+            scene.golfball.material.emission = create_color(0, 0, 0, 1);
         break;
     }
-    
 
     glutPostRedisplay();
 }
 
 void keyboard_up(unsigned char key, int x, int y)
 {
-    switch (key) {
+    switch (key)
+    {
     case 'w':
     case 's':
         set_camera_speed(&camera, 0.0);
@@ -175,7 +175,7 @@ void idle()
     static int last_frame_time = 0;
     int current_time;
     double elapsed_time;
-   
+
     current_time = glutGet(GLUT_ELAPSED_TIME);
     elapsed_time = (double)(current_time - last_frame_time) / 1000;
     last_frame_time = current_time;
@@ -183,4 +183,24 @@ void idle()
     update_camera(&camera, elapsed_time, &scene);
     update_game(&scene, elapsed_time);
     glutPostRedisplay();
+}
+
+void make_ball_move(double drag_distance)
+{
+    //Create vector between camera and ball
+    vec3 look = create_vec3(
+        scene.golfball.position.x - camera.position.x,
+        scene.golfball.position.y - camera.position.y,
+        scene.golfball.position.z - camera.position.z);
+
+    //Normalize it
+    look = create_vec3(look.x / abs(look.x), look.y / abs(look.y), look.z / abs(look.z));
+
+    //Multiply it, by drag distance
+    look = create_vec3(look.x * drag_distance, look.y * drag_distance, look.z * drag_distance);
+
+    //Add it to the speed vector of the ball
+    scene.golfball.speed.x += look.x;
+    scene.golfball.speed.y += look.y;
+    scene.golfball.speed.z += look.z;
 }

@@ -57,4 +57,9 @@ void keyboard_up(unsigned char key, int x, int y);
  */
 void idle();
 
+/**
+ * Make the ball move, once we have finalized drag distance
+ */
+void make_ball_move(double drag_distance);
+
 #endif /* CALLBACKS_H */
