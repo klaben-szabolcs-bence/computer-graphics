@@ -15,6 +15,7 @@ typedef struct TexturedBrick
     float rotation_angle;
     vec3 size;
     bool wrap_3d;
+    int texture_size[2];
 } TexturedBrick;
 
 typedef struct GolfBall

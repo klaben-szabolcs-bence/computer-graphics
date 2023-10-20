@@ -42,6 +42,8 @@ void init_scene(Scene *scene)
     specular_material = create_color(0.633f,0.727811f,0.633f,1.0f);
     unplayable_ground.material = create_material(ambient_material, diffuse_material, specular_material, 76.8f, emission_material);
     unplayable_ground.wrap_3d = false;
+    unplayable_ground.texture_size[0] = 900;
+    unplayable_ground.texture_size[1] = 901;
     scene->bricks[0] = unplayable_ground;
 
     scene->playable_ground_texture = load_texture("playable_ground.jpg");
@@ -288,84 +290,79 @@ void draw_textured_brick(const TexturedBrick *brick, const Scene *scene)
     }
     else
     {
-        ArrayUV4 uv4;
-        uv4.uv[0] = 0;
-        uv4.uv[1] = 1;
-        uv4.uv[2] = 1;
-        uv4.uv[3] = 1;
-        uv4.uv[4] = 1;
-        uv4.uv[5] = 0;
-        uv4.uv[6] = 0;
-        uv4.uv[7] = 0;
+        float right_U = brick->size.x / brick->texture_size[0];
+        float top_V_on_sides = brick->size.z / brick->texture_size[1];
+        float top_V_on_top = brick->size.y / brick->texture_size[1];
+        printf("%.3f\n", right_U);
         //Top
         glBegin(GL_QUADS);
-        glTexCoord2f(uv4.uv[0], uv4.uv[1]);
+        glTexCoord2f(0, top_V_on_top);
         glVertex3f(0, brick->size.y, brick->size.z);
-        glTexCoord2f(uv4.uv[2], uv4.uv[3]);
+        glTexCoord2f(right_U, top_V_on_top);
         glVertex3f(brick->size.x, brick->size.y, brick->size.z);
-        glTexCoord2f(uv4.uv[4], uv4.uv[5]);
+        glTexCoord2f(right_U, 0);
         glVertex3f(brick->size.x, 0, brick->size.z);
-        glTexCoord2f(uv4.uv[6], uv4.uv[7]);
+        glTexCoord2f(0, 0);
         glVertex3f(0, 0, brick->size.z);
         glEnd();
 
         //Bottom
         glBegin(GL_QUADS);
-        glTexCoord2f(uv4.uv[0], uv4.uv[1]);
+        glTexCoord2f(0, -top_V_on_top);
         glVertex3f(0, 0, brick->size.z);
-        glTexCoord2f(uv4.uv[2], uv4.uv[3]);
+        glTexCoord2f(right_U, -top_V_on_top);
         glVertex3f(brick->size.x, 0, 0);
-        glTexCoord2f(uv4.uv[4], uv4.uv[5]);
+        glTexCoord2f(right_U,0);
         glVertex3f(brick->size.x, brick->size.y, 0);
-        glTexCoord2f(uv4.uv[6], uv4.uv[7]);
+        glTexCoord2f(0, 0);
         glVertex3f(0, brick->size.y, 0);
         glEnd();
 
         //Front
         glBegin(GL_QUADS);
-        glTexCoord2f(uv4.uv[0], uv4.uv[1]);
+        glTexCoord2f(0, top_V_on_sides);
         glVertex3f(0, 0, brick->size.z);
-        glTexCoord2f(uv4.uv[2], uv4.uv[3]);
+        glTexCoord2f(right_U, top_V_on_sides);
         glVertex3f(brick->size.x, 0, brick->size.z);
-        glTexCoord2f(uv4.uv[4], uv4.uv[5]);
+        glTexCoord2f(right_U,0);
         glVertex3f(brick->size.x, 0, 0);
-        glTexCoord2f(uv4.uv[6], uv4.uv[7]);
+        glTexCoord2f(0, 0);
         glVertex3f(brick->size.x, 0, 0);
         glEnd();
 
         //Left
         glBegin(GL_QUADS);
-        glTexCoord2f(uv4.uv[0], uv4.uv[1]);
+        glTexCoord2f(0, top_V_on_sides);
         glVertex3f(0, brick->size.y, brick->size.z);
-        glTexCoord2f(uv4.uv[2], uv4.uv[3]);
+        glTexCoord2f(right_U, top_V_on_sides);
         glVertex3f(0, 0, brick->size.z);
-        glTexCoord2f(uv4.uv[4], uv4.uv[5]);
+        glTexCoord2f(right_U,0);
         glVertex3f(0, 0, 0);
-        glTexCoord2f(uv4.uv[6], uv4.uv[7]);
+        glTexCoord2f(0, 0);
         glVertex3f(0, brick->size.y, 0);
         glEnd();
 
         //Right
         glBegin(GL_QUADS);
-        glTexCoord2f(uv4.uv[0], uv4.uv[1]);
+        glTexCoord2f(0, top_V_on_sides);
         glVertex3f(brick->size.x, 0, brick->size.z);
-        glTexCoord2f(uv4.uv[2], uv4.uv[3]);
+        glTexCoord2f(right_U, top_V_on_sides);
         glVertex3f(brick->size.x, brick->size.y, brick->size.z);
-        glTexCoord2f(uv4.uv[4], uv4.uv[5]);
+        glTexCoord2f(right_U,0);
         glVertex3f(brick->size.x, brick->size.y, 0);
-        glTexCoord2f(uv4.uv[6], uv4.uv[7]);
+        glTexCoord2f(0, 0);
         glVertex3f(brick->size.x, 0, 0);
         glEnd();
 
         //Back
         glBegin(GL_QUADS);
-        glTexCoord2f(uv4.uv[0], uv4.uv[1]);
+        glTexCoord2f(0, top_V_on_sides);
         glVertex3f(brick->size.x, brick->size.y, brick->size.z);
-        glTexCoord2f(uv4.uv[2], uv4.uv[3]);
+        glTexCoord2f(right_U, top_V_on_sides);
         glVertex3f(0, brick->size.y, brick->size.z);
-        glTexCoord2f(uv4.uv[4], uv4.uv[5]);
+        glTexCoord2f(right_U,0);
         glVertex3f(0, brick->size.y, 0);
-        glTexCoord2f(uv4.uv[6], uv4.uv[7]);
+        glTexCoord2f(0, 0);
         glVertex3f(brick->size.x, brick->size.y, 0);
         glEnd();
     }
