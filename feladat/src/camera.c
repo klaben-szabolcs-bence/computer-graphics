@@ -25,16 +25,12 @@ void update_camera(Camera *camera, double time, Scene *scene)
 {
     if (!camera->freecam)
     {
-        double angle;
-        double up_angle;
+        double angle = degree_to_radian(camera->rotation.z);
+        double up_angle = degree_to_radian(camera->rotation.x);
 
-        angle = degree_to_radian(camera->rotation.z);
-        up_angle = degree_to_radian(camera->rotation.x);
-
-        double x = cos(angle);
-        double y = sin(angle);
-        double z = sin(up_angle) * 10;
-        
+        double x = scene->golfball.position.x + 10 * cos(angle) * cos(up_angle);
+        double y = scene->golfball.position.y + 10 * sin(angle) * cos(up_angle);
+        double z = 10 * sin(up_angle);
 
         camera->position = create_vec3(x, y, z);
     }
@@ -63,7 +59,9 @@ void set_view(const Camera *camera, const Scene *scene)
     glLoadIdentity();
     if (!camera->freecam)
     {
-        gluLookAt(camera->position.x, camera->position.y, camera->position.z, scene->golfball.position.x, scene->golfball.position.y, scene->golfball.position.z, 0, 0, 1);
+        gluLookAt(camera->position.x, camera->position.y, camera->position.z,
+         scene->golfball.position.x, scene->golfball.position.y, scene->golfball.position.z,
+         0, 0, 1);
     }
     else
     {
@@ -102,13 +100,13 @@ void rotate_camera(Camera *camera, double horizontal, double vertical)
     }
     else
     {
-        if (camera->rotation.x < 0.1)
+        if (camera->rotation.x < 0)
         {
-            camera->rotation.x = 0.1;
+            camera->rotation.x = 0;
         }
-        if (camera->rotation.x > 90.0)
+        if (camera->rotation.x > 89.0)
         {
-            camera->rotation.x = 90.0;
+            camera->rotation.x = 89.0;
         }
     }
 }

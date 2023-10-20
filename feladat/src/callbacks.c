@@ -54,8 +54,6 @@ void mouse(int button, int state, int x, int y)
 {
     mouse_position.x = x;
     mouse_position.y = y;
-    printf("Pos: %.2f %.2f %.2f | ", camera.position.x, camera.position.y, camera.position.z);
-    printf("Rot: %.2f %.2f %.2f\n", camera.rotation.x, camera.rotation.y, camera.rotation.z);
 }
 
 void motion(int x, int y)
