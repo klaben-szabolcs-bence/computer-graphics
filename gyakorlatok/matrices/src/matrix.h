@@ -10,7 +10,7 @@ void init_zero_matrix(float matrix[3][3]);
  * Initializes an identity matrix.
  * An Identity Matrix is a matrix with ones in the main diagonal, and zeros elsewhere.
  */
-void init_identify_matrix(float matrix[3][3]);
+void init_identity_matrix(float matrix[3][3]);
 
 /**
  * Print the elements of the matrix.

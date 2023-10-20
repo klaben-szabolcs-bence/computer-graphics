@@ -14,7 +14,7 @@ void init_zero_matrix(float matrix[3][3])
     }
 }
 
-void init_identify_matrix(float matrix[3][3])
+void init_identity_matrix(float matrix[3][3])
 {
     int i;
     int j;

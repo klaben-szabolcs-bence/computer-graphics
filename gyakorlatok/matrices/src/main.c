@@ -22,11 +22,11 @@ int main(int argc, char* argv[])
     add_matrices(a, b, c);
     print_matrix(c);
 
-    init_identify_matrix(a);
+    init_identity_matrix(a);
     printf("Identity matrix:\n");
     print_matrix(a);
 
-    mult_scalar_matrix(b, 1000, a);
+    mult_scalar_matrix(b, 1000, b);
     printf("Multiplied by scalar:\n");
     print_matrix(b);
 	return 0;
