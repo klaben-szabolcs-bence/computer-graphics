@@ -26,7 +26,7 @@ int main(int argc, char* argv[])
     printf("Identity matrix:\n");
     print_matrix(a);
 
-    mult_scalar_matrix(b, 1000, b);
+    multiply_scalar_matrix(b, 1000, b);
     printf("Multiplied by scalar:\n");
     print_matrix(b);
 	return 0;

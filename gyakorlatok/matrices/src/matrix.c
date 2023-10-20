@@ -44,19 +44,19 @@ void print_matrix(const float matrix[3][3])
     }
 }
 
-void add_matrices(const float a[3][3], const float b[3][3], float c[3][3])
+void add_matrices(const float result[3][3], const float a[3][3], float b[3][3])
 {
     int i;
     int j;
 
     for (i = 0; i < 3; ++i) {
         for (j = 0; j < 3; ++j) {
-            c[i][j] = a[i][j] + b[i][j];
+            result[i][j] = a[i][j] + b[i][j];
         }
     }
 }
 
-void mult_scalar_matrix(float result[3][3], float scalar, const float matrix[3][3])
+void multiply_scalar_matrix(float result[3][3], float scalar, const float matrix[3][3])
 {
     int i;
     int j;
