@@ -120,7 +120,7 @@ void init_scene(Scene *scene)
     scene->bricks[7] = wooden_brick;
 
     wooden_brick.position = create_vec3(-26, -25, 0);
-    // Direkt 1 magasságú, hogy tesztelni lehessen, mi van ha OOB a labda.
+    // Made 1 tall knowingly to be able to test what happens when the ball is OOB
     wooden_brick.size = create_vec3(1, 51, 1);
     scene->bricks[8] = wooden_brick;
 
@@ -145,9 +145,9 @@ void init_scene(Scene *scene)
 
     scene->ascii_texture = load_ogl_texture("ascii.png");
 
-    ambient_material = create_color(0.5f, 0.0f, 0.5f, 1.0f);
+    ambient_material = create_color(0.5f, 0.2f, 0.5f, 1.0f);
     diffuse_material = create_color(0.5f, 0.4f, 0.5f, 1.0f);
-    specular_material = create_color(0.7f, 0.4f, 0.7f, 1.0f);
+    specular_material = create_color(0.7f, 0.6f, 0.7f, 1.0f);
     scene->cherry_material =
     create_material(ambient_material, diffuse_material, specular_material, 10.0f, emission_material);
 
