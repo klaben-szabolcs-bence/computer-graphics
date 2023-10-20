@@ -16,6 +16,7 @@ void init_camera(Camera *camera)
     camera->speed.x = 0.0;
     camera->speed.y = 0.0;
     camera->speed.z = 0.0;
+    camera->distance = 20;
 
     camera->freecam = false;
     is_preview_visible = FALSE;
@@ -28,9 +29,9 @@ void update_camera(Camera *camera, double time, Scene *scene)
         double angle = degree_to_radian(camera->rotation.z);
         double up_angle = degree_to_radian(camera->rotation.x);
 
-        double x = scene->golfball.position.x + 10 * cos(angle) * cos(up_angle);
-        double y = scene->golfball.position.y + 10 * sin(angle) * cos(up_angle);
-        double z = 10 * sin(up_angle);
+        double x = scene->golfball.position.x + camera->distance * cos(angle) * cos(up_angle);
+        double y = scene->golfball.position.y + camera->distance * sin(angle) * cos(up_angle);
+        double z = camera->distance * sin(up_angle);
 
         camera->position = create_vec3(x, y, z);
     }

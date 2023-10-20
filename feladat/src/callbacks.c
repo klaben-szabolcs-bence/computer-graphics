@@ -54,6 +54,16 @@ void mouse(int button, int state, int x, int y)
 {
     mouse_position.x = x;
     mouse_position.y = y;
+
+   if ((button == 3) || (button == 4)) // It's a wheel event
+    {
+        if (state == GLUT_UP) return; 
+        if (button == 3) camera.distance--;
+        else camera.distance++;
+
+        if (camera.distance < 5) camera.distance = 5;
+        if (camera.distance > 50) camera.distance = 50;
+    }
 }
 
 void motion(int x, int y)

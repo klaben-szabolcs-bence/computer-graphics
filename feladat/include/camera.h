@@ -14,6 +14,7 @@ typedef struct Camera
     vec3 rotation;
     vec3 speed;
     bool freecam;
+    int distance;
 } Camera;
 
 /**
@@ -50,5 +51,10 @@ void set_camera_speed(Camera* camera, double speed);
  * Set the speed of left and right side steps.
  */
 void set_camera_side_speed(Camera* camera, double speed);
+
+/**
+ * Shows the texture preview.
+ */
+void show_texture_preview();
 
 #endif /* CAMERA_H */
