@@ -22,8 +22,7 @@ void init_scene(Scene* scene)
     scene->material.shininess = 32.0;
 
     GolfBall ball;
-    float pos[] = {10, 0, 0};
-    ball.position = array_to_vec3(pos);
+    ball.position = create_vec3(10, 0, 0);
 
     scene->golfball = ball;
 
