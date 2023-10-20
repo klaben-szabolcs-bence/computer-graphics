@@ -55,4 +55,23 @@ vec3 create_vec3(float x, float y, float z);
  */
 Color array_to_color(float array[3]);
 
+/**
+ * Creates a color (rgb)
+ */
+Color create_color(float r, float g, float b);
+
+/**
+ * Creates a material
+ */
+Material create_material(Color ambient, Color diffuse, Color specular, float shininess);
+
+/**
+ * Creates a material only using floats
+ */
+Material create_material_10f(
+	float ambient_red, float ambient_green, float ambient_blue,
+	float diffuse_red, float diffuse_green, float diffuse_blue,
+	float specular_red, float specular_green, float specular_blue,
+	float shininess);
+
 #endif /* UTILS_H */

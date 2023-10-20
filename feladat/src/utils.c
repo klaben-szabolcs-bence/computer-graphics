@@ -33,3 +33,34 @@ Color array_to_color(float array[3])
 	color.blue = array[2];
 	return color;
 }
+
+Color create_color(float r, float g, float b)
+{
+	Color color;
+	color.red = r;
+	color.green = g;
+	color.blue = b;
+	return color;
+}
+
+Material create_material(Color ambient, Color diffuse, Color specular, float shininess)
+{
+	Material material;
+	material.ambient = ambient;
+	material.diffuse = diffuse;
+	material.specular = specular;
+	material.shininess = shininess;
+	return material;
+}
+
+Material create_material_10f(
+	float ambient_red, float ambient_green, float ambient_blue,
+	float diffuse_red, float diffuse_green, float diffuse_blue,
+	float specular_red, float specular_green, float specular_blue,
+	float shininess)
+{
+	Color ambient = create_color(ambient_red, ambient_green, ambient_blue);
+	Color diffuse = create_color(diffuse_red, diffuse_green, diffuse_blue);
+	Color specular = create_color(specular_red, specular_green, specular_blue);
+	return create_material(ambient, diffuse, specular, shininess);
+}
