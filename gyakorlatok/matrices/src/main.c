@@ -37,6 +37,14 @@ int main(int argc, char* argv[])
     printf("The b and c matrices multiplied together and stored in a:\n");
     print_matrix(a);
 
+    point p = {3, 2, 1};
+    printf("The p point:\n");
+    print_point(p);
+
+    transform_point(p, p, a);
+    printf("The p point transposed by a:\n");
+    print_point(p);
+
 	return 0;
 }
 
