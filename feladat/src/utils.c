@@ -16,6 +16,15 @@ vec3 array_to_vec3(float array[3])
 	return vector;
 }
 
+vec3 create_vec3(float x, float y, float z)
+{
+	vec3 vector;
+	vector.x = x;
+	vector.y = y;
+	vector.z = z;
+	return vector;
+}
+
 Color array_to_color(float array[3])
 {
 	Color color;

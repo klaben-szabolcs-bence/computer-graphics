@@ -46,6 +46,11 @@ double degree_to_radian(double degree);
 vec3 array_to_vec3(float array[3]);
 
 /**
+ * Creates a vec3
+ */
+vec3 create_vec3(float x, float y, float z);
+
+/**
  * Turns an array to a color (rgb)
  */
 Color array_to_color(float array[3]);
