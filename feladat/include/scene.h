@@ -26,6 +26,7 @@ typedef struct GolfBall
     bool glow;
     vec3 speed;
     bool on_ground;
+    bool still;
 } GolfBall;
 
 #define N_BRICKS 6

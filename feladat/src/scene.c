@@ -23,6 +23,7 @@ void init_scene(Scene *scene)
     scene->golfball.glow = false;
     ball.speed = create_vec3(0.0f, 0.0f, 0.0f);
     ball.on_ground = false;
+    ball.still = false;
     ambient_material = create_color(0, 0, 0, 1);
     diffuse_material = create_color(0.55, 0.55, 0.55, 1);
     specular_material = create_color(0.77, 0.77, 0.77, 1);
@@ -551,6 +552,16 @@ void update_game(Scene *scene, double delta)
             }
             
         }
+    }
+
+    if (scene->golfball.on_ground && scene->golfball.speed.x == 0 && scene->golfball.speed.y == 0)
+    {
+        scene->golfball.still = true;
+        printf("STILL!\n");
+    }
+    else
+    {
+        scene->golfball.still = false;
     }
     
 }
