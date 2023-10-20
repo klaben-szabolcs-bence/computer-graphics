@@ -4,6 +4,8 @@
 
 void init_opengl()
 {
+    printf("OpenGL v%s", glGetString(GL_VERSION));
+
     glShadeModel(GL_SMOOTH);
 
     glEnable(GL_NORMALIZE);
