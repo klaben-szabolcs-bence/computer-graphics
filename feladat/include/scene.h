@@ -17,6 +17,16 @@ typedef struct MaterialBrickParticle
     float rotation_angle;
 } MaterialBrickParticle;
 
+typedef struct ModelInstance
+{
+    Model* model;
+    Material* material;
+    GLuint texture;
+    vec3 position;
+    float rotation_angle;
+    float size;
+} ModelInstance;
+
 typedef struct TexturedBrick
 {
     Material* material;
@@ -44,12 +54,15 @@ typedef struct GolfBall
 
 #define N_BRICKS 10
 #define N_PARTICLES 500
+#define N_BUSHES 100
 
 typedef struct Scene
 {
     GolfBall golfball;
     TexturedBrick bricks[N_BRICKS];
     MaterialBrickParticle particles[N_PARTICLES];
+    ModelInstance stop_sign;
+    Model bush;
     int hole;
     Material invalid_material;
     Material null_material;
@@ -101,8 +114,13 @@ void draw_skybox(const Scene* scene);
 void draw_textured_brick(const TexturedBrick *brick, const Scene *scene);
 
 /**
- * Draw a MaterialBrickParticle
+ * Draws a MaterialBrickParticle
  */
 void draw_material_brick_particle(const MaterialBrickParticle *brick);
+
+/**
+ * Draws a ModelInstance
+ */
+void draw_model_instance(const ModelInstance* model);
 
 #endif /* SCENE_H */

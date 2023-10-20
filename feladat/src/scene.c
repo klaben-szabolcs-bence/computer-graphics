@@ -151,6 +151,16 @@ void init_scene(Scene *scene)
     scene->cherry_material =
     create_material(ambient_material, diffuse_material, specular_material, 10.0f, emission_material);
 
+    load_model(&(scene->bush), "stop_sign.obj");
+    ModelInstance stop_sign;
+    stop_sign.model = &(scene->bush);
+    stop_sign.position = create_vec3(-30, 0, 0);
+    stop_sign.rotation_angle = 90.0f;
+    stop_sign.size = 0.05f;
+    stop_sign.texture = load_ogl_texture("stop_sign.jpg");
+    stop_sign.material = &(scene->plastic_material);
+    scene->stop_sign = stop_sign;
+
     glBindTexture(GL_TEXTURE_2D, 0);
 }
 
@@ -218,6 +228,8 @@ void draw_scene(const Scene *scene)
     glPopMatrix();
     glEnable(GL_BLEND);
     glBindTexture(GL_TEXTURE_2D, 0);
+
+    draw_model_instance(&(scene->stop_sign));
     set_material(&(scene->invalid_material));
 }
 
@@ -543,4 +555,17 @@ void draw_material_brick_particle(const MaterialBrickParticle *brick)
     glEnd();
 
     glPopMatrix();
+}
+
+void draw_model_instance(const ModelInstance* model)
+{
+    set_material(model->material);
+    glBindTexture(GL_TEXTURE_2D, model->texture);
+    glPushMatrix();
+    glTranslatef(model->position.x, model->position.y, model->position.z);
+    glRotatef(model->rotation_angle, 0, 0, 1);
+    glScalef(model->size, model->size, model->size);
+    draw_model(model->model);
+    glPopMatrix();
+    glBindTexture(GL_TEXTURE_2D, 0);
 }
