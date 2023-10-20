@@ -424,6 +424,8 @@ void draw_textured_brick(const TexturedBrick *brick, const Scene *scene)
 
 void update_game(Scene *scene, double delta)
 {
+    printf("Speed: %f %f %f\n", scene->golfball.speed.x, scene->golfball.speed.y, scene->golfball.speed.z);
+    printf("Pos: %f %f %f\n", scene->golfball.position.x, scene->golfball.position.y, scene->golfball.position.z);
 
     //Basic forces
     scene->golfball.position.x += scene->golfball.speed.x * delta;
@@ -451,7 +453,73 @@ void update_game(Scene *scene, double delta)
         scene->golfball.position.y = 0;
         scene->golfball.position.z = 10;
     }
-    printf("Time: Delta: %f Current: %f\n", delta);
-    printf("Speed: %f %f %f\n", scene->golfball.speed.x, scene->golfball.speed.y, scene->golfball.speed.z);
-    printf("Pos: %f %f %f\n", scene->golfball.position.x, scene->golfball.position.y, scene->golfball.position.z);
+
+    int colliding_brick = is_colliding_with_brick(scene);
+    if (colliding_brick > -1 )
+    {
+        float distance[6];
+        distance[0] = scene->golfball.position.x - scene->bricks[colliding_brick].position.x;
+        distance[1] = scene->golfball.position.x - scene->bricks[colliding_brick].position.x + scene->bricks[colliding_brick].size.x;
+        distance[2] = scene->golfball.position.y - scene->bricks[colliding_brick].position.y;
+        distance[3] = scene->golfball.position.y - scene->bricks[colliding_brick].position.y + scene->bricks[colliding_brick].size.y;
+        distance[4] = scene->golfball.position.z - scene->bricks[colliding_brick].position.z;
+        distance[5] = scene->golfball.position.z - scene->bricks[colliding_brick].position.z + scene->bricks[colliding_brick].size.z;
+
+        
+
+        int min_distance = fmin(distance[0], distance[1]);
+
+        int i;
+        for (i = 2; i < 6; ++i)
+        {
+            min_distance = fmin(min_distance, distance[i]);    
+        }
+
+        if (min_distance == distance[0])
+        {
+            // Collission on left side
+        }
+        else if (min_distance == distance[1])
+        {
+            // Collission on right side
+        }
+        else if (min_distance == distance[2])
+        {
+            //Collission on front side
+        }
+        else if (min_distance == distance[3])
+        {
+            //Collission on back side
+        }
+        else if (min_distance == distance[4])
+        {
+            //Collision on bottom side
+        }
+        else
+        {
+            //Collision on top side
+        }
+    }
+    
+}
+
+int is_colliding_with_brick(Scene* scene)
+{
+    int i;
+    for (i = 0; i < N_BRICKS; ++i)
+    {
+        if
+        (
+            scene->golfball.position.x > scene->bricks[i].position.x ||
+            scene->golfball.position.x < scene->bricks[i].position.x + scene->bricks[i].size.x ||
+            scene->golfball.position.y > scene->bricks[i].position.y ||
+            scene->golfball.position.y < scene->bricks[i].position.y + scene->bricks[i].size.y ||
+            scene->golfball.position.z > scene->bricks[i].position.z ||
+            scene->golfball.position.z < scene->bricks[i].position.z + scene->bricks[i].size.z
+        )
+        {
+            return i;
+        }
+    }
+    return -1;
 }

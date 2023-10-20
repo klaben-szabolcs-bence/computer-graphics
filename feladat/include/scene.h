@@ -82,4 +82,9 @@ void draw_textured_brick(const TexturedBrick *brick, const Scene *scene);
  */
 void update_game(Scene* scene, double delta);
 
+/**
+ * Check if the ball is colliding with a brick returns the index of the brick, -1 if none
+ */
+int is_colliding_with_brick(Scene* scene);
+
 #endif /* SCENE_H */

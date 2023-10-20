@@ -3,6 +3,7 @@
 #define _USE_MATH_DEFINES
 #define FALSE 0
 #define TRUE 1
+#include <math.h>
 
 /**
  * GLSL-like three dimensional vector
