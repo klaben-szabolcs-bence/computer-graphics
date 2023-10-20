@@ -138,7 +138,6 @@ void motion(int x, int y)
         {
             drag_distance = MAX_DRAG_DISTANCE;
         }
-        printf("Drag distance: %.4f\n", drag_distance);
     }
     mouse_position.x = x;
     mouse_position.y = y;
@@ -268,6 +267,16 @@ void make_ball_move()
     scene.golfball.velocity.x += look.x;
     scene.golfball.velocity.y += look.y;
     //scene.golfball.velocity.z += look.z;
+
+    //The velocity may be inf, if we are looking at the ball from the top, so we just set it to 0
+    if (scene.golfball.velocity.x > 900)
+        scene.golfball.velocity.x = 0;
+    if (scene.golfball.velocity.y > 900)
+        scene.golfball.velocity.y = 0;
+    if (scene.golfball.velocity.x < -900)
+        scene.golfball.velocity.x = 0;
+    if (scene.golfball.velocity.y < -900)
+        scene.golfball.velocity.y = 0;
 }
 
 void draw_powerbar(int x, int y, int width, int height)
