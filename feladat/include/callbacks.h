@@ -23,6 +23,11 @@ Camera camera;
 double drag_distance;
 
 /**
+ * Toggle for showing help message
+ */
+bool show_help;
+
+/**
  * Call when need to display the graphical content.
  */
 void display();

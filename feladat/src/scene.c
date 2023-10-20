@@ -594,7 +594,7 @@ void write_char_to_screen(char character, GLuint ascii_map, int x, int y, int si
     glPushMatrix();
     glBindTexture(GL_TEXTURE_2D, ascii_map);
     float sd2 = size / 2;
-    glTranslatef(x, y, 0);
+    glTranslatef(x, 0, y);
 
     ArrayUV4 uv4;
     ArrayUV tiles, index;
@@ -604,8 +604,6 @@ void write_char_to_screen(char character, GLuint ascii_map, int x, int y, int si
     character -= 32;
     index.uv[0] = character % (int)tiles.uv[0];
     index.uv[1] = character / (int)tiles.uv[0];
-
-    printf("Printing character at (%d; %d)\n", (int)index.uv[0], (int)index.uv[1]);
 
     uv4 = get_uv(tiles, index);
     glColor3f(0, 0, 1);

@@ -38,7 +38,16 @@ void draw_hud()
     set_material(&(scene.null_material));
 
     glPushMatrix();
-    write_text_to_screen("Hello!", scene.ascii_texture, 8, 8, 32);
+    if (!show_help)
+    {
+        write_text_to_screen("Press F1 to open the help menu!", scene.ascii_texture, 8, 8, 16);
+    } else
+    {
+        write_text_to_screen("Use the mouse to look around, drag (hold down LMB then move the mouse) and release to move.",
+        scene.ascii_texture, 8, 8, 16);
+        write_text_to_screen("f: Make the ball glow", scene.ascii_texture, 8, 24, 16);
+        write_text_to_screen("c: Toggle free-cam mdoe", scene.ascii_texture, 8, 40, 16);
+    }
     glPopMatrix();
     
 }
@@ -168,6 +177,10 @@ void keyboard(unsigned char key, int x, int y)
             scene.golfball.material.emission = create_color(1, 1, 1, 1);
         else
             scene.golfball.material.emission = create_color(0, 0, 0, 1);
+        break;
+    case GLUT_KEY_F1:
+        show_help = !show_help;
+        printf("F1 pressed / show_help: %d", show_help);
         break;
     }
 

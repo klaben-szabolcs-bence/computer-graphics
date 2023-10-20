@@ -40,6 +40,7 @@ int main(int argc, char* argv[])
     init_scene(&scene);
     init_camera(&camera);
     drag_distance = 0.0;
+    show_help = false;
     set_callbacks();
 
     glutMainLoop();
