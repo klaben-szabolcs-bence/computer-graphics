@@ -1,4 +1,5 @@
 #include "matrix.h"
+#include <math.h>
 #include <stdio.h>
 
 int main(int argc, char* argv[])
@@ -48,6 +49,37 @@ int main(int argc, char* argv[])
     transform_point(p, p, a);
     printf("The p point transposed by a:\n");
     print_point(p);
+
+    p[0] = 2;
+    p[1] = 2;
+    p[2] = 1;
+    printf("Set p point to:\n");
+    print_point(p);
+
+    T_MATRIX transformation_matrix;
+    init_identity_matrix(transformation_matrix);
+    make_scale_matrix(transformation_matrix, 2, 4);
+    transform_point(p, p, transformation_matrix);
+    printf("The p point scaled by 2 on x and by 4 on the y axis,\n"
+           "and stored in p:\n");
+    print_point(p);
+
+    init_identity_matrix(transformation_matrix);
+    make_shift_matrix(transformation_matrix, 4, 2);
+    transform_point(p, p, transformation_matrix);
+    printf(
+           "The p point shifted by 4 on the x and by 2 on the y axis,\n"
+           "and stored in p:\n");
+    print_point(p);
+
+    init_identity_matrix(transformation_matrix);
+    make_rotate_matrix(transformation_matrix, 1.0471975512);
+    print_matrix(transformation_matrix);
+    transform_point(p, p, transformation_matrix);
+    printf("The p point rotated by 60 degrees around origin,\n"
+           "and stored in p:\n");
+    print_point(p);
+    printf("This should be [-4.6603, 11.9282, 1]^T, but sometimes computers are worse at math than humans.\n");
 
 	return 0;
 }
