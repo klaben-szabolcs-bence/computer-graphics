@@ -1,16 +1,27 @@
-#include "circle.h"
+#include "cuboid.h"
 
 #include <stdio.h>
 
 int main(int argc, char* argv[])
 {
-	Circle circle;
-	double area;
+	double w, h, d;
+
+	printf("Input the three size of the cuboid in the following order\nseparated by space: width height depth!\n");
+	while (scanf("%lf %lf %lf", &w, &h, &d) != 3)
+    {
+	    printf("Malformed input!\n");
+	    while (getchar() != '\n');
+    }
+
+    Cuboid cuboid;
+
+	set_size(&cuboid, w, h, d);
+	double volume = calc_volume(&cuboid);
+	double surface = calc_surface(&cuboid);
+	int is_side_square = is_a_side_square(&cuboid);
 	
-	set_circle_data(&circle, 5, 10, 8);
-	area = calc_circle_area(&circle);
-	
-	printf("Circle area: %lf\n", area);
+	printf("== Cuboid ==\nVolume: %lf\nSurface: %lf\nIs a side a square? %s\n",
+        volume, surface, is_side_square ? "Yes" : "No");
 	
 	return 0;
 }
