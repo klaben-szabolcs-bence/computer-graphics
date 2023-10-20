@@ -14,6 +14,6 @@ else
 endif
 
 all:
-	@mkdir -p $(OUTPUT_FOLDER)
+	@mkdir $(OUTPUT_FOLDER)
     #@cp $(ASSETS) $(OUTPUT_FOLDER)
 	$(CC) -I$(INCLUDES) $(SRCS) $(LIBS) -o $(OUTPUT) $(IGNORE_WARNS)
