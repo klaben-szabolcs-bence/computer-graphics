@@ -28,4 +28,14 @@ void draw_hud(Screen* screen, Scene* scene);
  */
 void draw_powerbar(Scene* scene, int x, int y, int width, int height);
 
+/**
+ * Writes the character to the screen
+ */
+void write_char_to_screen(char character, GLuint ascii_map, int x, int y, int size);
+
+/**
+ * Writes the text on the screen
+ */
+void write_text_to_screen(const char* text, GLuint ascii_map, int x, int y, int size);
+
 #endif /* HUD_H */
