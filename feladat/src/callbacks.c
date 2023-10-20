@@ -159,9 +159,9 @@ void keyboard(unsigned char key, int x, int y)
             glDisable(GL_LIGHT1);
 
         if (scene.golfball.glow)
-            scene.golfball.material.emission = create_color(1, 1, 1, 1);
+            scene.golfball.material->emission = create_color(1, 1, 1, 1);
         else
-            scene.golfball.material.emission = create_color(0, 0, 0, 1);
+            scene.golfball.material->emission = create_color(0, 0, 0, 1);
         break;
     case 'r':
         reset_ball(&(scene.golfball));

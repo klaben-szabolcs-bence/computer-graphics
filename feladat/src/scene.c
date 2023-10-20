@@ -29,7 +29,7 @@ void init_scene(Scene *scene)
     specular_material = create_color(0.7f, 0.7f, 0.7f, 1);
     scene->plastic_material =
         create_material(ambient_material, diffuse_material, specular_material, 10.0f, emission_material);
-    ball.material = scene->plastic_material;
+    ball.material = &(scene->plastic_material);
     scene->plastic_texture = load_texture("plastic.jpg");
     ball.texture = scene->plastic_texture;
     scene->golfball = ball;
@@ -48,8 +48,9 @@ void init_scene(Scene *scene)
     ambient_material = create_color(0.0215f, 0.1745f, 0.0215f, 1.0f);
     diffuse_material = create_color(0.07568f, 0.61424f, 0.07568f, 1.0f);
     specular_material = create_color(0.633f, 0.727811f, 0.633f, 1.0f);
-    unplayable_ground.material =
+    scene->unplayable_material =
         create_material(ambient_material, diffuse_material, specular_material, 7.68f, emission_material);
+    unplayable_ground.material = &(scene->unplayable_material);
 
     unplayable_ground.wrap_3d = false;
     unplayable_ground.open_top = false;
@@ -77,7 +78,7 @@ void init_scene(Scene *scene)
     playable_ground.position = create_vec3(-21, -25, 0);
     playable_ground.size = create_vec3(46, 50, 1);
     playable_ground.texture = scene->playable_ground_texture;
-    playable_ground.material = scene->playable_ground_material;
+    playable_ground.material = &(scene->playable_ground_material);
     playable_ground.wrap_3d = false;
     playable_ground.tiled_texture = true;
     playable_ground.open_top = false;
@@ -102,7 +103,7 @@ void init_scene(Scene *scene)
     wooden_brick.position = create_vec3(-25, 25, 0);
     wooden_brick.size = create_vec3(51, 1, 3);
     wooden_brick.texture = scene->wooden_texture;
-    wooden_brick.material = scene->wooden_material;
+    wooden_brick.material = &(scene->wooden_material);
     wooden_brick.wrap_3d = false;
     wooden_brick.tiled_texture = true;
     wooden_brick.open_top = false;
@@ -137,7 +138,7 @@ void init_scene(Scene *scene)
     ambient_material = create_color(0.05f, 0.05f, 0.05f, 1);
     diffuse_material = create_color(0.5f, 0.5f, 0.5f, 1);
     specular_material = create_color(0.7f, 0.7f, 0.7f, 1);
-    hole.material = scene->plastic_material;
+    hole.material = &(scene->plastic_material);
 
     scene->hole = hole;
 
@@ -195,7 +196,7 @@ void draw_scene(const Scene *scene)
 
     draw_textured_brick(&(scene->hole), scene);;
 
-    set_material(&(scene->golfball.material));
+    set_material(scene->golfball.material);
     glBindTexture(GL_TEXTURE_2D, scene->golfball.texture);
     glDisable(GL_BLEND);
     glPushMatrix();
@@ -336,7 +337,7 @@ void draw_textured_brick(const TexturedBrick *brick, const Scene *scene)
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
     }
-    set_material(&(brick->material));
+    set_material(brick->material);
     glBindTexture(GL_TEXTURE_2D, brick->texture);
     glPushMatrix();
     glTranslatef(brick->position.x, brick->position.y, brick->position.z);

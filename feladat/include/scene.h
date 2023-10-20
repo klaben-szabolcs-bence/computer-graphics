@@ -9,7 +9,7 @@
 
 typedef struct TexturedBrick
 {
-    Material material;
+    Material* material;
     GLuint texture;
     vec3 position;
     float rotation_angle;
@@ -22,7 +22,7 @@ typedef struct TexturedBrick
 
 typedef struct GolfBall
 {
-    Material material;
+    Material* material;
     vec3 position;
     bool glow;
     double speed;
@@ -36,19 +36,20 @@ typedef struct GolfBall
 
 typedef struct Scene
 {
-    Material invalid_material;
-    Material null_material;
     GolfBall golfball;
-    GLuint skybox_texture;
-    GLuint playable_ground_texture;
-    Material playable_ground_material;
-    GLuint wooden_texture;
-    Material wooden_material;
-    GLuint plastic_texture;
-    Material plastic_material;
     TexturedBrick bricks[N_BRICKS];
     TexturedBrick hole;
+    Material invalid_material;
+    Material null_material;
+    Material playable_ground_material;
+    Material wooden_material;
+    Material plastic_material;
+    Material unplayable_material;
+    GLuint skybox_texture;
     GLuint ascii_texture;
+    GLuint playable_ground_texture;
+    GLuint wooden_texture;
+    GLuint plastic_texture;
 } Scene;
 
 /**
