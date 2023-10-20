@@ -1,9 +1,10 @@
 #include "matrix.h"
+#include <stdio.h>
 
 int main(int argc, char* argv[])
 {
 	float a[3][3] = {
-        { 1.0f, -2.0f,  3.0f},
+        { 1.0f, -2.0f,  3.1f},
         { 5.0f, -3.0f,  0.0f},
         {-2.0f,  1.0f, -4.0f}
     };
@@ -19,9 +20,15 @@ int main(int argc, char* argv[])
     print_matrix(b);
     
     add_matrices(a, b, c);
-
     print_matrix(c);
 
+    init_identify_matrix(a);
+    printf("Identity matrix:\n");
+    print_matrix(a);
+
+    mult_scalar_matrix(b, 1000, a);
+    printf("Multiplied by scalar:\n");
+    print_matrix(b);
 	return 0;
 }
 
