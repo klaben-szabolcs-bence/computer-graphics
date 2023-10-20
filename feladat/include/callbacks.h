@@ -3,6 +3,7 @@
 
 #include "camera.h"
 #include "scene.h"
+#include "game.h"
 #include <stdlib.h>
 
 #include <GL/glut.h>
