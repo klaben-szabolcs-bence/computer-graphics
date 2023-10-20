@@ -15,14 +15,11 @@ void init_scene(Scene* scene)
     Color ambient_material = create_color(0, 0, 0);
     Color diffuse_material = create_color(0.55, 0.55, 0.55);
     Color specular_material = create_color(0.77, 0.77, 0.77);
-
     scene->material = create_material(ambient_material, diffuse_material, specular_material, 32);
 
     GolfBall ball;
     ball.position = create_vec3(10, 0, 0);
-
     scene->golfball = ball;
-
 }
 
 void set_lighting()
