@@ -53,10 +53,13 @@ void draw_hud()
     }
     char pos_text[64];
     char vel_text[64];
-    sprintf(pos_text,"Pos: %6.3f %6.3f %6.3f", scene.golfball.position.x, scene.golfball.position.y, scene.golfball.position.z);
-    sprintf(vel_text,"Vel: %6.3f %6.3f %6.3f", scene.golfball.velocity.x, scene.golfball.velocity.y, scene.golfball.velocity.z);
-    write_text_to_screen(pos_text,scene.ascii_texture, screen.width - 32 * 12, screen.height - 2*12, 12);
-    write_text_to_screen(vel_text,scene.ascii_texture, screen.width - 32 * 12, screen.height - 12, 12);
+    char spd_text[64];
+    sprintf(pos_text,"Pos: %06.3f %06.3f %06.3f", scene.golfball.position.x, scene.golfball.position.y, scene.golfball.position.z);
+    sprintf(vel_text,"Vel: %06.3f %06.3f %06.3f", scene.golfball.velocity.x, scene.golfball.velocity.y, scene.golfball.velocity.z);
+    sprintf(spd_text,"Spd: %06.3f %06.3f %06.3f", scene.golfball.speed.x, scene.golfball.speed.y, scene.golfball.speed.z);
+    write_text_to_screen(pos_text,scene.ascii_texture, screen.width - 32 * 12, screen.height - 3*12, 12);
+    write_text_to_screen(vel_text,scene.ascii_texture, screen.width - 32 * 12, screen.height - 2*12, 12);
+    write_text_to_screen(spd_text,scene.ascii_texture, screen.width - 32 * 12, screen.height - 12, 12);
     draw_powerbar(10, screen.height - 60, 100, 50);
     glPopMatrix();
     glEnable(GL_LIGHTING);
