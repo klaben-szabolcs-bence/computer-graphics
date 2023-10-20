@@ -20,9 +20,14 @@ struct stack
 struct stack* init_matrix_stack();
 
 /**
+ * Utility function to free the matrix stack, after no longer being used.
+ */
+void free_matrix_stack(struct stack* pt);
+
+/**
  * Utility function to return the size of the stack.
  */
-int matrix_stack_size(struct stack *pt);
+int matrix_stack_size(struct stack* pt);
 
 /**
  * Utility function to check if the stack is empty.

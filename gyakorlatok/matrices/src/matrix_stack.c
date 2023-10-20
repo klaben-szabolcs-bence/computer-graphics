@@ -16,6 +16,12 @@ struct stack* init_matrix_stack()
     return pt;
 }
 
+void free_matrix_stack(struct stack* pt)
+{
+    free(pt->items);
+    free(pt);
+}
+
 int matrix_stack_size(struct stack *pt)
 {
     return pt->top + 1;
