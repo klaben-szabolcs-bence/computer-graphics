@@ -12,18 +12,13 @@ void init_scene(Scene* scene)
 
     //glBindTexture(GL_TEXTURE_2D, scene->texture_id);
 
-    scene->material.ambient.red = 0.0;
-    scene->material.ambient.green = 0.0;
-    scene->material.ambient.blue = 0.0;
+    float ambient_material[] = {0, 0, 0};
+    float diffuse_material[] = {0.55, 0.55, 0.55};
+    float specular_material[] = {0.77, 0.77, 0.77};
 
-    scene->material.diffuse.red = 0.55;
-    scene->material.diffuse.green = 0.55;
-    scene->material.diffuse.blue = 0.55;
-
-    scene->material.specular.red = 0.77;
-    scene->material.specular.green = 0.77;
-    scene->material.specular.blue = 0.77;
-
+    scene->material.ambient = array_to_color(ambient_material);
+    scene->material.diffuse = array_to_color(diffuse_material);
+    scene->material.specular = array_to_color(specular_material);
     scene->material.shininess = 32.0;
 
     GolfBall ball;
