@@ -66,7 +66,7 @@ void update_game(Scene *scene, double delta)
         scene->golfball.position.z < -1.0f || scene->golfball.position.z > 900)
     {
         printf("Ball OOB @ %f %f %f\n", scene->golfball.position.x, scene->golfball.position.y, scene->golfball.position.z);
-        reset_ball(&(scene->golfball));
+        reset_ball(&(scene->golfball), true);
     }
 
 
@@ -80,7 +80,7 @@ void update_game(Scene *scene, double delta)
         {
             if (is_colliding_with_brick(scene) != scene->hole)
             {
-                reset_ball(&(scene->golfball));
+                reset_ball(&(scene->golfball), false);
             } else
             {
                 in_hole = true;
@@ -129,12 +129,12 @@ void make_ball_move(Scene* scene, Camera* camera, double drag_distance)
         scene->golfball.direction_vector.y = 0;
 }
 
-void reset_ball(GolfBall *ball)
+void reset_ball(GolfBall *ball, bool reset_strokes)
 {
     ball->position.x = 0;
     ball->position.y = 0;
     ball->position.z = 10;
-    shots_taken = 0;
+    if (reset_strokes) shots_taken = 0;
 }
 
 int on_ground(Scene *scene)
@@ -146,10 +146,10 @@ int on_ground(Scene *scene)
     {
         if (
             //From top-down perspective the ball should be on-top
-            ball->position.x >= scene->bricks[i].position.x &&
-            ball->position.x <= scene->bricks[i].position.x + scene->bricks[i].size.x &&
-            ball->position.y >= scene->bricks[i].position.y &&
-            ball->position.y <= scene->bricks[i].position.y + scene->bricks[i].size.y &&
+            ball->position.x + 1.0f >= scene->bricks[i].position.x &&
+            ball->position.x - 1.0f <= scene->bricks[i].position.x + scene->bricks[i].size.x &&
+            ball->position.y + 1.0f >= scene->bricks[i].position.y &&
+            ball->position.y - 1.0f <= scene->bricks[i].position.y + scene->bricks[i].size.y &&
             //And from side views should be exacly on-top
             ball->position.z - 1.0f == scene->bricks[i].position.z + scene->bricks[i].size.z)
         {
@@ -207,7 +207,6 @@ float calc_min_distance(float *distance)
 
 void kick_from_brick(Scene *scene, float min_distance, float *distance, int colliding_brick)
 {
-
     //Don't get kicked our from the hole
     if (colliding_brick == scene->hole) return;
 

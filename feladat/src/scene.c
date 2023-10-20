@@ -126,8 +126,8 @@ void init_scene(Scene *scene)
 
     TexturedBrick hole;
     hole.rotation_angle = 0;
-    hole.position = create_vec3(-23.99f, -1.49f, 0.01f);
-    hole.size = create_vec3(2.98f, 2.98f, 0.98f);
+    hole.position = create_vec3(-24.0f, -1.5f, 0.0f);
+    hole.size = create_vec3(3.0f, 3.0f, 1.0f);
     hole.texture = scene->plastic_texture;
     hole.texture_size[0] = 1200;
     hole.texture_size[1] = 1200;

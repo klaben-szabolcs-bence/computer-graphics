@@ -26,7 +26,7 @@ void make_ball_move(Scene* scene, Camera* camera, double drag_distance);
 /**
  * Reset the ball
  */
-void reset_ball(GolfBall* ball);
+void reset_ball(GolfBall *ball, bool reset_strokes);
 
 /**
  * Returns the ID of the brick we are on

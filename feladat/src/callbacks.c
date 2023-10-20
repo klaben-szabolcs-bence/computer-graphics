@@ -165,7 +165,7 @@ void keyboard(unsigned char key, int x, int y)
             scene.golfball.material->emission = create_color(0, 0, 0, 1);
         break;
     case 'r':
-        reset_ball(&(scene.golfball));
+        reset_ball(&(scene.golfball), true);
         break;
     }
 
