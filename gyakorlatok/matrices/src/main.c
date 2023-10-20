@@ -1,4 +1,5 @@
 #include "matrix.h"
+#include "matrix_stack.h"
 #include <math.h>
 #include <stdio.h>
 
@@ -81,6 +82,22 @@ int main(int argc, char* argv[])
     print_point(p);
     printf("This should be [-4.6603, 11.9282, 1]^T, but sometimes computers are worse at math than humans.\n");
 
+    struct stack* stack_pt = init_matrix_stack();
+    //we push the 60 degree rotator matrix to the stack
+    push_matrix(stack_pt,transformation_matrix);
+    //We use the transformation matrix to do something to it
+    init_identity_matrix(transformation_matrix);
+    make_shift_matrix(transformation_matrix, 10, 20);
+    transform_point(p, p, transformation_matrix);
+    //We get the original 60 degree rotator matrix back
+    pop_matrix(stack_pt, transformation_matrix);
+    //We then can apply it to p again
+    transform_point(p, p, transformation_matrix);
+    printf("The p point shifted (10,20) and then rotated 60 degrees again:\n");
+    print_point(p);
+
+    //Since it's allocated on the heap with malloc it, must be freed
+    free_matrix_stack(stack_pt);
 	return 0;
 }
 
