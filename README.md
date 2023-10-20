@@ -8,7 +8,7 @@ A mini-golf demo game. Enjoy shooting the ball around the map, while enjoying ch
    - [x] In centered view, you can zoom in and out by scrolling.
  - [x] You can make the ball glow (or not) by pressing the <kbd>f</kbd>.
  - [x] A basic map to explore the demo game's capabilities.
- - [x] A nice and simple collision and gravity system.
+ - [x] A nice and simple physics system.
  - [x] Shoot the ball by holding down <kbd>LMB</kbd> (left mouse button) then moving the mouse to set the power and releasing it!
  - [x] An in-game help with <kbd>F1</kbd>.
  - [x] A GUI to show how to reach in-game help and the power bar for how strong the ball will be hit.
