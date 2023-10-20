@@ -2,19 +2,19 @@
 
 #include <stdio.h>
 
-void init_zero_matrix(float matrix[3][3])
+void init_zero_matrix(matrix m)
 {
     int i;
     int j;
 
     for (i = 0; i < 3; ++i) {
         for (j = 0; j < 3; ++j) {
-            matrix[i][j] = 0.0;
+            m[i][j] = 0.0;
         }
     }
 }
 
-void init_identity_matrix(float matrix[3][3])
+void init_identity_matrix(matrix m)
 {
     int i;
     int j;
@@ -23,28 +23,28 @@ void init_identity_matrix(float matrix[3][3])
         for (j = 0; j < 3; ++j) {
             if (i == j)
             {
-                matrix[i][j] = 1.0;
+                m[i][j] = 1.0;
             } else {
-                matrix[i][j] = 0.0;
+                m[i][j] = 0.0;
             }
         }
     }
 }
 
-void print_matrix(const float matrix[3][3])
+void print_matrix(const matrix m)
 {
     int i;
     int j;
 
     for (i = 0; i < 3; ++i) {
         for (j = 0; j < 3; ++j) {
-            printf("%4.4f ", matrix[i][j]);
+            printf("%4.4f ", m[i][j]);
         }
         printf("\n");
     }
 }
 
-void add_matrices(const float result[3][3], const float a[3][3], float b[3][3])
+void add_matrices(matrix result, const matrix a, const matrix b)
 {
     int i;
     int j;
@@ -56,14 +56,31 @@ void add_matrices(const float result[3][3], const float a[3][3], float b[3][3])
     }
 }
 
-void multiply_scalar_matrix(float result[3][3], float scalar, const float matrix[3][3])
+void multiply_matrices(matrix result, const matrix a, const matrix b)
+{
+    int i;
+    int j;
+    int k;
+
+    for (i = 0; i < 3; ++i) {
+        for (j = 0; j < 3; ++j) {
+            int sum = 0;
+            for (k = 0; k < 3; ++k) {
+                sum = sum + a[i][k] * b [k][j];
+            }
+            result[i][j] = sum;
+        }
+    }
+}
+
+void multiply_scalar_matrix(matrix result, const float scalar, const matrix m)
 {
     int i;
     int j;
 
     for (i = 0; i < 3; ++i) {
         for (j = 0; j < 3; ++j) {
-            result[i][j] = matrix[i][j] * scalar;
+            result[i][j] = m[i][j] * scalar;
         }
     }
 }
