@@ -65,3 +65,22 @@ Material create_material(Color ambient, Color diffuse, Color specular, float shi
 	material.emission = emission;
 	return material;
 }
+
+ArrayUV4 get_uv(ArrayUV tiles, ArrayUV index)
+{
+	float left_U = index.uv[0] / tiles.uv[0];
+	float right_U = (index.uv[0] + 1.0f) / tiles.uv[0];
+	float top_V = (tiles.uv[1] - index.uv[1]) / tiles.uv[1];
+	float bottom_V = (tiles.uv[1] - index.uv[1] - 1.0f) / tiles.uv[1];
+
+	ArrayUV4 uv4;
+	uv4.uv4[0].uv[0] = left_U;
+	uv4.uv4[0].uv[1] = top_V;
+	uv4.uv4[1].uv[0] = right_U;
+	uv4.uv4[1].uv[1] = top_V;
+	uv4.uv4[2].uv[0] = right_U;
+	uv4.uv4[2].uv[1] = bottom_V;
+	uv4.uv4[3].uv[0] = left_U;
+	uv4.uv4[3].uv[1] = bottom_V;
+	return uv4;
+}

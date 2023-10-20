@@ -44,6 +44,22 @@ typedef struct ArrayColor
 
 
 /**
+ * Two floats in a array. First is u, second is v.
+ */
+typedef struct ArrayUV
+{
+    float uv[2];
+} ArrayUV;
+
+/**
+ * 4 UV coordinates: left-top, right-top, bottom-right, bottom-left.
+ */
+typedef struct ArrayUV4
+{
+    ArrayUV uv4[4];
+} ArrayUV4;
+
+/**
  * Calculates radian from degree.
  */
 double degree_to_radian(double degree);
@@ -77,5 +93,10 @@ ArrayColor color_to_array(Color color);
  * Creates a material
  */
 Material create_material(Color ambient, Color diffuse, Color specular, float shininess, Color emission);
+
+/**
+ * Generetaes the UV coordinates required for simple mapping.
+ */
+ArrayUV4 get_uv(ArrayUV tiles, ArrayUV index);
 
 #endif /* UTILS_H */
