@@ -18,11 +18,11 @@ void init_scene(Scene *scene)
         create_material(ambient_material, diffuse_material, specular_material, 32.0f, emission_material);
 
     GolfBall ball;
-    ball.position = create_vec3(0.0f, -23.5f, 2);
+    ball.position = create_vec3(0.0f, 0.0f, 2);
     scene->golfball.glow = false;
-    ball.speed = 1;
-    ball.velocity = 10.0f;
-    ball.direction_vector = create_vec3(0.0f, -1.0f, 0.0f);
+    ball.speed = 2;
+    ball.velocity = 0.0f;
+    ball.direction_vector = create_vec3(0.0f, 0.0f, 0.0f);
     ball.still = false;
     ambient_material = create_color(0.05f, 0.05f, 0.05f, 1);
     diffuse_material = create_color(0.5f, 0.5f, 0.5f, 1);
