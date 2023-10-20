@@ -15,7 +15,7 @@ void init_scene(Scene *scene)
     Color specular_material = create_color(0, 0.755, 0.755, 1);
     Color emission_material = create_color(0, 0, 0, 1);
     scene->invalid_material =
-        create_material(ambient_material, diffuse_material, specular_material, 32.0, emission_material);
+        create_material(ambient_material, diffuse_material, specular_material, 32.0f, emission_material);
 
     GolfBall ball;
     ball.position = create_vec3(10, 0, 2);
@@ -24,18 +24,16 @@ void init_scene(Scene *scene)
     ball.velocity = create_vec3(0.0, 0.0, 0.0);
     ball.on_ground = false;
     ball.still = false;
-    ambient_material = create_color(0, 0, 0, 1);
-    diffuse_material = create_color(0.55, 0.55, 0.55, 1);
-    specular_material = create_color(0.77, 0.77, 0.77, 1);
-    emission_material = create_color(0, 0, 0, 1);
-    scene->golfball.material =
-        create_material(ambient_material, diffuse_material, specular_material, 1.0, emission_material);
+    ambient_material = create_color(0.05f, 0.05f, 0.05f, 1);
+    diffuse_material = create_color(0.5f, 0.5f, 0.5f, 1);
+    specular_material = create_color(0.7f, 0.7f, 0.7f, 1);
+    ball.material =
+        create_material(ambient_material, diffuse_material, specular_material, 10.0f, emission_material);
     scene->golfball = ball;
 
-    ambient_material = create_color(1, 1, 1, 1);
-    diffuse_material = create_color(0, 0, 0, 1);
-    specular_material = create_color(0, 0, 0, 1);
-    emission_material = create_color(0, 0, 0, 1);
+    ambient_material = create_color(0.1f, 0.1f, 0.1f, 1);
+    diffuse_material = create_color(0.5f, 0.5f, 0.5f, 1);
+    specular_material = create_color(0.5f, 0.5f, 0.5f, 1);
     scene->null_material =
         create_material(ambient_material, diffuse_material, specular_material, 0.0, emission_material);
 
@@ -48,7 +46,7 @@ void init_scene(Scene *scene)
     diffuse_material = create_color(0.07568f, 0.61424f, 0.07568f, 1.0f);
     specular_material = create_color(0.633f, 0.727811f, 0.633f, 1.0f);
     unplayable_ground.material =
-        create_material(ambient_material, diffuse_material, specular_material, 76.8f, emission_material);
+        create_material(ambient_material, diffuse_material, specular_material, 7.68f, emission_material);
 
     unplayable_ground.wrap_3d = false;
     unplayable_ground.texture_size[0] = 900;
@@ -61,14 +59,14 @@ void init_scene(Scene *scene)
     diffuse_material = create_color(0.17568f, 0.71424f, 0.17568f, 1.0f);
     specular_material = create_color(0.733f, 0.827811f, 0.733f, 1.0f);
     scene->playable_ground_material =
-        create_material(ambient_material, diffuse_material, specular_material, 76.8f, emission_material);
+        create_material(ambient_material, diffuse_material, specular_material, 7.68f, emission_material);
 
     scene->wooden_texture = load_texture("wood.png");
     ambient_material = create_color(0.1f, 0.1f, 0.1f, 1.0f);
     diffuse_material = create_color(0.63529f, 0.4705f, 0.3843f, 1.0f);
     specular_material = create_color(0.63529f, 0.4705f, 0.3843f, 1.0f);
     scene->wooden_material =
-        create_material(ambient_material, diffuse_material, specular_material, 160.0f, emission_material);
+        create_material(ambient_material, diffuse_material, specular_material, 10.0f, emission_material);
 
     TexturedBrick playable_ground;
     playable_ground.rotation_angle = 0;
@@ -108,7 +106,7 @@ void init_scene(Scene *scene)
     scene->bricks[5] = wooden_brick;
 
     scene->ascii_texture = load_ogl_texture("ascii.png");
-    
+    glBindTexture(GL_TEXTURE_2D, 0);
 }
 
 void set_lighting(const Scene *scene)
@@ -116,7 +114,7 @@ void set_lighting(const Scene *scene)
     float ambient_light[] = {1.0f, 1.0f, 1.0f, 0.001f};
     float diffuse_light[] = {1.0f, 1.0f, 1.0, 0.1f};
     float specular_light[] = {1.0f, 1.0f, 1.0f, 0.1f};
-    float position[] = {10000.0f, 0.0f, 0.0f, 1.0f};
+    float position[] = {10000.0f, 0.0f, 10000.0f, 1.0f};
 
     glLightfv(GL_LIGHT0, GL_AMBIENT, ambient_light);
     glLightfv(GL_LIGHT0, GL_DIFFUSE, diffuse_light);
@@ -159,11 +157,13 @@ void draw_scene(const Scene *scene)
         draw_textured_brick(&(scene->bricks[i]), scene);
     }
 
-    set_material(&(scene->golfball.material));
+    glDisable(GL_BLEND);
     glPushMatrix();
     glTranslatef(scene->golfball.position.x, scene->golfball.position.y, scene->golfball.position.z);
+    set_material(&(scene->golfball.material));
     glutSolidSphere(1, 36, 36);
     glPopMatrix();
+    glEnable(GL_BLEND);
 
     set_material(&(scene->invalid_material));
 }
