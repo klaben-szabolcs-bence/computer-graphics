@@ -80,6 +80,6 @@ void draw_textured_brick(const TexturedBrick *brick, const Scene *scene);
 /**
  * Updates game objects
  */
-void update_game(Scene* scene, double delta, double current);
+void update_game(Scene* scene, double delta);
 
 #endif /* SCENE_H */

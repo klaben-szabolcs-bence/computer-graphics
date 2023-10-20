@@ -422,7 +422,7 @@ void draw_textured_brick(const TexturedBrick *brick, const Scene *scene)
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP);
 }
 
-void update_game(Scene *scene, double delta, double current)
+void update_game(Scene *scene, double delta)
 {
 
     //Basic forces
@@ -451,7 +451,7 @@ void update_game(Scene *scene, double delta, double current)
         scene->golfball.position.y = 0;
         scene->golfball.position.z = 10;
     }
-    printf("Time: Delta: %f Current: %f\n", delta, current);
+    printf("Time: Delta: %f Current: %f\n", delta);
     printf("Speed: %f %f %f\n", scene->golfball.speed.x, scene->golfball.speed.y, scene->golfball.speed.z);
     printf("Pos: %f %f %f\n", scene->golfball.position.x, scene->golfball.position.y, scene->golfball.position.z);
 }
