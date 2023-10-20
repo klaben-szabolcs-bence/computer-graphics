@@ -46,10 +46,10 @@ void draw_hud()
     } else
     {
         write_text_to_screen("Use the mouse to look around",scene.ascii_texture, 8, 8, 16);
-        write_text_to_screen("Drag and release to move", scene.ascii_texture, 8, 24, 16);
-        write_text_to_screen("f: Make the ball glow", scene.ascii_texture, 8, 40, 16);
-        write_text_to_screen("c: Toggle free-cam mode", scene.ascii_texture, 8, 56, 16);
-        
+        write_text_to_screen("Drag and release to move", scene.ascii_texture, 8, 8 + 16, 16);
+        write_text_to_screen("f: Make the ball glow", scene.ascii_texture, 8, 8 + 16 * 2, 16);
+        write_text_to_screen("c: Toggle free-cam mode", scene.ascii_texture, 8, 8 + 16 * 3, 16);
+        write_text_to_screen("r: Reset the ball", scene.ascii_texture, 8, 8 + 16 * 4, 16);
     }
     char pos_text[64];
     char vel_text[64];
