@@ -499,12 +499,10 @@ void update_game(Scene *scene, double delta)
             if (scene->golfball.speed.x < 0)
             {
                 scene->golfball.position.x -= distance[0] + 0.5f;
-                printf("Collision with %d on LEFT.\n", colliding_brick);
             }
             else
             {
                 scene->golfball.position.x -= distance[1] - 0.5f;
-                printf("Collision with %d on RIGHT.\n", colliding_brick);
             }
             
         }
@@ -519,12 +517,10 @@ void update_game(Scene *scene, double delta)
             if (scene->golfball.speed.y < 0)
             {
                 scene->golfball.position.y -= distance[2] + 0.5f;
-                printf("Collision with %d on FRONT.\n", colliding_brick);
             }
             else
             {
                 scene->golfball.position.y -= distance[3] - 0.5f;
-                printf("Collision with %d on BACK.\n", colliding_brick);
             }
             
         }
@@ -539,11 +535,9 @@ void update_game(Scene *scene, double delta)
             if (scene->golfball.speed.z < 0)
             {
                 scene->golfball.position.z -= distance[4] + 0.5f;
-                printf("Collision with %d on BOTTOM.\n", colliding_brick);
             }
             else
             {
-                printf("Collision with %d on TOP.\n", colliding_brick);
                 scene->golfball.position.z -= distance[5] - 0.5f;
                 if (abs(scene->golfball.speed.z) < 0.1f)
                 {
@@ -559,7 +553,6 @@ void update_game(Scene *scene, double delta)
     if (scene->golfball.on_ground && scene->golfball.speed.x == 0 && scene->golfball.speed.y == 0)
     {
         scene->golfball.still = true;
-        printf("STILL!\n");
     }
     else
     {
