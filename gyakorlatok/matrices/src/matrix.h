@@ -60,5 +60,27 @@ void multiply_scalar_matrix(T_MATRIX result, const float scalar, const T_MATRIX 
  */
 void transform_point(T_POINT2D result, const T_POINT2D p, const T_MATRIX transformation);
 
+/**
+ * Takes a transformation matrix and applies scaling to it.
+ * @warning They stack on top of each other.
+ * @param x Scaling factor on the x-asis. (lambda)
+ * @param y Scaling factor on the y-axis. (mu)
+ */
+void make_scale_matrix(T_MATRIX m, const float x, const float y);
+
+/**
+ * Takes a transformation matrix and applies shifting to it.
+ * @warning They stack on top of each other.
+ * @param x Shifting distance on the x-asis.
+ * @param y Shifting distance on the y-axis.
+ */
+void make_shift_matrix(T_MATRIX m, const float x, const float y);
+
+/**
+ * Takes a transformation matrix and applies rotation to it.
+ * @warning This shouldn't be used together with the others, as it overwrites the matrix.
+ * @param alpha in radians (Reminder: counter-clockwise is positive)
+ */
+void make_rotate_matrix(T_MATRIX m, const float alpha);
 #endif // MATRIX_H
 

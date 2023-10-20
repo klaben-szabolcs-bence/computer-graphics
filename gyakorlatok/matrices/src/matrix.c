@@ -1,6 +1,7 @@
 #include "matrix.h"
 
 #include <stdio.h>
+#include <math.h>
 
 void init_zero_matrix(T_MATRIX m)
 {
@@ -82,7 +83,7 @@ void transpose_matrix(T_MATRIX result, const T_MATRIX m)
 
     for (i = 0; i < 3; ++i) {
         for (j = 0; j < 3; ++j) {
-            out[i][j] = result[j][i];
+            out[i][j] = m[j][i];
         }
     }
 
@@ -148,4 +149,24 @@ void transform_point(T_POINT2D result, const T_POINT2D p, const T_MATRIX transfo
     }
 
     copy_point(result, out);
+}
+
+void make_scale_matrix(T_MATRIX m, const float x, const float y)
+{
+    m[0][0] = m[0][0] * x;
+    m[1][1] = m[1][1] * y;
+}
+
+void make_shift_matrix(T_MATRIX m, const float x, const float y)
+{
+    m[0][2] = m[0][2] + x;
+    m[1][2] = m[1][2] + y;
+}
+
+void make_rotate_matrix(T_MATRIX m, const float alpha)
+{
+    m[0][0] = cos(alpha);
+    m[0][1] = sin(alpha);
+    m[1][0] = -1 * sin(alpha);
+    m[1][1] = cos(alpha);
 }
