@@ -594,6 +594,11 @@ void write_char_to_screen(char character, GLuint ascii_map, int x, int y, int si
     tiles.uv[0] = 18.0;
     tiles.uv[1] = 18.0;
 
+    if (character > '~' || character < ' ')
+    {
+        character = '~' + 1;
+    }
+
     character -= 32;
     index.uv[0] = character % (int)tiles.uv[0];
     index.uv[1] = character / (int)tiles.uv[0];
