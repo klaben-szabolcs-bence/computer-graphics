@@ -189,7 +189,6 @@ void special_keyboard(int key, int x, int y)
     {
     case GLUT_KEY_F1:
         show_help = !show_help;
-        printf("F1 pressed / show_help: %d", show_help);
         break;
     }
 }
