@@ -4,6 +4,7 @@
 #include "camera.h"
 #include "scene.h"
 #include "game.h"
+#include "hud.h"
 #include <stdlib.h>
 
 #include <GL/glut.h>
@@ -18,16 +19,7 @@ Scene scene;
  */
 Camera camera;
 
-/**
- * Drag distance with the mouse
- */
-double drag_distance;
-#define MAX_DRAG_DISTANCE 10
 
-/**
- * Toggle for showing help message
- */
-bool show_help;
 
 /**
  * Call when need to display the graphical content.
@@ -79,15 +71,6 @@ void idle();
  */
 void make_ball_move();
 
-/**
- * Draw HUD
- */
-void draw_hud();
-
-/**
- * Draws the powerbar for the HUD
- */
-void draw_powerbar(int x, int y, int width, int height);
 
 
 #endif /* CALLBACKS_H */
