@@ -5,6 +5,7 @@ OpenGl practice and project for University of Miskolc.
 A mini-golf demo game. Enjoy shooting the ball around the map, while enjoying cherry blossoms falling.
 
  - Camera centered around the ball or by pressing <kbd>c</kbd> to switch to free-cam mode.
+   - In centered view, you can zoom in and out by scrolling.
  - You can make the ball glow (or not) by pressing the <kbd>f</kbd>.
  - Shoot the ball by holding down <kbd>LMB</kbd> (left mouse button) then moving the mouse to set the power and releasing it!
  - An in-game help with <kbd>F1</kbd>.
