@@ -4,6 +4,9 @@
 #include "scene.h"
 #include "camera.h"
 
+bool in_hole;
+int shots_taken;
+
 /**
  * Updates game objects
  */
@@ -60,5 +63,10 @@ int is_colliding_with_brick(Scene* scene);
  * Returns -1 if none
  */
 int is_going_to_collide_with_brick(Scene* scene);
+
+/**
+ * Returns if the ball is allowed to move
+ */
+bool can_move(Scene* scene, Camera* camera);
 
 #endif /* GAME_H */

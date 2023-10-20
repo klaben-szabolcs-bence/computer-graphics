@@ -15,7 +15,7 @@ void display()
     glPushMatrix();
     set_view(&camera, &scene);
     draw_scene(&scene);
-    draw_hud(&screen, &scene);
+    draw_hud(&screen, &scene, &camera);
     glPopMatrix();
 
     if (is_preview_visible)
@@ -76,6 +76,7 @@ void mouse(int button, int state, int x, int y)
     {
         if (drag_distance > 0) make_ball_move(&scene, &camera, drag_distance);
         drag_distance = 0.0;
+        shots_taken++;
     }
 
     mouse_position.x = x;
@@ -85,7 +86,7 @@ void mouse(int button, int state, int x, int y)
 void motion(int x, int y)
 {
     // Handle moving
-    if (scene.golfball.still && !camera.freecam)
+    if (can_move(&scene, &camera))
     {
         double raw_drag_distance = (mouse_position.y - y) * -1;
         drag_distance += raw_drag_distance;

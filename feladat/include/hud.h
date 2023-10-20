@@ -3,6 +3,7 @@
 
 #include "scene.h"
 #include "camera.h"
+#include "game.h"
 
 #include <GL/glut.h>
 
@@ -21,12 +22,12 @@ double drag_distance;
 /**
  * Draw HUD
  */
-void draw_hud(Screen* screen, Scene* scene);
+void draw_hud(Screen* screen, Scene* scene, Camera* camera);
 
 /**
  * Draws the powerbar for the HUD
  */
-void draw_powerbar(Scene* scene, int x, int y, int width, int height);
+void draw_powerbar(int x, int y, int width, int height, bool can_move_calced);
 
 /**
  * Writes the character to the screen

@@ -34,9 +34,9 @@ void init_scene(Scene *scene)
     ball.texture = scene->plastic_texture;
     scene->golfball = ball;
 
-    ambient_material = create_color(0.1f, 0.1f, 0.1f, 1);
-    diffuse_material = create_color(0.5f, 0.5f, 0.5f, 1);
-    specular_material = create_color(0.5f, 0.5f, 0.5f, 1);
+    ambient_material = create_color(1, 1, 1, 1);
+    diffuse_material = create_color(0, 0, 0, 1);
+    specular_material = create_color(0, 0, 0, 0);
     scene->null_material =
         create_material(ambient_material, diffuse_material, specular_material, 0.0, emission_material);
 
@@ -140,7 +140,8 @@ void init_scene(Scene *scene)
     specular_material = create_color(0.7f, 0.7f, 0.7f, 1);
     hole.material = &(scene->plastic_material);
 
-    scene->hole = hole;
+    scene->bricks[9] = hole;
+    scene->hole = 9;
 
     scene->ascii_texture = load_ogl_texture("ascii.png");
     glBindTexture(GL_TEXTURE_2D, 0);
@@ -193,8 +194,6 @@ void draw_scene(const Scene *scene)
     {
         draw_textured_brick(&(scene->bricks[i]), scene);
     }
-
-    draw_textured_brick(&(scene->hole), scene);;
 
     set_material(scene->golfball.material);
     glBindTexture(GL_TEXTURE_2D, scene->golfball.texture);

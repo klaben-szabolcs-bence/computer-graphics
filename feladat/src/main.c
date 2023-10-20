@@ -42,6 +42,8 @@ int main(int argc, char* argv[])
     init_camera(&camera);
     drag_distance = 0.0;
     show_help = false;
+    in_hole = false;
+    shots_taken = 0;
     set_callbacks();
 
     glutMainLoop();

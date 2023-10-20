@@ -32,13 +32,13 @@ typedef struct GolfBall
     GLuint texture;
 } GolfBall;
 
-#define N_BRICKS 9
+#define N_BRICKS 10
 
 typedef struct Scene
 {
     GolfBall golfball;
     TexturedBrick bricks[N_BRICKS];
-    TexturedBrick hole;
+    int hole;
     Material invalid_material;
     Material null_material;
     Material playable_ground_material;

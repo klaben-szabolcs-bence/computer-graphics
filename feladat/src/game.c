@@ -25,7 +25,7 @@ void update_game(Scene *scene, double delta)
 
     int brick_we_are_standing_on = on_ground(scene);
 
-    if (brick_we_are_standing_on == -1)
+    if (brick_we_are_standing_on == -1 || brick_we_are_standing_on == scene->hole)
     {
         scene->golfball.direction_vector.z = -1.0f;
         if (scene->golfball.velocity == 0.0)
@@ -55,6 +55,8 @@ void update_game(Scene *scene, double delta)
         reset_ball(&(scene->golfball));
     }
 
+
+    in_hole = false;
     //Check if we are standing still
     if (scene->golfball.velocity == 0.0 && brick_we_are_standing_on > -1)
     {
@@ -62,7 +64,13 @@ void update_game(Scene *scene, double delta)
 
         if (brick_we_are_standing_on == 0)
         {
-            reset_ball(&(scene->golfball));
+            if (is_colliding_with_brick(scene) != scene->hole)
+            {
+                reset_ball(&(scene->golfball));
+            } else
+            {
+                in_hole = true;
+            }
         }
     }
     else
@@ -111,6 +119,7 @@ void reset_ball(GolfBall *ball)
     ball->position.x = 0;
     ball->position.y = 0;
     ball->position.z = 10;
+    shots_taken = 0;
 }
 
 int on_ground(Scene *scene)
@@ -183,6 +192,10 @@ float calc_min_distance(float *distance)
 
 void kick_from_brick(Scene *scene, float min_distance, float *distance, int colliding_brick)
 {
+
+    //Don't get kicked our from the hole
+    if (colliding_brick == scene->hole) return;
+
     if (min_distance == abs(distance[0]) || min_distance == abs(distance[1]))
     {
         // Collission on left side
@@ -271,4 +284,9 @@ int is_going_to_collide_with_brick(Scene *scene)
         }
     }
     return -1;
+}
+
+bool can_move(Scene* scene, Camera* camera)
+{
+    return (scene->golfball.still && !in_hole && !camera->freecam);
 }
