@@ -76,8 +76,12 @@ void keyboard(unsigned char key, int x, int y)
     case 'l':
         set_camera_horizontal_rotation_speed(&camera, 10);
         break;
+    case 'i':
+        set_camera_vertical_rotation_speed(&camera, 10);
+        break;
+    case 'k':
+        set_camera_vertical_rotation_speed(&camera, -10);
     }
-    
 
     glutPostRedisplay();
 }
@@ -102,6 +106,11 @@ void keyboard_up(unsigned char key, int x, int y)
     case 'j':
     case 'l':
         set_camera_horizontal_rotation_speed(&camera, 0.0);
+        break;
+    case 'k':
+    case 'i':
+        set_camera_vertical_rotation_speed(&camera, 0.0);
+        break;
     }
 
     glutPostRedisplay();
