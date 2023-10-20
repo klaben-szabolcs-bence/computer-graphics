@@ -21,7 +21,8 @@ void init_scene(Scene *scene)
     ball.position = create_vec3(10, 0, 2);
     scene->golfball = ball;
     scene->golfball.glow = false;
-    ball.speed = create_vec3(0, 0, 0);
+    ball.speed = create_vec3(0.0f, 0.0f, 0.0f);
+    ball.on_ground = false;
     ambient_material = create_color(0, 0, 0, 1);
     diffuse_material = create_color(0.55, 0.55, 0.55, 1);
     specular_material = create_color(0.77, 0.77, 0.77, 1);
@@ -435,12 +436,18 @@ void update_game(Scene *scene, double delta)
     scene->golfball.speed.x /= 2.0f;
     scene->golfball.speed.y /= 2.0f;
 
-    if (scene->golfball.speed.x < 0.1f)
+    if (abs(scene->golfball.speed.x) < 0.1f)
         scene->golfball.speed.x = 0.0f;
-    if (scene->golfball.speed.y < 0.1f)
+    if (abs(scene->golfball.speed.y) < 0.1f)
         scene->golfball.speed.y = 0.0f;
-    if (scene->golfball.speed.z > -10.0f)
-        scene->golfball.speed.z += -2.0f;
+    if (abs(scene->golfball.speed.z) < 0.1f)
+        scene->golfball.speed.z = 0.0f;
+    
+    // Apply gravity
+    if (scene->golfball.speed.z > -10.0f && !scene->golfball.on_ground)
+        scene->golfball.speed.z += -1.0f;
+
+    // Mitigate weird stuff
     if (scene->golfball.speed.z > 100000.0f)
         scene->golfball.speed.z = 0.0f;
 
@@ -454,50 +461,95 @@ void update_game(Scene *scene, double delta)
         scene->golfball.position.z = 10;
     }
 
+    scene->golfball.on_ground = false;
+
     int colliding_brick = is_colliding_with_brick(scene);
     if (colliding_brick > -1 )
     {
         float distance[6];
         distance[0] = scene->golfball.position.x - scene->bricks[colliding_brick].position.x;
-        distance[1] = scene->golfball.position.x - scene->bricks[colliding_brick].position.x + scene->bricks[colliding_brick].size.x;
+        distance[1] = scene->golfball.position.x - (scene->bricks[colliding_brick].position.x + scene->bricks[colliding_brick].size.x);
         distance[2] = scene->golfball.position.y - scene->bricks[colliding_brick].position.y;
-        distance[3] = scene->golfball.position.y - scene->bricks[colliding_brick].position.y + scene->bricks[colliding_brick].size.y;
+        distance[3] = scene->golfball.position.y - (scene->bricks[colliding_brick].position.y + scene->bricks[colliding_brick].size.y);
         distance[4] = scene->golfball.position.z - scene->bricks[colliding_brick].position.z;
-        distance[5] = scene->golfball.position.z - scene->bricks[colliding_brick].position.z + scene->bricks[colliding_brick].size.z;
+        distance[5] = scene->golfball.position.z - (scene->bricks[colliding_brick].position.z + scene->bricks[colliding_brick].size.z);
 
         
 
-        int min_distance = fmin(distance[0], distance[1]);
+        int min_distance = fmin(abs(distance[0]), abs(distance[1]));
 
         int i;
         for (i = 2; i < 6; ++i)
         {
-            min_distance = fmin(min_distance, distance[i]);    
+            min_distance = fmin(min_distance, abs(distance[i]));    
         }
 
-        if (min_distance == distance[0])
+        if (min_distance == abs(distance[0]) || min_distance == abs(distance[1]))
         {
             // Collission on left side
-        }
-        else if (min_distance == distance[1])
-        {
             // Collission on right side
+
+            scene->golfball.speed.x *= -1.0f;
+
+            
+            if (scene->golfball.speed.x < 0)
+            {
+                scene->golfball.position.x -= distance[0] + 0.5f;
+                printf("Collision with %d on LEFT.\n", colliding_brick);
+            }
+            else
+            {
+                scene->golfball.position.x -= distance[1] - 0.5f;
+                printf("Collision with %d on RIGHT.\n", colliding_brick);
+            }
+            
         }
-        else if (min_distance == distance[2])
+        else if (min_distance == abs(distance[2]) || min_distance == abs(distance[3]))
         {
             //Collission on front side
-        }
-        else if (min_distance == distance[3])
-        {
             //Collission on back side
-        }
-        else if (min_distance == distance[4])
-        {
-            //Collision on bottom side
+
+            scene->golfball.speed.y *= -1.0f;
+
+            
+            if (scene->golfball.speed.y < 0)
+            {
+                scene->golfball.position.y -= distance[2] + 0.5f;
+                printf("Collision with %d on FRONT.\n", colliding_brick);
+            }
+            else
+            {
+                scene->golfball.position.y -= distance[3] - 0.5f;
+                printf("Collision with %d on BACK.\n", colliding_brick);
+            }
+            
         }
         else
         {
+            //Collision on bottom side
             //Collision on top side
+
+            scene->golfball.speed.z *= -0.1f;
+
+            
+            if (scene->golfball.speed.z < 0)
+            {
+                scene->golfball.position.z -= distance[4] + 0.5f;
+                printf("Collision with %d on BOTTOM.\n", colliding_brick);
+            }
+            else
+            {
+                printf("Collision with %d on TOP.\n", colliding_brick);
+                printf("Distance: %f\n", distance[5]);
+                scene->golfball.position.z -= distance[5] - 0.5f;
+                if (abs(scene->golfball.speed.z) < 0.1f)
+                {
+                    scene->golfball.speed.z = 0.0f;
+                    scene->golfball.on_ground = true;
+                }
+
+            }
+            
         }
     }
     
@@ -510,12 +562,12 @@ int is_colliding_with_brick(Scene* scene)
     {
         if
         (
-            scene->golfball.position.x > scene->bricks[i].position.x ||
-            scene->golfball.position.x < scene->bricks[i].position.x + scene->bricks[i].size.x ||
-            scene->golfball.position.y > scene->bricks[i].position.y ||
-            scene->golfball.position.y < scene->bricks[i].position.y + scene->bricks[i].size.y ||
-            scene->golfball.position.z > scene->bricks[i].position.z ||
-            scene->golfball.position.z < scene->bricks[i].position.z + scene->bricks[i].size.z
+            scene->golfball.position.x + 0.5f > scene->bricks[i].position.x &&
+            scene->golfball.position.x - 0.5f< scene->bricks[i].position.x + scene->bricks[i].size.x &&
+            scene->golfball.position.y + 0.5f> scene->bricks[i].position.y &&
+            scene->golfball.position.y - 0.5f< scene->bricks[i].position.y + scene->bricks[i].size.y &&
+            scene->golfball.position.z + 0.5f> scene->bricks[i].position.z &&
+            scene->golfball.position.z - 0.5f< scene->bricks[i].position.z + scene->bricks[i].size.z
         )
         {
             return i;
