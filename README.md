@@ -1,5 +1,5 @@
 # computer-graphics
-OpenGl practice and project for University of Miskolc.
+OpenGl practice and project for University.
 
 ## The Project
 A mini-golf demo game. Enjoy shooting the ball around the map, while enjoying cherry blossoms falling.
