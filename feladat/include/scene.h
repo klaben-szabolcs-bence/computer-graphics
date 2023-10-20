@@ -25,8 +25,8 @@ typedef struct GolfBall
     vec3 position;
     bool glow;
     double speed;
-    vec3 velocity;
-    bool on_ground;
+    double velocity;
+    vec3 direction_vector;
     bool still;
 } GolfBall;
 
@@ -111,5 +111,11 @@ void write_text_to_screen(const char* text, GLuint ascii_map, int x, int y, int 
  * Reset the ball
  */
 void reset_ball(GolfBall* ball);
+
+/**
+ * Returns the ID of the brick we are on
+ * If none returns -1
+ */
+int on_ground(Scene* scene);
 
 #endif /* SCENE_H */

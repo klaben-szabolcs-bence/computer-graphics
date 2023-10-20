@@ -52,14 +52,14 @@ void draw_hud()
         write_text_to_screen("r: Reset the ball", scene.ascii_texture, 8, 8 + 16 * 4, 16);
     }
     char pos_text[64];
-    char vel_text[64];
+    char dir_text[64];
     char spd_text[64];
     sprintf(pos_text,"Pos: %+07.3f %+07.3f %+07.3f", scene.golfball.position.x, scene.golfball.position.y, scene.golfball.position.z);
-    sprintf(vel_text,"Vel: %+07.3f %+07.3f %+07.3f", scene.golfball.velocity.x, scene.golfball.velocity.y, scene.golfball.velocity.z);
-    sprintf(spd_text,"Speed: %+07.3f", scene.golfball.speed);
+    sprintf(dir_text,"Dir: %+07.3f %+07.3f %+07.3f", scene.golfball.direction_vector.x, scene.golfball.direction_vector.y, scene.golfball.direction_vector.z);
+    sprintf(spd_text,"Speed: %+07.3f / Velocity: %+07.3f", scene.golfball.speed, scene.golfball.velocity);
     write_text_to_screen(pos_text,scene.ascii_texture, screen.width - 28 * 12, screen.height - 3*12, 12);
-    write_text_to_screen(vel_text,scene.ascii_texture, screen.width - 28 * 12, screen.height - 2*12, 12);
-    write_text_to_screen(spd_text,scene.ascii_texture, screen.width - 16 * 12, screen.height - 12, 12);
+    write_text_to_screen(dir_text,scene.ascii_texture, screen.width - 28 * 12, screen.height - 2*12, 12);
+    write_text_to_screen(spd_text,scene.ascii_texture, screen.width - 35 * 12, screen.height - 12, 12);
     draw_powerbar(10, screen.height - 60, 100, 50);
     glPopMatrix();
     glEnable(GL_LIGHTING);
@@ -260,26 +260,23 @@ void make_ball_move()
         scene.golfball.position.y - camera.position.y,
         scene.golfball.position.z - camera.position.z);
 
-    //Normalize it
-    look = create_vec3(look.x / abs(look.x), look.y / abs(look.y), look.z / abs(look.z));
+    //Make the velocity the drag distance
+    scene.golfball.velocity = drag_distance;
 
-    //Multiply it, by drag distance
-    look = create_vec3(look.x * drag_distance, look.y * drag_distance, look.z * drag_distance);
+    double cam_dist = sqrt(pow(look.x, 2) + pow(look.y, 2));
+    //Make the look vector the direction vector of the ball after normalizing
+    scene.golfball.direction_vector.x = look.x / cam_dist;
+    scene.golfball.direction_vector.y = look.y / cam_dist;
 
-    //Add it to the velocity vector of the ball
-    scene.golfball.velocity.x += look.x;
-    scene.golfball.velocity.y += look.y;
-    //scene.golfball.velocity.z += look.z;
-
-    //The velocity may be inf, if we are looking at the ball from the top, so we just set it to 0
-    if (scene.golfball.velocity.x > 900)
-        scene.golfball.velocity.x = 0;
-    if (scene.golfball.velocity.y > 900)
-        scene.golfball.velocity.y = 0;
-    if (scene.golfball.velocity.x < -900)
-        scene.golfball.velocity.x = 0;
-    if (scene.golfball.velocity.y < -900)
-        scene.golfball.velocity.y = 0;
+    //The direction vector may be inf, if we are looking at the ball from the top, so we just set it to 0
+    if (scene.golfball.direction_vector.x > 1)
+        scene.golfball.direction_vector.x = 0;
+    if (scene.golfball.direction_vector.y > 1)
+        scene.golfball.direction_vector.y = 0;
+    if (scene.golfball.direction_vector.x < -1)
+        scene.golfball.direction_vector.x = 0;
+    if (scene.golfball.direction_vector.y < -1)
+        scene.golfball.direction_vector.y = 0;
 }
 
 void draw_powerbar(int x, int y, int width, int height)

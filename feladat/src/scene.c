@@ -18,11 +18,11 @@ void init_scene(Scene *scene)
         create_material(ambient_material, diffuse_material, specular_material, 32.0f, emission_material);
 
     GolfBall ball;
-    ball.position = create_vec3(10, 0, 2);
+    ball.position = create_vec3(10, 0, 3);
     scene->golfball.glow = false;
     ball.speed = 1;
-    ball.velocity = create_vec3(0.0, 0.0, 0.0);
-    ball.on_ground = false;
+    ball.velocity = 0.0f;
+    ball.direction_vector = create_vec3(0.0f, 0.0f, 0.0f);
     ball.still = false;
     ambient_material = create_color(0.05f, 0.05f, 0.05f, 1);
     diffuse_material = create_color(0.5f, 0.5f, 0.5f, 1);
@@ -429,56 +429,49 @@ void draw_textured_brick(const TexturedBrick *brick, const Scene *scene)
 
 void update_game(Scene *scene, double delta)
 {
-    //printf("Speed: %f %f %f\n", scene->golfball.speed.x, scene->golfball.speed.y, scene->golfball.speed.z);
     //printf("Pos: %f %f %f\n", scene->golfball.position.x, scene->golfball.position.y, scene->golfball.position.z);
+    //printf("DirVec: %f %f %f\n", scene->golfball.direction_vector.x, scene->golfball.direction_vector.y, scene->golfball.direction_vector.z);
+    //printf("Vel: %f\n", scene->golfball.velocity);
 
     //Basic forces
-    if (abs(scene->golfball.velocity.x) >= abs(scene->golfball.speed))
+    if (abs(scene->golfball.velocity) >= abs(scene->golfball.speed))
     {
-        scene->golfball.position.x += scene->golfball.speed * delta * sgn(scene->golfball.velocity.x);
-        scene->golfball.velocity.x -= scene->golfball.speed * delta * sgn(scene->golfball.velocity.x);
-    } else
-    {
-        scene->golfball.position.x += scene->golfball.velocity.x;
-        scene->golfball.velocity.x = 0;
+        scene->golfball.position.x += scene->golfball.speed * delta * sgn(scene->golfball.direction_vector.x);
+        scene->golfball.position.y += scene->golfball.speed * delta * sgn(scene->golfball.direction_vector.y);
+        scene->golfball.position.z += scene->golfball.speed * delta * sgn(scene->golfball.direction_vector.z);
+
+        scene->golfball.velocity -= scene->golfball.speed * delta;
     }
-    if (abs(scene->golfball.velocity.y) >= abs(scene->golfball.speed))
+    else
     {
-        scene->golfball.position.y += scene->golfball.speed * delta * sgn(scene->golfball.velocity.y);
-        scene->golfball.velocity.y -= scene->golfball.speed * delta * sgn(scene->golfball.velocity.y);
-    } else
-    {
-        scene->golfball.position.y += scene->golfball.velocity.y;
-        scene->golfball.velocity.y = 0;
+        scene->golfball.position.x += scene->golfball.velocity * sgn(scene->golfball.direction_vector.x);
+        scene->golfball.position.y += scene->golfball.velocity * sgn(scene->golfball.direction_vector.y);
+        scene->golfball.position.z += scene->golfball.velocity * sgn(scene->golfball.direction_vector.z);
+        scene->golfball.velocity = 0;
     }
-    if (abs(scene->golfball.velocity.z) >= abs(scene->golfball.speed))
+
+    int brick_we_are_standing_on = on_ground(scene);
+
+    if (brick_we_are_standing_on == -1)
     {
-        scene->golfball.position.z += scene->golfball.speed * delta * sgn(scene->golfball.velocity.z);
-        scene->golfball.velocity.z -= scene->golfball.speed * delta * sgn(scene->golfball.velocity.z);
-    } else
-    {
-        scene->golfball.position.z += scene->golfball.velocity.z;
-        scene->golfball.velocity.z = 0;
+        scene->golfball.direction_vector.z = -1.0f;
+        if (scene->golfball.velocity == 0.0)
+        {
+            scene->golfball.velocity = 1.0;
+        }
     }
-    
+    else
+    {
+        scene->golfball.direction_vector.z = 0.0f;
+    }
+
     //Magic fuckery
-    if (scene->golfball.velocity.x < -100000)
-        scene->golfball.velocity.x = 0.0;
-    if (scene->golfball.velocity.y < -100000)
-        scene->golfball.velocity.y = 0.0;
-    if (scene->golfball.velocity.z < -100000)
-        scene->golfball.velocity.z = 0.0;
+    if (scene->golfball.velocity < -100000)
+        scene->golfball.velocity = 0.0;
     if (scene->golfball.speed > 100000)
         scene->golfball.speed = 2.0f;
-    if (abs(scene->golfball.velocity.x) < 0.001)
-        scene->golfball.velocity.x = 0.0f;
-    if (abs(scene->golfball.velocity.y) < 0.001)
-        scene->golfball.velocity.y = 0.0f;
-
-    // Apply gravity
-    if (!scene->golfball.on_ground)
-        scene->golfball.velocity.z = -1.0f;
-    else scene->golfball.velocity.z = 0.0f;
+    if (abs(scene->golfball.velocity) < 0.001)
+        scene->golfball.velocity = 0.0f;
 
     // Out of Out of Bounds
     if (scene->golfball.position.x > 900 || scene->golfball.position.x < -900 ||
@@ -489,10 +482,23 @@ void update_game(Scene *scene, double delta)
         reset_ball(&(scene->golfball));
     }
 
-    scene->golfball.on_ground = false;
+    //Check if we are standing still
+    if (scene->golfball.velocity == 0.0 && brick_we_are_standing_on > -1 )
+    {
+        scene->golfball.still = true;
+
+        if (brick_we_are_standing_on == 0)
+        {
+            reset_ball(&(scene->golfball));
+        }
+    }
+    else
+    {
+        scene->golfball.still = false;
+    }
 
     int colliding_brick = is_going_to_collide_with_brick(scene);
-    if (colliding_brick > -1 )
+    if (colliding_brick > -1)
     {
         float distance[6];
         distance[0] = scene->golfball.position.x - scene->bricks[colliding_brick].position.x;
@@ -507,7 +513,7 @@ void update_game(Scene *scene, double delta)
         int i;
         for (i = 2; i < 6; ++i)
         {
-            min_distance = fmin(min_distance, abs(distance[i]));    
+            min_distance = fmin(min_distance, abs(distance[i]));
         }
 
         if (min_distance == abs(distance[0]) || min_distance == abs(distance[1]))
@@ -515,10 +521,9 @@ void update_game(Scene *scene, double delta)
             // Collission on left side
             // Collission on right side
 
-            scene->golfball.velocity.x *= -1.0f;
+            scene->golfball.direction_vector.x *= -1.0f;
 
-            
-            if (scene->golfball.velocity.x < 0)
+            if (scene->golfball.direction_vector.x < 0)
             {
                 scene->golfball.position.x = scene->bricks[colliding_brick].position.x - 1.0f;
             }
@@ -526,17 +531,15 @@ void update_game(Scene *scene, double delta)
             {
                 scene->golfball.position.x = scene->bricks[colliding_brick].position.x + scene->bricks[colliding_brick].size.x + 1.0f;
             }
-            
         }
         else if (min_distance == abs(distance[2]) || min_distance == abs(distance[3]))
         {
             //Collission on front side
             //Collission on back side
 
-            scene->golfball.velocity.y *= -1.0f;
+            scene->golfball.direction_vector.y *= -1.0f;
 
-            
-            if (scene->golfball.velocity.y < 0)
+            if (scene->golfball.direction_vector.y < 0)
             {
                 scene->golfball.position.y = scene->bricks[colliding_brick].position.y - 1.0f;
             }
@@ -544,67 +547,37 @@ void update_game(Scene *scene, double delta)
             {
                 scene->golfball.position.y = scene->bricks[colliding_brick].position.y + scene->bricks[colliding_brick].size.y + 1.0f;
             }
-            
         }
         else
         {
             //Collision on bottom side
             //Collision on top side
-            scene->golfball.velocity.z *= 0.0f;
+            scene->golfball.direction_vector.z *= 0.0f;
 
-            
-            if (scene->golfball.velocity.z < 0)
+            if (scene->golfball.direction_vector.z < 0)
             {
                 scene->golfball.position.z = scene->bricks[colliding_brick].position.z - 1.0f;
             }
             else
             {
                 scene->golfball.position.z = scene->bricks[colliding_brick].position.z + scene->bricks[colliding_brick].size.z + 1.0f;
-                scene->golfball.on_ground = true;
-                printf("ON GROUND\n");
-
-                if (scene->golfball.on_ground && scene->golfball.velocity.x == 0.0 && scene->golfball.velocity.y == 0.0)
-                {
-                    scene->golfball.still = true;
-                    if (colliding_brick == 0)
-                    {
-                        reset_ball(&(scene->golfball));
-                    }
-                }
-                else
-                {
-                    scene->golfball.still = false;
-                }
             }
         }
     }
-    
-    /*
-    printf("Pos %f %f %f / Vel: %f %f %f\n",
-        scene->golfball.position.x,
-        scene->golfball.position.y,
-        scene->golfball.position.z,
-        scene->golfball.velocity.x,
-        scene->golfball.velocity.y,
-        scene->golfball.velocity.z
-    );*/
-    
 }
 
-int is_colliding_with_brick(Scene* scene)
+int is_colliding_with_brick(Scene *scene)
 {
     int i;
     for (i = 0; i < N_BRICKS; ++i)
     {
-        if
-        (
+        if (
             scene->golfball.position.x + 1.0f > scene->bricks[i].position.x &&
             scene->golfball.position.x - 1.0f < scene->bricks[i].position.x + scene->bricks[i].size.x &&
             scene->golfball.position.y + 1.0f > scene->bricks[i].position.y &&
             scene->golfball.position.y - 1.0f < scene->bricks[i].position.y + scene->bricks[i].size.y &&
             scene->golfball.position.z + 1.0f > scene->bricks[i].position.z &&
-            scene->golfball.position.z - 1.0f < scene->bricks[i].position.z + scene->bricks[i].size.z
-        )
+            scene->golfball.position.z - 1.0f < scene->bricks[i].position.z + scene->bricks[i].size.z)
         {
             return i;
         }
@@ -612,21 +585,20 @@ int is_colliding_with_brick(Scene* scene)
     return -1;
 }
 
-int is_going_to_collide_with_brick(Scene* scene)
+int is_going_to_collide_with_brick(Scene *scene)
 {
-    GolfBall* ball = &(scene->golfball);
+    GolfBall *ball = &(scene->golfball);
 
     int i;
     for (i = N_BRICKS - 1; i >= 0; --i)
     {
         if (
-            ball->position.x + (ball->speed * ball->velocity.x) + 1.0f > scene->bricks[i].position.x &&
-            ball->position.x + (ball->speed * ball->velocity.x) - 1.0f < scene->bricks[i].position.x + scene->bricks[i].size.x &&
-            ball->position.y + (ball->speed * ball->velocity.y) + 1.0f > scene->bricks[i].position.y &&
-            ball->position.y + (ball->speed * ball->velocity.y) - 1.0f < scene->bricks[i].position.y + scene->bricks[i].size.y &&
-            ball->position.z + (ball->speed * ball->velocity.z) + 1.0f > scene->bricks[i].position.z &&
-            ball->position.z + (ball->speed * ball->velocity.z) - 1.0f < scene->bricks[i].position.z + scene->bricks[i].size.z
-        )
+            ball->position.x + (ball->speed * ball->velocity) + 1.0f > scene->bricks[i].position.x &&
+            ball->position.x + (ball->speed * ball->velocity) - 1.0f < scene->bricks[i].position.x + scene->bricks[i].size.x &&
+            ball->position.y + (ball->speed * ball->velocity) + 1.0f > scene->bricks[i].position.y &&
+            ball->position.y + (ball->speed * ball->velocity) - 1.0f < scene->bricks[i].position.y + scene->bricks[i].size.y &&
+            ball->position.z + (ball->speed * ball->velocity) + 1.0f > scene->bricks[i].position.z &&
+            ball->position.z + (ball->speed * ball->velocity) - 1.0f < scene->bricks[i].position.z + scene->bricks[i].size.z)
         {
             return i;
         }
@@ -673,18 +645,40 @@ void write_char_to_screen(char character, GLuint ascii_map, int x, int y, int si
     glPopMatrix();
 }
 
-void write_text_to_screen(const char* text, GLuint ascii_map, int x, int y, int size)
+void write_text_to_screen(const char *text, GLuint ascii_map, int x, int y, int size)
 {
     unsigned int i;
-    for(i = 0; i < strlen(text); ++i)
+    for (i = 0; i < strlen(text); ++i)
     {
         write_char_to_screen(text[i], ascii_map, x + (i * size), y, size);
     }
 }
 
-void reset_ball(GolfBall* ball)
+void reset_ball(GolfBall *ball)
 {
     ball->position.x = 0;
     ball->position.y = 0;
     ball->position.z = 10;
+}
+
+int on_ground(Scene *scene)
+{
+    GolfBall *ball = &(scene->golfball);
+
+    int i;
+    for (i = 0; i < N_BRICKS; ++i)
+    {
+        if (
+            //From top-down perspective the ball should be on-top
+            ball->position.x >= scene->bricks[i].position.x &&
+            ball->position.x <= scene->bricks[i].position.x + scene->bricks[i].size.x &&
+            ball->position.y >= scene->bricks[i].position.y &&
+            ball->position.y <= scene->bricks[i].position.y + scene->bricks[i].size.y &&
+            //And from side views should be exacly on-top
+            ball->position.z - 1.0f == scene->bricks[i].position.z + scene->bricks[i].size.z)
+        {
+            return i;
+        }
+    }
+    return -1;
 }
