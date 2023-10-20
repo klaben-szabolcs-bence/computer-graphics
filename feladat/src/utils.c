@@ -103,3 +103,12 @@ ArrayUV4 get_uv2(ArrayUV tiles, ArrayUV index)
 	uv4.uv[7] = bottom_V;
 	return uv4;
 }
+
+signed char sgn(float num)
+{
+	if (num == 0)
+		return 0;
+	if (num > 0)
+		return 1;
+	return -1;
+}

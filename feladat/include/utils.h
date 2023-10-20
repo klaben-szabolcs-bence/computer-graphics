@@ -105,4 +105,9 @@ ArrayUV4 get_uv(ArrayUV tiles, ArrayUV index);
  */
 ArrayUV4 get_uv2(ArrayUV tiles, ArrayUV index);
 
+/**
+ * Returns the sign of the number.
+ */
+signed char sgn(float num);
+
 #endif /* UTILS_H */
