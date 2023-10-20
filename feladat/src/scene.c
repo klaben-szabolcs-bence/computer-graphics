@@ -27,8 +27,11 @@ void init_scene(Scene *scene)
     ambient_material = create_color(0.05f, 0.05f, 0.05f, 1);
     diffuse_material = create_color(0.5f, 0.5f, 0.5f, 1);
     specular_material = create_color(0.7f, 0.7f, 0.7f, 1);
-    ball.material =
+    scene->plastic_material =
         create_material(ambient_material, diffuse_material, specular_material, 10.0f, emission_material);
+    ball.material = scene->plastic_material;
+    scene->plastic_texture = load_texture("plastic.jpg");
+    ball.texture = scene->plastic_texture;
     scene->golfball = ball;
 
     ambient_material = create_color(0.1f, 0.1f, 0.1f, 1);
@@ -49,6 +52,7 @@ void init_scene(Scene *scene)
         create_material(ambient_material, diffuse_material, specular_material, 7.68f, emission_material);
 
     unplayable_ground.wrap_3d = false;
+    unplayable_ground.open_top = false;
     unplayable_ground.texture_size[0] = 900;
     unplayable_ground.texture_size[1] = 900;
     unplayable_ground.tiled_texture = true;
@@ -76,6 +80,7 @@ void init_scene(Scene *scene)
     playable_ground.material = scene->playable_ground_material;
     playable_ground.wrap_3d = false;
     playable_ground.tiled_texture = true;
+    playable_ground.open_top = false;
     playable_ground.texture_size[0] = 500;
     playable_ground.texture_size[1] = 500;
     scene->bricks[1] = playable_ground;
@@ -100,6 +105,7 @@ void init_scene(Scene *scene)
     wooden_brick.material = scene->wooden_material;
     wooden_brick.wrap_3d = false;
     wooden_brick.tiled_texture = true;
+    wooden_brick.open_top = false;
     wooden_brick.texture_size[0] = 4096;
     wooden_brick.texture_size[1] = 4096;
     scene->bricks[5] = wooden_brick;
@@ -116,6 +122,24 @@ void init_scene(Scene *scene)
     // Direkt 1 magasságú, hogy tesztelni lehessen, mi van ha OOB a labda.
     wooden_brick.size = create_vec3(1, 51, 1);
     scene->bricks[8] = wooden_brick;
+
+    TexturedBrick hole;
+    hole.rotation_angle = 0;
+    hole.position = create_vec3(-23.99f, -1.49f, 0.01f);
+    hole.size = create_vec3(2.98f, 2.98f, 0.98f);
+    hole.texture = scene->plastic_texture;
+    hole.texture_size[0] = 1200;
+    hole.texture_size[1] = 1200;
+    hole.wrap_3d = false;
+    hole.tiled_texture = true;
+    hole.open_top = true;
+
+    ambient_material = create_color(0.05f, 0.05f, 0.05f, 1);
+    diffuse_material = create_color(0.5f, 0.5f, 0.5f, 1);
+    specular_material = create_color(0.7f, 0.7f, 0.7f, 1);
+    hole.material = scene->plastic_material;
+
+    scene->hole = hole;
 
     scene->ascii_texture = load_ogl_texture("ascii.png");
     glBindTexture(GL_TEXTURE_2D, 0);
@@ -169,14 +193,19 @@ void draw_scene(const Scene *scene)
         draw_textured_brick(&(scene->bricks[i]), scene);
     }
 
+    draw_textured_brick(&(scene->hole), scene);;
+
+    set_material(&(scene->golfball.material));
+    glBindTexture(GL_TEXTURE_2D, scene->golfball.texture);
     glDisable(GL_BLEND);
     glPushMatrix();
+    
     glTranslatef(scene->golfball.position.x, scene->golfball.position.y, scene->golfball.position.z);
-    set_material(&(scene->golfball.material));
     glutSolidSphere(1, 36, 36);
+    
     glPopMatrix();
     glEnable(GL_BLEND);
-
+    glBindTexture(GL_TEXTURE_2D, 0);
     set_material(&(scene->invalid_material));
 }
 
@@ -333,16 +362,19 @@ void draw_textured_brick(const TexturedBrick *brick, const Scene *scene)
         glVertex3f(0, brick->size.y, brick->size.z);
         glEnd();
 
-        glBegin(GL_QUADS);
-        glTexCoord2f(1, 1);
-        glVertex3f(0, brick->size.y, brick->size.z);
-        glTexCoord2f(0, 1);
-        glVertex3f(brick->size.x, brick->size.y, brick->size.z);
-        glTexCoord2f(1, 1);
-        glVertex3f(brick->size.x, 0, brick->size.z);
-        glTexCoord2f(0, 1);
-        glVertex3f(0, 0, brick->size.z);
-        glEnd();
+        if (!brick->open_top)
+        {
+            glBegin(GL_QUADS);
+            glTexCoord2f(1, 1);
+            glVertex3f(0, brick->size.y, brick->size.z);
+            glTexCoord2f(0, 1);
+            glVertex3f(brick->size.x, brick->size.y, brick->size.z);
+            glTexCoord2f(1, 1);
+            glVertex3f(brick->size.x, 0, brick->size.z);
+            glTexCoord2f(0, 1);
+            glVertex3f(0, 0, brick->size.z);
+            glEnd();
+        }
 
         glBegin(GL_QUADS);
         glTexCoord2f(0, 0);
@@ -360,17 +392,21 @@ void draw_textured_brick(const TexturedBrick *brick, const Scene *scene)
         float right_U = brick->size.x / brick->texture_size[0] * 50;
         float top_V_on_sides = brick->size.z / brick->texture_size[1] * 50;
         float top_V_on_top = brick->size.y / brick->texture_size[1] * 50;
+
         //Top
-        glBegin(GL_QUADS);
-        glTexCoord2f(0, top_V_on_top);
-        glVertex3f(0, brick->size.y, brick->size.z);
-        glTexCoord2f(right_U, top_V_on_top);
-        glVertex3f(brick->size.x, brick->size.y, brick->size.z);
-        glTexCoord2f(right_U, 0);
-        glVertex3f(brick->size.x, 0, brick->size.z);
-        glTexCoord2f(0, 0);
-        glVertex3f(0, 0, brick->size.z);
-        glEnd();
+        if (!brick->open_top)
+        {
+            glBegin(GL_QUADS);
+            glTexCoord2f(0, top_V_on_top);
+            glVertex3f(0, brick->size.y, brick->size.z);
+            glTexCoord2f(right_U, top_V_on_top);
+            glVertex3f(brick->size.x, brick->size.y, brick->size.z);
+            glTexCoord2f(right_U, 0);
+            glVertex3f(brick->size.x, 0, brick->size.z);
+            glTexCoord2f(0, 0);
+            glVertex3f(0, 0, brick->size.z);
+            glEnd();
+        }
 
         //Bottom
         glBegin(GL_QUADS);

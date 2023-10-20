@@ -17,6 +17,7 @@ typedef struct TexturedBrick
     bool wrap_3d;
     int texture_size[2];
     bool tiled_texture;
+    bool open_top;
 } TexturedBrick;
 
 typedef struct GolfBall
@@ -28,6 +29,7 @@ typedef struct GolfBall
     double velocity;
     vec3 direction_vector;
     bool still;
+    GLuint texture;
 } GolfBall;
 
 #define N_BRICKS 9
@@ -42,7 +44,10 @@ typedef struct Scene
     Material playable_ground_material;
     GLuint wooden_texture;
     Material wooden_material;
+    GLuint plastic_texture;
+    Material plastic_material;
     TexturedBrick bricks[N_BRICKS];
+    TexturedBrick hole;
     GLuint ascii_texture;
 } Scene;
 
