@@ -22,6 +22,7 @@ typedef struct Color
     float red;
     float green;
     float blue;
+    float alpha;
 } Color;
 
 /**
@@ -33,7 +34,14 @@ typedef struct Material
     struct Color diffuse; 
     struct Color specular; 
     float shininess;
+    struct Color emission;
 } Material;
+
+typedef struct ArrayColor
+{
+    float color[4];
+} ArrayColor;
+
 
 /**
  * Calculates radian from degree.
@@ -51,27 +59,23 @@ vec3 array_to_vec3(float array[3]);
 vec3 create_vec3(float x, float y, float z);
 
 /**
- * Turns an array to a color (rgb)
+ * Turns an array to a color (rgba)
  */
-Color array_to_color(float array[3]);
+Color array_to_color(float array[4]);
 
 /**
- * Creates a color (rgb)
+ * Creates a color (rgba)
  */
-Color create_color(float r, float g, float b);
+Color create_color(float r, float g, float b, float a);
+
+/**
+ * Turns a color to an array (rgba)
+ */
+ArrayColor color_to_array(Color color);
 
 /**
  * Creates a material
  */
-Material create_material(Color ambient, Color diffuse, Color specular, float shininess);
-
-/**
- * Creates a material only using floats
- */
-Material create_material_10f(
-	float ambient_red, float ambient_green, float ambient_blue,
-	float diffuse_red, float diffuse_green, float diffuse_blue,
-	float specular_red, float specular_green, float specular_blue,
-	float shininess);
+Material create_material(Color ambient, Color diffuse, Color specular, float shininess, Color emission);
 
 #endif /* UTILS_H */

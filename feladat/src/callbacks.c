@@ -106,6 +106,13 @@ void keyboard(unsigned char key, int x, int y)
         exit(0);
     case 'f':
         scene.golfball.glow = !scene.golfball.glow;
+
+        if (scene.golfball.glow) glEnable(GL_LIGHT1);
+        else glDisable(GL_LIGHT1);
+
+        
+        if (scene.golfball.glow) scene.material.emission.alpha = 1;
+        else scene.material.emission.alpha = 0;
         break;
     }
     

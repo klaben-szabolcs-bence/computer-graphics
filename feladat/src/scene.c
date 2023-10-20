@@ -13,10 +13,11 @@ void init_scene(Scene* scene)
 
     //glBindTexture(GL_TEXTURE_2D, scene->texture_id);
 
-    Color ambient_material = create_color(0, 0, 0);
-    Color diffuse_material = create_color(0.55, 0.55, 0.55);
-    Color specular_material = create_color(0.77, 0.77, 0.77);
-    scene->material = create_material(ambient_material, diffuse_material, specular_material, 32);
+    Color ambient_material = create_color(0, 0, 0, 1);
+    Color diffuse_material = create_color(0.55, 0.55, 0.55, 1);
+    Color specular_material = create_color(0.77, 0.77, 0.77, 1);
+    Color emission_material = create_color(0, 0, 0, 0);
+    scene->material = create_material(ambient_material, diffuse_material, specular_material, 32.0, emission_material);
 
     GolfBall ball;
     ball.position = create_vec3(10, 0, 0);
@@ -36,59 +37,26 @@ void set_lighting(const Scene* scene)
     glLightfv(GL_LIGHT0, GL_SPECULAR, specular_light);
     glLightfv(GL_LIGHT0, GL_POSITION, position);
 
-    if(scene->golfball.glow)
-    {
-        ambient_light[3] = 1.0f;
-        diffuse_light[3] = 1.0f;
-        specular_light[3] = 1.0f;
-        position[0] = scene->golfball.position.x;
-        position[1] = scene->golfball.position.y + 1.01;
-        position[2] = scene->golfball.position.z;
+    ambient_light[3] = 1.0f;
+    diffuse_light[3] = 1.0f;
+    specular_light[3] = 1.0f;
+    position[0] = scene->golfball.position.x;
+    position[1] = scene->golfball.position.y;
+    position[2] = scene->golfball.position.z;
 
-        glLightfv(GL_LIGHT1, GL_AMBIENT, ambient_light);
-        glLightfv(GL_LIGHT1, GL_DIFFUSE, diffuse_light);
-        glLightfv(GL_LIGHT1, GL_SPECULAR, specular_light);
-        glLightfv(GL_LIGHT1, GL_POSITION, position);
-    } else {
-        ambient_light[3] = 0.0f;
-        diffuse_light[3] = 0.0f;
-        specular_light[3] = 0.0f;
-        position[0] = scene->golfball.position.x;
-        position[1] = scene->golfball.position.y + 1.01;
-        position[2] = scene->golfball.position.z;
-
-        glLightfv(GL_LIGHT1, GL_AMBIENT, ambient_light);
-        glLightfv(GL_LIGHT1, GL_DIFFUSE, diffuse_light);
-        glLightfv(GL_LIGHT1, GL_SPECULAR, specular_light);
-        glLightfv(GL_LIGHT1, GL_POSITION, position);
-    }
+    glLightfv(GL_LIGHT1, GL_AMBIENT, ambient_light);
+    glLightfv(GL_LIGHT1, GL_DIFFUSE, diffuse_light);
+    glLightfv(GL_LIGHT1, GL_SPECULAR, specular_light);
+    glLightfv(GL_LIGHT1, GL_POSITION, position);
 }
 
 void set_material(const Material* material)
 {
-    float ambient_material_color[] = {
-        material->ambient.red,
-        material->ambient.green,
-        material->ambient.blue
-    };
-
-    float diffuse_material_color[] = {
-        material->diffuse.red,
-        material->diffuse.green,
-        material->diffuse.blue
-    };
-
-    float specular_material_color[] = {
-        material->specular.red,
-        material->specular.green,
-        material->specular.blue
-    };
-
-    glMaterialfv(GL_FRONT_AND_BACK, GL_AMBIENT, ambient_material_color);
-    glMaterialfv(GL_FRONT_AND_BACK, GL_DIFFUSE, diffuse_material_color);
-    glMaterialfv(GL_FRONT_AND_BACK, GL_SPECULAR, specular_material_color);
-
+    glMaterialfv(GL_FRONT_AND_BACK, GL_AMBIENT, color_to_array(material->ambient).color);
+    glMaterialfv(GL_FRONT_AND_BACK, GL_DIFFUSE, color_to_array(material->diffuse).color);
+    glMaterialfv(GL_FRONT_AND_BACK, GL_SPECULAR, color_to_array(material->specular).color);
     glMaterialfv(GL_FRONT_AND_BACK, GL_SHININESS, &(material->shininess));
+    glMaterialfv(GL_BACK, GL_EMISSION, color_to_array(material->emission).color);
 }
 
 void draw_scene(const Scene* scene)

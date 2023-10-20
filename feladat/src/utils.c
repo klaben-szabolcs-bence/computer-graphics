@@ -25,42 +25,43 @@ vec3 create_vec3(float x, float y, float z)
 	return vector;
 }
 
-Color array_to_color(float array[3])
+Color array_to_color(float array[4])
 {
 	Color color;
 	color.red = array[0];
 	color.green = array[1];
 	color.blue = array[2];
+	color.alpha = array[3];
 	return color;
 }
 
-Color create_color(float r, float g, float b)
+Color create_color(float r, float g, float b, float a)
 {
 	Color color;
 	color.red = r;
 	color.green = g;
 	color.blue = b;
+	color.alpha = a;
 	return color;
 }
 
-Material create_material(Color ambient, Color diffuse, Color specular, float shininess)
+ArrayColor color_to_array(Color color)
+{
+	ArrayColor array;
+	array.color[0] = color.red;
+	array.color[1] = color.green;
+	array.color[2] = color.blue;
+	array.color[3] = color.alpha;
+	return array;
+}
+
+Material create_material(Color ambient, Color diffuse, Color specular, float shininess, Color emission)
 {
 	Material material;
 	material.ambient = ambient;
 	material.diffuse = diffuse;
 	material.specular = specular;
 	material.shininess = shininess;
+	material.emission = emission;
 	return material;
-}
-
-Material create_material_10f(
-	float ambient_red, float ambient_green, float ambient_blue,
-	float diffuse_red, float diffuse_green, float diffuse_blue,
-	float specular_red, float specular_green, float specular_blue,
-	float shininess)
-{
-	Color ambient = create_color(ambient_red, ambient_green, ambient_blue);
-	Color diffuse = create_color(diffuse_red, diffuse_green, diffuse_blue);
-	Color specular = create_color(specular_red, specular_green, specular_blue);
-	return create_material(ambient, diffuse, specular, shininess);
 }
