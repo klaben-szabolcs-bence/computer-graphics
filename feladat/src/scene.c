@@ -56,7 +56,7 @@ void set_material(const Material* material)
     glMaterialfv(GL_FRONT_AND_BACK, GL_DIFFUSE, color_to_array(material->diffuse).color);
     glMaterialfv(GL_FRONT_AND_BACK, GL_SPECULAR, color_to_array(material->specular).color);
     glMaterialfv(GL_FRONT_AND_BACK, GL_SHININESS, &(material->shininess));
-    glMaterialfv(GL_BACK, GL_EMISSION, color_to_array(material->emission).color);
+    glMaterialfv(GL_FRONT), GL_EMISSION, color_to_array(material->emission).color);
 }
 
 void draw_scene(const Scene* scene)
