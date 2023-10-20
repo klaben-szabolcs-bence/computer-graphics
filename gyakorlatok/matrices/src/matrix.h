@@ -36,6 +36,11 @@ void copy_matrix(T_MATRIX to, const T_MATRIX from);
 void copy_point(T_POINT2D to, const T_POINT2D from);
 
 /**
+ * Transposes the given matrix.
+ */
+void transpose_matrix(T_MATRIX result, const T_MATRIX m);
+
+/**
  * Adds a matrix and b matrix together and puts it in result.
  */
 void add_matrices(T_MATRIX result, const T_MATRIX a, const T_MATRIX b);

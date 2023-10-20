@@ -74,6 +74,21 @@ void copy_point(T_POINT2D to, const T_POINT2D from)
     }
 }
 
+void transpose_matrix(T_MATRIX result, const T_MATRIX m)
+{
+    int i;
+    int j;
+    T_MATRIX out;
+
+    for (i = 0; i < 3; ++i) {
+        for (j = 0; j < 3; ++j) {
+            out[i][j] = result[j][i];
+        }
+    }
+
+    copy_matrix(result, out);
+}
+
 void add_matrices(T_MATRIX result, const T_MATRIX a, const T_MATRIX b)
 {
     int i;
