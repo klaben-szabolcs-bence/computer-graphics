@@ -16,6 +16,7 @@ typedef struct TexturedBrick
     vec3 size;
     bool wrap_3d;
     int texture_size[2];
+    bool tiled_texture;
 } TexturedBrick;
 
 typedef struct GolfBall

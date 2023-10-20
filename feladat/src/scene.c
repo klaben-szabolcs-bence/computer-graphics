@@ -48,7 +48,8 @@ void init_scene(Scene *scene)
     
     unplayable_ground.wrap_3d = false;
     unplayable_ground.texture_size[0] = 900;
-    unplayable_ground.texture_size[1] = 901;
+    unplayable_ground.texture_size[1] = 900;
+    unplayable_ground.tiled_texture = true;
     scene->bricks[0] = unplayable_ground;
 
     scene->playable_ground_texture = load_texture("playable_ground.jpg");
@@ -245,9 +246,14 @@ void draw_skybox(const Scene *scene)
 
 void draw_textured_brick(const TexturedBrick *brick, const Scene *scene)
 {
-    glPushMatrix();
-    glBindTexture(GL_TEXTURE_2D, brick->texture);
+    if (brick->tiled_texture)
+    {
+        glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_WRAP_S,GL_REPEAT);
+        glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_WRAP_T,GL_REPEAT);
+    }
     set_material(&(brick->material));
+    glBindTexture(GL_TEXTURE_2D, brick->texture);
+    glPushMatrix();
     glTranslatef(brick->position.x, brick->position.y, brick->position.z);
     glRotatef(brick->rotation_angle, 0, 0, 0);
     if (brick->wrap_3d)
@@ -295,10 +301,9 @@ void draw_textured_brick(const TexturedBrick *brick, const Scene *scene)
     }
     else
     {
-        float right_U = brick->size.x / brick->texture_size[0];
-        float top_V_on_sides = brick->size.z / brick->texture_size[1];
-        float top_V_on_top = brick->size.y / brick->texture_size[1];
-        printf("%.3f\n", right_U);
+        float right_U = brick->size.x / brick->texture_size[0] * 50;
+        float top_V_on_sides = brick->size.z / brick->texture_size[1] * 50;
+        float top_V_on_top = brick->size.y / brick->texture_size[1] * 50;
         //Top
         glBegin(GL_QUADS);
         glTexCoord2f(0, top_V_on_top);
@@ -374,4 +379,6 @@ void draw_textured_brick(const TexturedBrick *brick, const Scene *scene)
     glPopMatrix();
     set_material(&(scene->invalid_material));
     glBindTexture(GL_TEXTURE_2D, 0);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP);
 }
