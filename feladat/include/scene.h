@@ -92,6 +92,12 @@ void update_game(Scene* scene, double delta);
 int is_colliding_with_brick(Scene* scene);
 
 /**
+ * Check if the ball is going to collide with a brick in the next frame and the returns the index of the brick
+ * Returns -1 if none
+ */
+int is_going_to_collide_with_brick(Scene* scene);
+
+/**
  * Writes the character to the screen
  */
 void write_char_to_screen(char character, GLuint ascii_map, int x, int y, int size);

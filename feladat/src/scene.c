@@ -605,6 +605,28 @@ int is_colliding_with_brick(Scene* scene)
     return -1;
 }
 
+int is_going_to_collide_with_brick(Scene* scene)
+{
+    GolfBall* ball = &(scene->golfball);
+
+    int i;
+    for (i = 0; i < N_BRICKS; ++i)
+    {
+        if (
+            ball->position.x + (ball->speed * ball->velocity.x) + 0.5f > scene->bricks[i].position.x &&
+            ball->position.x + (ball->speed * ball->velocity.x) - 0.5f > scene->bricks[i].position.x + scene->bricks[i].size.x &&
+            ball->position.y + (ball->speed * ball->velocity.y) + 0.5f > scene->bricks[i].position.y &&
+            ball->position.y + (ball->speed * ball->velocity.y) - 0.5f > scene->bricks[i].position.y + scene->bricks[i].size.y &&
+            ball->position.z + (ball->speed * ball->velocity.z) + 0.5f > scene->bricks[i].position.z &&
+            ball->position.z + (ball->speed * ball->velocity.z) - 0.5f > scene->bricks[i].position.z + scene->bricks[i].size.z
+        )
+        {
+            return i;
+        }
+    }
+    return -1;
+}
+
 void write_char_to_screen(char character, GLuint ascii_map, int x, int y, int size)
 {
     glPushMatrix();
