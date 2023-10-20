@@ -597,23 +597,25 @@ void write_char_to_screen(char character, GLuint ascii_map, int x, int y, int si
     ArrayUV4 uv4;
     ArrayUV tiles, index;
     tiles.uv[0] = 18.0;
-    tiles.uv[1] = 6.0;
+    tiles.uv[1] = 18.0;
 
     character -= 32;
-    index.uv[0] = character / (int)tiles.uv[0];
-    index.uv[1] = character % (int)tiles.uv[0];
+    index.uv[0] = character % (int)tiles.uv[0];
+    index.uv[1] = character / (int)tiles.uv[0];
+
+    printf("Printing character at (%d; %d)\n", (int)index.uv[0], (int)index.uv[1]);
 
     uv4 = get_uv(tiles, index);
     glBegin(GL_QUADS);
 
     glTexCoord2f(uv4.uv[0], uv4.uv[1]);
-    glVertex2f(x, y);
-    glTexCoord2f(uv4.uv[2], uv4.uv[3]);
-    glVertex2f(x + size, y);
-    glTexCoord2f(uv4.uv[4], uv4.uv[5]);
-    glVertex2f(x + size, y + size);
-    glTexCoord2f(uv4.uv[6], uv4.uv[7]);
     glVertex2f(x, y + size);
+    glTexCoord2f(uv4.uv[2], uv4.uv[3]);
+    glVertex2f(x + size, y + size);
+    glTexCoord2f(uv4.uv[4], uv4.uv[5]);
+    glVertex2f(x + size, y);
+    glTexCoord2f(uv4.uv[6], uv4.uv[7]);
+    glVertex2f(x, y);
     glEnd();
 
     glBindTexture(GL_TEXTURE_2D, 0);

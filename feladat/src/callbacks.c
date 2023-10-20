@@ -38,7 +38,12 @@ void draw_hud()
     set_material(&(scene.null_material));
 
     glPushMatrix();
-    write_char_to_screen('a', scene.ascii_texture, 8, 8, 64);
+    write_char_to_screen('H', scene.ascii_texture, 8, 8, 32);
+    write_char_to_screen('e', scene.ascii_texture, 40, 8, 32);
+    write_char_to_screen('l', scene.ascii_texture, 72, 8, 32);
+    write_char_to_screen('l', scene.ascii_texture, 104, 8, 32);
+    write_char_to_screen('o', scene.ascii_texture, 136, 8, 32);
+    write_char_to_screen('!', scene.ascii_texture, 168, 8, 32);
     glPopMatrix();
     
 }

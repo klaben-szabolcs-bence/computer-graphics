@@ -57,7 +57,7 @@ typedef struct ArrayUV
  */
 typedef struct ArrayUV4
 {
-    float uv[8];
+    double uv[8];
 } ArrayUV4;
 
 /**
