@@ -107,4 +107,9 @@ void write_char_to_screen(char character, GLuint ascii_map, int x, int y, int si
  */
 void write_text_to_screen(const char* text, GLuint ascii_map, int x, int y, int size);
 
+/**
+ * Reset the ball
+ */
+void reset_ball(GolfBall* ball);
+
 #endif /* SCENE_H */

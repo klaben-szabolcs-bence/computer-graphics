@@ -486,9 +486,7 @@ void update_game(Scene *scene, double delta)
         scene->golfball.position.z < -1.0f || scene->golfball.position.z > 900)
     {
         printf("Ball OOB @ %f %f %f\n", scene->golfball.position.x, scene->golfball.position.y, scene->golfball.position.z);
-        scene->golfball.position.x = 0;
-        scene->golfball.position.y = 0;
-        scene->golfball.position.z = 10;
+        reset_ball(&(scene->golfball));
     }
 
     scene->golfball.on_ground = false;
@@ -565,10 +563,22 @@ void update_game(Scene *scene, double delta)
                 scene->golfball.on_ground = true;
                 printf("ON GROUND\n");
 
+                if (scene->golfball.on_ground && scene->golfball.velocity.x == 0.0 && scene->golfball.velocity.y == 0.0)
+                {
+                    scene->golfball.still = true;
+                    if (colliding_brick == 0)
+                    {
+                        reset_ball(&(scene->golfball));
+                    }
+                }
+                else
+                {
+                    scene->golfball.still = false;
+                }
             }
-            
         }
     }
+    
     /*
     printf("Pos %f %f %f / Vel: %f %f %f\n",
         scene->golfball.position.x,
@@ -578,15 +588,6 @@ void update_game(Scene *scene, double delta)
         scene->golfball.velocity.y,
         scene->golfball.velocity.z
     );*/
-
-    if (scene->golfball.on_ground && scene->golfball.velocity.x == 0.0 && scene->golfball.velocity.y == 0.0)
-    {
-        scene->golfball.still = true;
-    }
-    else
-    {
-        scene->golfball.still = false;
-    }
     
 }
 
@@ -679,4 +680,11 @@ void write_text_to_screen(const char* text, GLuint ascii_map, int x, int y, int 
     {
         write_char_to_screen(text[i], ascii_map, x + (i * size), y, size);
     }
+}
+
+void reset_ball(GolfBall* ball)
+{
+    ball->position.x = 0;
+    ball->position.y = 0;
+    ball->position.z = 10;
 }
