@@ -6,6 +6,7 @@ ASSETS:=assets/*
 OUTPUT_FOLDER:=build
 INCLUDES:=include/
 WARNS:=-Wall -Wextra -Wpedantic
+FLAGS:=-std=c99
 BASH:=$(shell echo $$BASH)
 
 ifeq ($(OS),Windows_NT)
@@ -30,7 +31,7 @@ OUTPUT:=$(OUTPUT_FOLDER)$(SEP)$(PROJECT)$(EXTENSION)
 all:
 	@mkdir $(OUTPUT_FOLDER)
 	@cp $(ASSETS) $(OUTPUT_FOLDER)
-	$(CC) -I$(INCLUDES) $(SRCS) $(LIBS) -o $(OUTPUT) $(WARNS)
+	$(CC) -I$(INCLUDES) $(SRCS) $(LIBS) -o $(OUTPUT) $(WARNS) $(FLAGS)
 
 clean:
 	$(REMOVE_CMD) $(OUTPUT_FOLDER)$(SEP)*
