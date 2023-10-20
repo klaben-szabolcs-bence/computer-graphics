@@ -11,6 +11,7 @@ typedef struct Camera
     vec3 position;
     vec3 rotation;
     vec3 speed;
+    vec3 rotation_speed;
 } Camera;
 
 /**
@@ -44,9 +45,29 @@ void set_camera_speed(Camera* camera, double speed);
 void set_camera_side_speed(Camera* camera, double speed);
 
 /**
- * @brief Set the vertical speed of the camera
+ * @brief Set the vertical speed of the camera.
  */
 void set_camera_vertical_speed(Camera* camera, double speed);
+
+/**
+ * @brief Rotates the camera horizontally.
+ */
+void rotate_camera_horizontally(Camera* camera, double rotation);
+
+/**
+ * @brief Rotates the camera vertically.
+ */
+void rotate_camera_vertically(Camera* camera, double rotation);
+
+/**
+ * @brief Set the horizontal rotational speed of the camera.
+ */
+void set_camera_horizontal_rotation_speed(Camera* camera, double speed);
+
+/**
+ * @brief Set the vertical rotational speed of the camera.
+ */
+void set_camera_vertical_rotation_speed(Camera* camera, double speed);
 
 #endif /* CAMERA_H */
 
