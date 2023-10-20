@@ -166,7 +166,7 @@ void make_shift_matrix(T_MATRIX m, const float x, const float y)
 void make_rotate_matrix(T_MATRIX m, const float alpha)
 {
     m[0][0] = cos(alpha);
-    m[0][1] = sin(alpha);
-    m[1][0] = -1 * sin(alpha);
+    m[0][1] = -1 * sin(alpha);
+    m[1][0] = sin(alpha);
     m[1][1] = cos(alpha);
 }
