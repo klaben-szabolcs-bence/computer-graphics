@@ -522,11 +522,11 @@ void update_game(Scene *scene, double delta)
             
             if (scene->golfball.velocity.x < 0)
             {
-                scene->golfball.position.x = scene->golfball.position.x = scene->bricks[colliding_brick].position.x - 1.0f;
+                scene->golfball.position.x = scene->bricks[colliding_brick].position.x - 1.0f;
             }
             else
             {
-                scene->golfball.position.x = scene->golfball.position.x = scene->bricks[colliding_brick].position.x + scene->bricks[colliding_brick].size.x + 1.0f;
+                scene->golfball.position.x = scene->bricks[colliding_brick].position.x + scene->bricks[colliding_brick].size.x + 1.0f;
             }
             
         }
