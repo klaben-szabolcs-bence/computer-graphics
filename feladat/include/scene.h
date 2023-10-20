@@ -42,6 +42,7 @@ typedef struct Scene
     GLuint wooden_texture;
     Material wooden_material;
     TexturedBrick bricks[N_BRICKS];
+    GLuint ascii_texture;
 } Scene;
 
 /**
@@ -88,5 +89,10 @@ void update_game(Scene* scene, double delta);
  * Check if the ball is colliding with a brick returns the index of the brick, -1 if none
  */
 int is_colliding_with_brick(Scene* scene);
+
+/**
+ * Writes teh character to the screen
+ */
+void write_char_to_screen(char character, GLuint ascii_map, int x, int y, int size);
 
 #endif /* SCENE_H */

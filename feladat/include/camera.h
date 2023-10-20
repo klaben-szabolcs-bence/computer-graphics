@@ -1,6 +1,9 @@
 #ifndef CAMERA_H
 #define CAMERA_H
 
+#define VIEWPORT_RATIO (4.0 / 3.0)
+#define VIEWPORT_ASPECT 50.0
+
 #include "utils.h"
 #include "stdbool.h"
 #include "scene.h"
@@ -15,7 +18,16 @@ typedef struct Camera
     vec3 speed;
     bool freecam;
     int distance;
+
 } Camera;
+
+typedef struct Screen
+{
+    int width;
+    int height;
+} Screen;
+
+Screen screen;
 
 /**
  * Is the texture preview visible?

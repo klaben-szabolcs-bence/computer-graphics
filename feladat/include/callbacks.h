@@ -67,4 +67,10 @@ void idle();
  */
 void make_ball_move();
 
+/**
+ * Draw HUD
+ */
+void draw_hud();
+
+
 #endif /* CALLBACKS_H */

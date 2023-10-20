@@ -56,6 +56,9 @@ void update_camera(Camera *camera, double time, Scene *scene)
 
 void set_view(const Camera *camera, const Scene *scene)
 {
+    glMatrixMode(GL_PROJECTION);
+    glLoadIdentity();
+    gluPerspective(VIEWPORT_ASPECT, VIEWPORT_RATIO, 0.01, 10000.0);
     glMatrixMode(GL_MODELVIEW);
     glLoadIdentity();
     if (!camera->freecam)

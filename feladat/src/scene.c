@@ -105,6 +105,9 @@ void init_scene(Scene *scene)
     // Direkt 1 magasságú, hogy tesztelni lehessen, mi van ha OOB a labda.
     wooden_brick.size = create_vec3(1, 26, 1);
     scene->bricks[5] = wooden_brick;
+
+    scene->ascii_texture = load_texture("ascii.png");
+    
 }
 
 void set_lighting(const Scene *scene)
@@ -584,4 +587,35 @@ int is_colliding_with_brick(Scene* scene)
         }
     }
     return -1;
+}
+
+void write_char_to_screen(char character, GLuint ascii_map, int x, int y, int size)
+{
+    glPushMatrix();
+    glBindTexture(GL_TEXTURE_2D, ascii_map);
+
+    ArrayUV4 uv4;
+    ArrayUV tiles, index;
+    tiles.uv[0] = 18.0;
+    tiles.uv[1] = 6.0;
+
+    character -= 32;
+    index.uv[0] = character % (int)tiles.uv[0];
+    index.uv[1] = character / (int)tiles.uv[0];
+
+    uv4 = get_uv(tiles, index);
+    glBegin(GL_QUADS);
+
+    glTexCoord2f(uv4.uv[0], uv4.uv[1]);
+    glVertex2f(x, y);
+    glTexCoord2f(uv4.uv[2], uv4.uv[3]);
+    glVertex2f(x + size, y);
+    glTexCoord2f(uv4.uv[3], uv4.uv[4]);
+    glVertex2f(x + size, y + size);
+    glTexCoord2f(uv4.uv[5], uv4.uv[6]);
+    glVertex2f(x, y + size);
+    glEnd();
+
+    glBindTexture(GL_TEXTURE_2D, 0);
+    glPopMatrix();
 }

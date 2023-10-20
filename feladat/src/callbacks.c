@@ -1,8 +1,5 @@
 #include "callbacks.h"
 
-#define VIEWPORT_RATIO (4.0 / 3.0)
-#define VIEWPORT_ASPECT 50.0
-
 struct
 {
     int x;
@@ -13,10 +10,12 @@ void display()
 {
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     glMatrixMode(GL_MODELVIEW);
+    
 
     glPushMatrix();
     set_view(&camera, &scene);
     draw_scene(&scene);
+    draw_hud();
     glPopMatrix();
 
     if (is_preview_visible)
@@ -27,11 +26,28 @@ void display()
     glutSwapBuffers();
 }
 
+void draw_hud()
+{
+    glMatrixMode(GL_PROJECTION);
+    glLoadIdentity();
+    glTranslatef(0, 0, 0);
+    glOrtho(0, screen.width, screen.height, 0, -2000, 2000);
+    glMatrixMode(GL_MODELVIEW);
+    glLoadIdentity();
+
+    glPushMatrix();
+    write_char_to_screen('a', scene.ascii_texture, 8, 8, 12);
+    glPopMatrix();
+    
+}
+
 void reshape(GLsizei width, GLsizei height)
 {
     int x, y, w, h;
     double ratio;
 
+    screen.height = height;
+    screen.width = width;
     ratio = (double)width / height;
     if (ratio > VIEWPORT_RATIO)
     {
