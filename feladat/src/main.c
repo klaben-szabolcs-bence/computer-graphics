@@ -17,6 +17,7 @@ void set_callbacks()
     glutPassiveMotionFunc(passive_motion);
     glutKeyboardFunc(keyboard);
     glutKeyboardUpFunc(keyboard_up);
+    glutSpecialFunc(special_keyboard);
     glutIdleFunc(idle);
 }
 

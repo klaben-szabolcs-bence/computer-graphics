@@ -178,13 +178,20 @@ void keyboard(unsigned char key, int x, int y)
         else
             scene.golfball.material.emission = create_color(0, 0, 0, 1);
         break;
+    }
+
+    glutPostRedisplay();
+}
+
+void special_keyboard(int key, int x, int y)
+{
+    switch(key)
+    {
     case GLUT_KEY_F1:
         show_help = !show_help;
         printf("F1 pressed / show_help: %d", show_help);
         break;
     }
-
-    glutPostRedisplay();
 }
 
 void keyboard_up(unsigned char key, int x, int y)
