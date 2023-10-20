@@ -8,6 +8,7 @@ typedef struct Pad
 {
     float position;
     float size;
+    #define PAD_WIDTH 50
 } Pad;
 
 /**

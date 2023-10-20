@@ -24,14 +24,17 @@ void restart_game(Game* game)
 
 void update_game(Game* game, double time)
 {
+#define BALL_COLLIDE_WITH_LPADLE game->left_pad.position  < game->ball.y && game->left_pad.position + game->left_pad.size > game->ball.y
+#define BALL_COLLIDE_WITH_RPADLE game->right_pad.position < game->ball.y && game->right_pad.position + game->right_pad.size > game->ball.y
+
     update_ball(&(game->ball), time);
-    if (game->ball.x - game->ball.radius < 50) {
+    if (game->ball.x - game->ball.radius < 50 && BALL_COLLIDE_WITH_LPADLE) {
         game->ball.x = game->ball.radius + 50;
-        game->ball.speed_x *= -1;
+        game->ball.speed_x *= -1.1;
     }
-    if (game->ball.x + game->ball.radius > game->width - 50) {
+    if (game->ball.x + game->ball.radius > game->width - 50 && BALL_COLLIDE_WITH_RPADLE) {
         game->ball.x = game->width - game->ball.radius - 50;
-        game->ball.speed_x *= -1;
+        game->ball.speed_x *= -1.1;
     }
     if (game->ball.y - game->ball.radius < 0) {
         game->ball.y = game->ball.radius;

@@ -7,7 +7,7 @@ void draw_game(Game* game)
     float x1, x2, y1, y2;
 
     x1 = 0;
-    x2 = 50;
+    x2 = PAD_WIDTH;
     y1 = game->left_pad.position;
     y2 = y1 + game->left_pad.size;
 
@@ -27,7 +27,7 @@ void draw_game(Game* game)
 
     glEnd();
 
-    x1 = game->width - 50;
+    x1 = game->width - PAD_WIDTH;
     x2 = game->width;
     y1 = game->right_pad.position;
     y2 = y1 + game->right_pad.size;
