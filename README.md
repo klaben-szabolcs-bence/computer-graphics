@@ -11,7 +11,7 @@ A mini-golf demo game. Enjoy shooting the ball around the map, while enjoying ch
  - [x] A nice and simple collision and gravity system.
  - [x] Shoot the ball by holding down <kbd>LMB</kbd> (left mouse button) then moving the mouse to set the power and releasing it!
  - [x] An in-game help with <kbd>F1</kbd>.
- - [ ] A GUI to show how to reach in-game help and the power bar for how strong the ball will be hit.
+ - [x] A GUI to show how to reach in-game help and the power bar for how strong the ball will be hit.
  - [ ] A golf hole, in which the ball goes, the ball gets reset, and a celebration is shown.
  - [ ] Counter for number of hits. Try to get par!
  - [ ] Cherry blossoms for atmosphere via a particle system.
