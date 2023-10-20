@@ -9,6 +9,7 @@
 
 typedef struct GolfBall
 {
+    Material material;
     vec3 position;
     bool glow;
 } GolfBall;

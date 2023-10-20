@@ -13,9 +13,9 @@ void init_scene(Scene* scene)
 
     //glBindTexture(GL_TEXTURE_2D, scene->texture_id);
 
-    Color ambient_material = create_color(0, 0, 0, 1);
-    Color diffuse_material = create_color(0.55, 0.55, 0.55, 1);
-    Color specular_material = create_color(0.77, 0.77, 0.77, 1);
+    Color ambient_material = create_color(0.55, 0, 0.55, 1);
+    Color diffuse_material = create_color(0.755, 0.755, 0, 1);
+    Color specular_material = create_color(0, 0.755, 0.755, 1);
     Color emission_material = create_color(0, 0, 0, 1);
     scene->material = create_material(ambient_material, diffuse_material, specular_material, 32.0, emission_material);
 
@@ -23,6 +23,11 @@ void init_scene(Scene* scene)
     ball.position = create_vec3(10, 0, 0);
     scene->golfball = ball;
     scene->golfball.glow = false;
+    ambient_material = create_color(0, 0, 0, 1);
+    diffuse_material = create_color(0.55, 0.55, 0.55, 1);
+    specular_material = create_color(0.77, 0.77, 0.77, 1);
+    emission_material = create_color(0, 0, 0, 1);
+    scene->golfball.material = create_material(ambient_material, diffuse_material, specular_material, 32.0, emission_material);
 }
 
 void set_lighting(const Scene* scene)
@@ -37,9 +42,9 @@ void set_lighting(const Scene* scene)
     glLightfv(GL_LIGHT0, GL_SPECULAR, specular_light);
     glLightfv(GL_LIGHT0, GL_POSITION, position);
 
-    ambient_light[3] = 1.0f;
-    diffuse_light[3] = 1.0f;
-    specular_light[3] = 1.0f;
+    ambient_light[3] = 0.0f;
+    diffuse_light[3] = 0.01f;
+    specular_light[3] = 0.01f;
     position[0] = scene->golfball.position.x;
     position[1] = scene->golfball.position.y;
     position[2] = scene->golfball.position.z;
@@ -62,14 +67,17 @@ void set_material(const Material* material)
 void draw_scene(const Scene* scene)
 {
     draw_origin();
-    set_material(&(scene->material));
     set_lighting(scene);
     //draw_model(&(scene->cube));
+
+    set_material(&(scene->golfball.material));
     glPushMatrix();
     glTranslatef(scene->golfball.position.x, scene->golfball.position.y, scene->golfball.position.z);
     glutSolidSphere(1, 36, 36);
     glPopMatrix();
     
+    set_material(&(scene->material));
+
     glPushMatrix();
     glTranslatef(0, 5, 0);
     glutSolidCube(1);
