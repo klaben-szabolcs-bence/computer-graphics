@@ -27,9 +27,14 @@ void display();
 void reshape(GLsizei width, GLsizei height);
 
 /**
- * Call after mouse event.
+ * @brief Call after a mouse event
+ * 
+ * @param button Which button was clicked: GLUT_#_BUTTON, where # can be LEFT, RIGHT and MIDDLE.
+ * @param state Which state the button was pressed: GLUT_UP or GLUT_DOWN.
+ * @param x The x position on the window.
+ * @param y The y position on the window.
  */
-void motion(int x, int y);
+void mouse(int button, int state, int x, int y);
 
 /**
  * Call after keyboard event.

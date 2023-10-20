@@ -12,7 +12,7 @@ void set_callbacks()
 {
     glutDisplayFunc(display);
     glutReshapeFunc(reshape);
-    glutPassiveMotionFunc(motion);
+    glutMouseFunc(mouse);
     glutKeyboardFunc(keyboard);
     glutKeyboardUpFunc(keyboard_up);
     glutIdleFunc(idle);

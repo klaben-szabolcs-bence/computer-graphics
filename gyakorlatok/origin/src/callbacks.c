@@ -41,9 +41,18 @@ void reshape(GLsizei width, GLsizei height)
     gluPerspective(50.0, (GLdouble)width / (GLdouble)height, 0.01, 10000.0);
 }
 
-void motion(int x, int y)
+void mouse(int button, int state, int x, int y)
 {
-    // rotate_camera(&camera, x, y);
+    if(state == GLUT_UP) {
+        set_camera_horizontal_rotation_speed(&camera, 0);
+        set_camera_vertical_rotation_speed(&camera, 0);
+    } else {
+        int width = glutGet(GLUT_WINDOW_WIDTH);
+        int height = glutGet(GLUT_WINDOW_HEIGHT);
+        set_camera_horizontal_rotation_speed(&camera, x * -40 / width + 20);
+        set_camera_vertical_rotation_speed(&camera, y * -40 / height + 20);
+    }
+
     glutPostRedisplay();
 }
 
