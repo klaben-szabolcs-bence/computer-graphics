@@ -16,7 +16,6 @@ void init_camera(Camera *camera)
     camera->speed.x = 0.0;
     camera->speed.y = 0.0;
     camera->speed.z = 0.0;
-    camera->follow_distance = 10;
 
     camera->freecam = false;
     is_preview_visible = FALSE;
@@ -32,10 +31,10 @@ void update_camera(Camera *camera, double time, Scene *scene)
         angle = degree_to_radian(camera->rotation.z);
         up_angle = degree_to_radian(camera->rotation.x);
 
-        double x = cos(angle) * 36;
-        double y = sin(angle) * 36;
-        double z = camera->follow_distance;
-
+        double x = cos(angle);
+        double y = sin(angle);
+        double z = sin(up_angle) * 10;
+        
 
         camera->position = create_vec3(x, y, z);
     }
@@ -56,7 +55,6 @@ void update_camera(Camera *camera, double time, Scene *scene)
         camera->position.z += sin(up_angle) * camera->speed.y * time;
         camera->position.z += cos(up_angle) * camera->speed.y * time;
     }
-    
 }
 
 void set_view(const Camera *camera, const Scene *scene)
@@ -81,7 +79,6 @@ void rotate_camera(Camera *camera, double horizontal, double vertical)
     camera->rotation.z += horizontal;
     camera->rotation.x += vertical;
 
-    
     if (camera->rotation.z < 0)
     {
         camera->rotation.z += 360.0;
@@ -92,16 +89,28 @@ void rotate_camera(Camera *camera, double horizontal, double vertical)
         camera->rotation.z -= 360.0;
     }
 
-    if (camera->rotation.x < 0)
+    if (camera->freecam)
     {
-        camera->rotation.x += 360.0;
+        if (camera->rotation.x < 0)
+        {
+            camera->rotation.x += 360.0;
+        }
+        if (camera->rotation.x > 360.0)
+        {
+            camera->rotation.x -= 360.0;
+        }
     }
-
-    if (camera->rotation.x > 360.0)
+    else
     {
-        camera->rotation.x -= 360.0;
+        if (camera->rotation.x < 0.1)
+        {
+            camera->rotation.x = 0.1;
+        }
+        if (camera->rotation.x > 90.0)
+        {
+            camera->rotation.x = 90.0;
+        }
     }
-    
 }
 
 void set_camera_speed(Camera *camera, double speed)
