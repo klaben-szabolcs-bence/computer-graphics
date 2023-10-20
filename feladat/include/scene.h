@@ -7,6 +7,16 @@
 
 #include <obj/model.h>
 
+typedef struct TexturedBrick
+{
+    Material material;
+    GLuint texture;
+    vec3 position;
+    float rotation_angle;
+    vec3 size;
+    bool wrap_3d;
+} TexturedBrick;
+
 typedef struct GolfBall
 {
     Material material;
@@ -14,12 +24,16 @@ typedef struct GolfBall
     bool glow;
 } GolfBall;
 
+#define N_BRICKS 1
+
 typedef struct Scene
 {
     Material invalid_material;
     Material null_material;
     GolfBall golfball;
     GLuint skybox_texture;
+    GLuint playable_ground_texture;
+    TexturedBrick bricks[N_BRICKS];
 } Scene;
 
 /**
@@ -51,5 +65,10 @@ void draw_origin();
  * Draws a skybox.
  */
 void draw_skybox(const Scene* scene);
+
+/**
+ * Draws a TexturedBrick.
+ */
+void draw_textured_brick(const TexturedBrick *brick, const Scene *scene);
 
 #endif /* SCENE_H */
