@@ -3,5 +3,5 @@ project(tiger C)
 
 set(CMAKE_C_STANDARD 11)
 
-add_executable(tiger main.c)
+add_executable(tiger tiger.c)
 target_link_libraries(tiger -lSOIL -lGL -lGLU -lglut -lm)
