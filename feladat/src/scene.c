@@ -600,8 +600,8 @@ void write_char_to_screen(char character, GLuint ascii_map, int x, int y, int si
     tiles.uv[1] = 6.0;
 
     character -= 32;
-    index.uv[0] = character % (int)tiles.uv[0];
-    index.uv[1] = character / (int)tiles.uv[0];
+    index.uv[0] = character / (int)tiles.uv[0];
+    index.uv[1] = character % (int)tiles.uv[0];
 
     uv4 = get_uv(tiles, index);
     glBegin(GL_QUADS);
@@ -610,9 +610,9 @@ void write_char_to_screen(char character, GLuint ascii_map, int x, int y, int si
     glVertex2f(x, y);
     glTexCoord2f(uv4.uv[2], uv4.uv[3]);
     glVertex2f(x + size, y);
-    glTexCoord2f(uv4.uv[3], uv4.uv[4]);
+    glTexCoord2f(uv4.uv[4], uv4.uv[5]);
     glVertex2f(x + size, y + size);
-    glTexCoord2f(uv4.uv[5], uv4.uv[6]);
+    glTexCoord2f(uv4.uv[6], uv4.uv[7]);
     glVertex2f(x, y + size);
     glEnd();
 
