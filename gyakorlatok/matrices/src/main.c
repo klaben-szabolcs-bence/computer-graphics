@@ -37,6 +37,10 @@ int main(int argc, char* argv[])
     printf("The b and c matrices multiplied together and stored in a:\n");
     print_matrix(a);
 
+    transpose_matrix(a, a);
+    printf("The a matrix transposed and stored in a:\n");
+    print_matrix(a);
+
     T_POINT2D p = {3, 2, 1};
     printf("The p point:\n");
     print_point(p);
