@@ -7,32 +7,32 @@
 
 void init_scene(Scene* scene)
 {
-    load_model(&(scene->cube), "cube.obj");
-    scene->texture_id = load_texture("cube.png"); 
+    load_model(&(scene->cube), "golf_ball.obj");
+    //scene->texture_id = load_texture("cube.png"); 
 
     glBindTexture(GL_TEXTURE_2D, scene->texture_id);
 
-    scene->material.ambient.red = 0.0;
-    scene->material.ambient.green = 0.0;
-    scene->material.ambient.blue = 0.0;
+    scene->material.ambient.red = 1.0;
+    scene->material.ambient.green = 1.0;
+    scene->material.ambient.blue = 1.0;
 
-    scene->material.diffuse.red = 0.0;
-    scene->material.diffuse.green = 0.0;
-    scene->material.diffuse.blue = 0.0;
+    scene->material.diffuse.red = 1.0;
+    scene->material.diffuse.green = 1.0;
+    scene->material.diffuse.blue = 1.0;
 
-    scene->material.specular.red = 0.0;
-    scene->material.specular.green = 0.0;
-    scene->material.specular.blue = 0.0;
+    scene->material.specular.red = 1.0;
+    scene->material.specular.green = 1.0;
+    scene->material.specular.blue = 1.0;
 
     scene->material.shininess = 0.0;
 }
 
 void set_lighting()
 {
-    float ambient_light[] = { 0.0f, 0.0f, 0.0f, 1.0f };
-    float diffuse_light[] = { 0.0f, 0.0f, 0.0, 1.0f };
-    float specular_light[] = { 0.0f, 0.0f, 0.0f, 1.0f };
-    float position[] = { 0.0f, 0.0f, 10.0f, 1.0f };
+    float ambient_light[] = { 1.0f, 1.0f, 1.0f, 0.2f };
+    float diffuse_light[] = { 1.0f, 1.0f, 1.0, 1.0f };
+    float specular_light[] = { 1.0f, 1.0f, 1.0f, 1.0f };
+    float position[] = { 10000.0f, 10000.0f, 0.0f, 1.0f };
 
     glLightfv(GL_LIGHT0, GL_AMBIENT, ambient_light);
     glLightfv(GL_LIGHT0, GL_DIFFUSE, diffuse_light);
