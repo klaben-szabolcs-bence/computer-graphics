@@ -7,31 +7,38 @@
 
 void init_scene(Scene* scene)
 {
-    load_model(&(scene->cube), "golf_ball.obj");
+    //load_model(&(scene->cube), "golf_ball.obj");
     //scene->texture_id = load_texture("cube.png"); 
 
-    glBindTexture(GL_TEXTURE_2D, scene->texture_id);
+    //glBindTexture(GL_TEXTURE_2D, scene->texture_id);
 
-    scene->material.ambient.red = 1.0;
-    scene->material.ambient.green = 1.0;
-    scene->material.ambient.blue = 1.0;
+    scene->material.ambient.red = 0.0;
+    scene->material.ambient.green = 0.0;
+    scene->material.ambient.blue = 0.0;
 
-    scene->material.diffuse.red = 1.0;
-    scene->material.diffuse.green = 1.0;
-    scene->material.diffuse.blue = 1.0;
+    scene->material.diffuse.red = 0.55;
+    scene->material.diffuse.green = 0.55;
+    scene->material.diffuse.blue = 0.55;
 
-    scene->material.specular.red = 1.0;
-    scene->material.specular.green = 1.0;
-    scene->material.specular.blue = 1.0;
+    scene->material.specular.red = 0.77;
+    scene->material.specular.green = 0.77;
+    scene->material.specular.blue = 0.77;
 
-    scene->material.shininess = 0.0;
+    scene->material.shininess = 32.0;
+
+    GolfBall ball;
+    float pos[] = {10, 0, 0};
+    ball.position = array_to_vec3(pos);
+
+    scene->golfball = ball;
+
 }
 
 void set_lighting()
 {
-    float ambient_light[] = { 1.0f, 1.0f, 1.0f, 0.2f };
-    float diffuse_light[] = { 1.0f, 1.0f, 1.0, 1.0f };
-    float specular_light[] = { 1.0f, 1.0f, 1.0f, 1.0f };
+    float ambient_light[] = { 1.0f, 1.0f, 1.0f, 0.01f };
+    float diffuse_light[] = { 1.0f, 1.0f, 1.0, 0.1f };
+    float specular_light[] = { 1.0f, 1.0f, 1.0f, 0.1f };
     float position[] = { 10000.0f, 10000.0f, 0.0f, 1.0f };
 
     glLightfv(GL_LIGHT0, GL_AMBIENT, ambient_light);
@@ -72,7 +79,11 @@ void draw_scene(const Scene* scene)
     set_material(&(scene->material));
     set_lighting();
     draw_origin();
-    draw_model(&(scene->cube));
+    //draw_model(&(scene->cube));
+    glPushMatrix();
+    glTranslatef(scene->golfball.position.x, scene->golfball.position.y, scene->golfball.position.z);
+    glutSolidSphere(2, 36, 36);
+    glPopMatrix();
 }
 
 void draw_origin()

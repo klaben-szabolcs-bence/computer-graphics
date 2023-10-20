@@ -6,11 +6,15 @@
 
 #include <obj/model.h>
 
+typedef struct GolfBall
+{
+    vec3 position;
+} GolfBall;
+
 typedef struct Scene
 {
-    Model cube;
     Material material;
-    GLuint texture_id;
+    GolfBall golfball;
 } Scene;
 
 /**
