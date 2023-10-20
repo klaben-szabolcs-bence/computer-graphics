@@ -27,7 +27,7 @@ void set_lighting()
     float ambient_light[] = { 1.0f, 1.0f, 1.0f, 0.01f };
     float diffuse_light[] = { 1.0f, 1.0f, 1.0, 0.1f };
     float specular_light[] = { 1.0f, 1.0f, 1.0f, 0.1f };
-    float position[] = { 10000.0f, 10000.0f, 0.0f, 1.0f };
+    float position[] = { 10000.0f, 0.0f, 0.0f, 1.0f };
 
     glLightfv(GL_LIGHT0, GL_AMBIENT, ambient_light);
     glLightfv(GL_LIGHT0, GL_DIFFUSE, diffuse_light);
@@ -64,13 +64,22 @@ void set_material(const Material* material)
 
 void draw_scene(const Scene* scene)
 {
+    draw_origin();
     set_material(&(scene->material));
     set_lighting();
-    draw_origin();
     //draw_model(&(scene->cube));
     glPushMatrix();
     glTranslatef(scene->golfball.position.x, scene->golfball.position.y, scene->golfball.position.z);
     glutSolidSphere(1, 36, 36);
+    
+    glLoadIdentity();
+    glTranslatef(0, 5, 0);
+    glutSolidCube(1);
+
+    glLoadIdentity();
+    glTranslatef(5, 5, 0);
+    glutSolidCube(2);
+
     glPopMatrix();
 }
 

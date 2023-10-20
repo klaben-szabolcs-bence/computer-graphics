@@ -52,15 +52,24 @@ void reshape(GLsizei width, GLsizei height)
 
 void mouse(int button, int state, int x, int y)
 {
-    mouse_position.x = x;
-    mouse_position.y = y;
+    printf("Pos: %.2f %.2f %.2f | Rot: %.2f %.2f %.2f\n", camera.position.x, camera.position.y, camera.position.z, camera.rotation.x, camera.rotation.y, camera.rotation.z);
 }
 
 void motion(int x, int y)
 {
-    rotate_camera(&camera, mouse_position.x - x, mouse_position.y - y);
+}
+
+void passive_motion(int x, int y)
+{
     mouse_position.x = x;
     mouse_position.y = y;
+    if (camera.freecam)
+    {
+        rotate_camera(&camera, (mouse_position.x - 640 / 2) / 10.0, -(mouse_position.y - 480 / 2) / 10.0);
+    } else {
+        rotate_camera(&camera, (mouse_position.x - 640 / 2) / 10.0, -(mouse_position.y - 480 / 2) / 10.0);
+    }
+    glutWarpPointer(640 / 2, 480 / 2);
     glutPostRedisplay();
 }
 
@@ -89,8 +98,16 @@ void keyboard(unsigned char key, int x, int y)
         break;
     case 'c':
         camera.freecam = !camera.freecam;
+        camera.rotation = create_vec3(0, 0, 0);
+        if (camera.freecam)
+        {
+            camera.position = scene.golfball.position;
+        }
         break;
+    case 27:
+        exit(0);
     }
+    
 
     glutPostRedisplay();
 }
@@ -122,6 +139,5 @@ void idle()
     last_frame_time = current_time;
 
     update_camera(&camera, elapsed_time, &scene);
-
     glutPostRedisplay();
 }
