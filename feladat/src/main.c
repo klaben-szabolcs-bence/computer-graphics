@@ -4,6 +4,8 @@
 #include <GL/glut.h>
 
 #include <stdio.h>
+#include <stdlib.h>
+#include <time.h>
 
 /**
  * Set the callbacks for GLUT.
@@ -40,10 +42,11 @@ int main(int argc, char* argv[])
     init_opengl();
     init_scene(&scene);
     init_camera(&camera);
-    drag_distance = 0.0;
-    show_help = false;
-    in_hole = false;
-    shots_taken = 0;
+    init_game(&scene);
+
+    time_t t;
+    srand((unsigned) time(&t));
+
     set_callbacks();
 
     glutMainLoop();

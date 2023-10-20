@@ -144,6 +144,13 @@ void init_scene(Scene *scene)
     scene->hole = 9;
 
     scene->ascii_texture = load_ogl_texture("ascii.png");
+
+    ambient_material = create_color(0.5f, 0.0f, 0.5f, 1.0f);
+    diffuse_material = create_color(0.5f, 0.4f, 0.5f, 1.0f);
+    specular_material = create_color(0.7f, 0.4f, 0.7f, 1.0f);
+    scene->cherry_material =
+    create_material(ambient_material, diffuse_material, specular_material, 10.0f, emission_material);
+
     glBindTexture(GL_TEXTURE_2D, 0);
 }
 
@@ -195,14 +202,19 @@ void draw_scene(const Scene *scene)
         draw_textured_brick(&(scene->bricks[i]), scene);
     }
 
+    for (i = 0; i < N_PARTICLES; ++i)
+    {
+        draw_material_brick_particle(&(scene->particles[i]));
+    }
+
     set_material(scene->golfball.material);
     glBindTexture(GL_TEXTURE_2D, scene->golfball.texture);
     glDisable(GL_BLEND);
     glPushMatrix();
-    
+
     glTranslatef(scene->golfball.position.x, scene->golfball.position.y, scene->golfball.position.z);
     glutSolidSphere(1, 36, 36);
-    
+
     glPopMatrix();
     glEnable(GL_BLEND);
     glBindTexture(GL_TEXTURE_2D, 0);
@@ -473,4 +485,62 @@ void draw_textured_brick(const TexturedBrick *brick, const Scene *scene)
     glBindTexture(GL_TEXTURE_2D, 0);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP);
+}
+
+void draw_material_brick_particle(const MaterialBrickParticle *brick)
+{
+    set_material(brick->material);
+    glPushMatrix();
+    glTranslatef(brick->position.x, brick->position.y, brick->position.z);
+    glRotatef(brick->rotation_angle, 0.1, 0, 1);
+
+    //Top
+    glBegin(GL_QUADS);
+    glVertex3f(0, brick->size.y, brick->size.z);
+    glVertex3f(brick->size.x, brick->size.y, brick->size.z);
+    glVertex3f(brick->size.x, 0, brick->size.z);
+    glVertex3f(0, 0, brick->size.z);
+    glEnd();
+
+    //Bottom
+    glBegin(GL_QUADS);
+    glVertex3f(0, 0, 0);
+    glVertex3f(brick->size.x, 0, 0);
+    glVertex3f(brick->size.x, brick->size.y, 0);
+    glVertex3f(0, brick->size.y, 0);
+    glEnd();
+
+    //Front
+    glBegin(GL_QUADS);
+    glVertex3f(0, 0, brick->size.z);
+    glVertex3f(brick->size.x, 0, brick->size.z);
+    glVertex3f(brick->size.x, 0, 0);
+    glVertex3f(0, 0, 0);
+    glEnd();
+
+    //Left
+    glBegin(GL_QUADS);
+    glVertex3f(0, brick->size.y, brick->size.z);
+    glVertex3f(0, 0, brick->size.z);
+    glVertex3f(0, 0, 0);
+    glVertex3f(0, brick->size.y, 0);
+    glEnd();
+
+    //Right
+    glBegin(GL_QUADS);
+    glVertex3f(brick->size.x, 0, brick->size.z);
+    glVertex3f(brick->size.x, brick->size.y, brick->size.z);
+    glVertex3f(brick->size.x, brick->size.y, 0);
+    glVertex3f(brick->size.x, 0, 0);
+    glEnd();
+
+    //Back
+    glBegin(GL_QUADS);
+    glVertex3f(brick->size.x, brick->size.y, brick->size.z);
+    glVertex3f(0, brick->size.y, brick->size.z);
+    glVertex3f(0, brick->size.y, 0);
+    glVertex3f(brick->size.x, brick->size.y, 0);
+    glEnd();
+
+    glPopMatrix();
 }

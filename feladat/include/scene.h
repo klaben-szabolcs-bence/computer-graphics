@@ -7,6 +7,16 @@
 
 #include <obj/model.h>
 
+typedef struct MaterialBrickParticle
+{
+    Material* material;
+    vec3 position;
+    vec3 size;
+    vec3 speed;
+    int lifespan;
+    float rotation_angle;
+} MaterialBrickParticle;
+
 typedef struct TexturedBrick
 {
     Material* material;
@@ -33,11 +43,13 @@ typedef struct GolfBall
 } GolfBall;
 
 #define N_BRICKS 10
+#define N_PARTICLES 500
 
 typedef struct Scene
 {
     GolfBall golfball;
     TexturedBrick bricks[N_BRICKS];
+    MaterialBrickParticle particles[N_PARTICLES];
     int hole;
     Material invalid_material;
     Material null_material;
@@ -45,6 +57,7 @@ typedef struct Scene
     Material wooden_material;
     Material plastic_material;
     Material unplayable_material;
+    Material cherry_material;
     GLuint skybox_texture;
     GLuint ascii_texture;
     GLuint playable_ground_texture;
@@ -86,5 +99,10 @@ void draw_skybox(const Scene* scene);
  * Draws a TexturedBrick.
  */
 void draw_textured_brick(const TexturedBrick *brick, const Scene *scene);
+
+/**
+ * Draw a MaterialBrickParticle
+ */
+void draw_material_brick_particle(const MaterialBrickParticle *brick);
 
 #endif /* SCENE_H */

@@ -1,11 +1,17 @@
 #ifndef GAME_H
 #define GAME_H
 
+#include "hud.h"
 #include "scene.h"
 #include "camera.h"
 
 bool in_hole;
 int shots_taken;
+
+/**
+ * Initilaize the game
+ */
+void init_game(Scene* scene);
 
 /**
  * Updates game objects
@@ -68,5 +74,15 @@ int is_going_to_collide_with_brick(Scene* scene);
  * Returns if the ball is allowed to move
  */
 bool can_move(Scene* scene, Camera* camera);
+
+/**
+ * Generate a particle
+ */
+MaterialBrickParticle generate_particle(Material* material);
+
+/**
+ * Update particles
+ */
+void update_particles(MaterialBrickParticle* particles, Material* material, float delta);
 
 #endif /* GAME_H */

@@ -1,5 +1,19 @@
 #include "game.h"
 
+void init_game(Scene* scene)
+{
+    int i;
+    for (i = 0; i < N_PARTICLES; ++i)
+    {
+        scene->particles[i] = generate_particle(&(scene->cherry_material));
+    }
+
+    drag_distance = 0.0;
+    show_help = false;
+    in_hole = false;
+    shots_taken = 0;
+}
+
 void update_game(Scene *scene, double delta)
 {
     //printf("Pos: %f %f %f\n", scene->golfball.position.x, scene->golfball.position.y, scene->golfball.position.z);
@@ -80,6 +94,7 @@ void update_game(Scene *scene, double delta)
 
     stop_colliding(scene);
     prevent_colliding(scene);
+    update_particles(scene->particles, &(scene->cherry_material), delta);
 }
 
 void make_ball_move(Scene* scene, Camera* camera, double drag_distance)
@@ -289,4 +304,34 @@ int is_going_to_collide_with_brick(Scene *scene)
 bool can_move(Scene* scene, Camera* camera)
 {
     return (scene->golfball.still && !in_hole && !camera->freecam);
+}
+
+MaterialBrickParticle generate_particle(Material* material)
+{
+    MaterialBrickParticle particle;
+    particle.material = material;
+    particle.size = create_vec3(1, 1, 0.1f);
+    particle.lifespan = rand() % 600000;
+    particle.position = create_vec3((rand() % 200) - 100, (rand() % 200) - 100, (rand() % 25) + 1);
+    particle.rotation_angle = rand() % 360;
+    particle.speed = create_vec3(((rand() % 100) - 50) / 10, ((rand() % 100) - 50) / 10, ((rand() % 100) - 75) / 10);
+    return particle;
+}
+
+void update_particles(MaterialBrickParticle* particles, Material* material, float delta)
+{
+    int i;
+    for (i = 0; i < N_PARTICLES; ++i)
+    {
+        if (particles[i].lifespan > 0 && particles[i].position.z > 0)
+        {
+            particles[i].lifespan-= delta;
+            particles[i].position.x += particles[i].speed.x * delta;
+            particles[i].position.y += particles[i].speed.y * delta;
+            particles[i].position.z += particles[i].speed.z * delta;
+        } else
+        {
+            particles[i] = generate_particle(material);
+        }
+    }
 }
