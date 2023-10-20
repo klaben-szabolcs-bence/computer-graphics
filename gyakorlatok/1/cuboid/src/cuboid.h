@@ -11,24 +11,16 @@ typedef struct Cuboid
 	double depth;
 } Cuboid;
 
-/**
- * Set the data of the cuboid
- */
+/// Set the data of the cuboid
 void set_size(Cuboid* cuboid, double width, double height, double depth);
 
-/**
- * Calculate the volume of the cuboid.
- */
+/// Calculate the volume of the cuboid.
 double calc_volume(const Cuboid* cuboid);
 
-/**
- * Calculate the surface of the cuboid.
- */
+/// Calculate the surface of the cuboid.
 double calc_surface(const Cuboid* cuboid);
 
-/**
- * Check if a side is a square
- */
+/// Check if a side is a square
 int is_a_side_square(const Cuboid* cuboid);
 
 #endif // CUBOID_H
