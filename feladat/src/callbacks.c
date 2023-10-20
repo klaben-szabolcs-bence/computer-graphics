@@ -263,7 +263,7 @@ void make_ball_move()
     //Make the velocity the drag distance
     scene.golfball.velocity = drag_distance;
 
-    double cam_dist = sqrt(pow(look.x, 2) + pow(look.y, 2) + pow(look.z, 2));
+    double cam_dist = sqrt(pow(look.x, 2) + pow(look.y, 2));
 
     //Normalize the vectors
     look.x = (look.x / cam_dist);

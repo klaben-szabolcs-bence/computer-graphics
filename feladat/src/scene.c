@@ -436,17 +436,17 @@ void update_game(Scene *scene, double delta)
     //Basic forces
     if (abs(scene->golfball.velocity) >= abs(scene->golfball.speed))
     {
-        scene->golfball.position.x += scene->golfball.speed * delta * sgn(scene->golfball.direction_vector.x);
-        scene->golfball.position.y += scene->golfball.speed * delta * sgn(scene->golfball.direction_vector.y);
-        scene->golfball.position.z += scene->golfball.speed * delta * sgn(scene->golfball.direction_vector.z);
+        scene->golfball.position.x += scene->golfball.speed * delta * scene->golfball.direction_vector.x;
+        scene->golfball.position.y += scene->golfball.speed * delta * scene->golfball.direction_vector.y;
+        scene->golfball.position.z += scene->golfball.speed * delta * scene->golfball.direction_vector.z;
 
         scene->golfball.velocity -= scene->golfball.speed * delta;
     }
     else
     {
-        scene->golfball.position.x += scene->golfball.velocity * sgn(scene->golfball.direction_vector.x);
-        scene->golfball.position.y += scene->golfball.velocity * sgn(scene->golfball.direction_vector.y);
-        scene->golfball.position.z += scene->golfball.velocity * sgn(scene->golfball.direction_vector.z);
+        scene->golfball.position.x += scene->golfball.velocity * scene->golfball.direction_vector.x;
+        scene->golfball.position.y += scene->golfball.velocity * scene->golfball.direction_vector.y;
+        scene->golfball.position.z += scene->golfball.velocity * scene->golfball.direction_vector.z;
         scene->golfball.velocity = 0;
     }
 
