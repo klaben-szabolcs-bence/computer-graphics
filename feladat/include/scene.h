@@ -26,7 +26,7 @@ typedef struct GolfBall
     bool glow;
 } GolfBall;
 
-#define N_BRICKS 2
+#define N_BRICKS 3
 
 typedef struct Scene
 {
@@ -35,6 +35,9 @@ typedef struct Scene
     GolfBall golfball;
     GLuint skybox_texture;
     GLuint playable_ground_texture;
+    Material playable_ground_material;
+    GLuint wooden_texture;
+    Material wooden_material;
     TexturedBrick bricks[N_BRICKS];
 } Scene;
 

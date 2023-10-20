@@ -53,24 +53,42 @@ void init_scene(Scene *scene)
     scene->bricks[0] = unplayable_ground;
 
     scene->playable_ground_texture = load_texture("playable_ground.jpg");
+    ambient_material = create_color(0.1215f,0.2745f,0.1215f,1.0f);
+    diffuse_material = create_color(0.17568f,0.71424f,0.17568f,1.0f);
+    specular_material = create_color(0.733f,0.827811f,0.733f,1.0f);
+    scene->playable_ground_material =
+    create_material(ambient_material, diffuse_material, specular_material, 76.8f, emission_material);
+
+    scene->wooden_texture = load_texture("wood.png");
+    ambient_material = create_color(0.1f, 0.1f, 0.1f, 1.0f);
+    diffuse_material = create_color(0.63529f, 0.4705f, 0.3843f, 1.0f);
+    specular_material = create_color(0.63529f, 0.4705f, 0.3843f, 1.0f);
+    scene->wooden_material =
+    create_material(ambient_material, diffuse_material, specular_material, 160.0f, emission_material);
 
     TexturedBrick playable_ground;
     playable_ground.rotation_angle = 0;
     playable_ground.position = create_vec3(-25, -25, 0);
     playable_ground.size = create_vec3(50, 50, 1);
     playable_ground.texture = scene->playable_ground_texture;
-    ambient_material = create_color(0.1215f,0.2745f,0.1215f,1.0f);
-    diffuse_material = create_color(0.17568f,0.71424f,0.17568f,1.0f);
-    specular_material = create_color(0.733f,0.827811f,0.733f,1.0f);
-    playable_ground.material =
-    create_material(ambient_material, diffuse_material, specular_material, 76.8f, emission_material);
-
+    playable_ground.material = scene->playable_ground_material;
     playable_ground.wrap_3d = false;
     playable_ground.tiled_texture = true;
     playable_ground.texture_size[0] = 500;
     playable_ground.texture_size[1] = 500;
-    
     scene->bricks[1] = playable_ground;
+
+    TexturedBrick wooden_brick;
+    wooden_brick.rotation_angle = 0;
+    wooden_brick.position = create_vec3(-25, 26, 0);
+    wooden_brick.size = create_vec3(51, 1, 3);
+    wooden_brick.texture = scene->wooden_texture;
+    wooden_brick.material = scene->wooden_material;
+    wooden_brick.wrap_3d = false;
+    wooden_brick.tiled_texture = true;
+    wooden_brick.texture_size[0] = 4096;
+    wooden_brick.texture_size[1] = 4096;
+    scene->bricks[2] = wooden_brick;
 
 }
 
@@ -327,7 +345,7 @@ void draw_textured_brick(const TexturedBrick *brick, const Scene *scene)
         //Bottom
         glBegin(GL_QUADS);
         glTexCoord2f(0, -top_V_on_top);
-        glVertex3f(0, 0, brick->size.z);
+        glVertex3f(0, 0, 0);
         glTexCoord2f(right_U, -top_V_on_top);
         glVertex3f(brick->size.x, 0, 0);
         glTexCoord2f(right_U,0);
@@ -345,7 +363,7 @@ void draw_textured_brick(const TexturedBrick *brick, const Scene *scene)
         glTexCoord2f(right_U,0);
         glVertex3f(brick->size.x, 0, 0);
         glTexCoord2f(0, 0);
-        glVertex3f(brick->size.x, 0, 0);
+        glVertex3f(0, 0, 0);
         glEnd();
 
         //Left
