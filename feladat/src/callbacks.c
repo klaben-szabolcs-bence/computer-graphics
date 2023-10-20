@@ -36,8 +36,10 @@ void draw_hud()
     glLoadIdentity();
 
     set_material(&(scene.null_material));
+    glDisable(GL_LIGHTING);
 
     glPushMatrix();
+    glColor3f(1.0, 1.0, 0.0);
     if (!show_help)
     {
         write_text_to_screen("Press F1 to open the help menu!", scene.ascii_texture, 8, 8, 16);
@@ -47,9 +49,11 @@ void draw_hud()
         write_text_to_screen("Drag and release to move", scene.ascii_texture, 8, 24, 16);
         write_text_to_screen("f: Make the ball glow", scene.ascii_texture, 8, 40, 16);
         write_text_to_screen("c: Toggle free-cam mode", scene.ascii_texture, 8, 56, 16);
+        
     }
+    draw_powerbar(10, screen.height - 60, 100, 50);
     glPopMatrix();
-    
+    glEnable(GL_LIGHTING);
 }
 
 void reshape(GLsizei width, GLsizei height)
@@ -110,10 +114,22 @@ void mouse(int button, int state, int x, int y)
 
 void motion(int x, int y)
 {
-    //Handle moving
+    // Handle moving
     if (scene.golfball.still && !camera.freecam)
     {
-        drag_distance += (mouse_position.y - y) * 10;
+        double raw_drag_distance = (mouse_position.y - y) * 10 * -1;
+        drag_distance += raw_drag_distance;
+        
+        // Clamp value
+        if (drag_distance < 0)
+        {
+            drag_distance = 0;
+        }
+        if (drag_distance > MAX_DRAG_DISTANCE)
+        {
+            drag_distance = MAX_DRAG_DISTANCE;
+        }
+        printf("Drag distance: %.4f\n", drag_distance);
     }
     mouse_position.x = x;
     mouse_position.y = y;
@@ -243,4 +259,31 @@ void make_ball_move()
     scene.golfball.speed.x += look.x;
     scene.golfball.speed.y += look.y;
     //scene.golfball.speed.z += look.z;
+}
+
+void draw_powerbar(int x, int y, int width, int height)
+{
+    glPushMatrix();
+    // Muted colors
+    glBegin(GL_QUADS);
+    glColor3f(1, 1, 1);
+    glVertex2f(x, y);
+    glVertex2f(x, y + height);
+    glColor3f(1, 0, 0);
+    glVertex2f(x + width, y + height);
+    glVertex2f(x + width, y);
+    glEnd();
+
+    double not_active_percent = 1 - (drag_distance / MAX_DRAG_DISTANCE);
+    
+    float z = 1.0;
+    // Reverse Actual power
+    glBegin(GL_QUADS);
+    glColor4f(0.0 , 0.0, 0.0, 0.5);
+    glVertex3f(x + width, y, z);
+    glVertex3f(x + width, y + height, z);
+    glVertex3f(x + width - not_active_percent * width , y + height, z);
+    glVertex3f(x + width - not_active_percent * width, y, z);
+    glEnd();
+    glPopMatrix();
 }
