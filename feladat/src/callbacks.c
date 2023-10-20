@@ -287,12 +287,18 @@ void make_ball_move()
 void draw_powerbar(int x, int y, int width, int height)
 {
     glPushMatrix();
-    // Muted colors
+    // Colored power bar
     glBegin(GL_QUADS);
     glColor3f(1, 1, 1);
     glVertex2f(x, y);
     glVertex2f(x, y + height);
-    glColor3f(1, 0, 0);
+
+    //Change the color based on, if you can shoot
+    if (scene.golfball.still)
+        glColor3f(1, 0, 0);
+    else
+        glColor3f(0, 0, 0);
+
     glVertex2f(x + width, y + height);
     glVertex2f(x + width, y);
     glEnd();
@@ -300,7 +306,7 @@ void draw_powerbar(int x, int y, int width, int height)
     double not_active_percent = 1 - (drag_distance / MAX_DRAG_DISTANCE);
     
     float z = 1.0;
-    // Reverse Actual power
+    // Darkening "curtain" that gets pulled back based on the drag distance
     glBegin(GL_QUADS);
     glColor4f(0.0 , 0.0, 0.0, 0.5);
     glVertex3f(x + width, y, z);
