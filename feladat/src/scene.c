@@ -18,11 +18,11 @@ void init_scene(Scene *scene)
         create_material(ambient_material, diffuse_material, specular_material, 32.0f, emission_material);
 
     GolfBall ball;
-    ball.position = create_vec3(0, 0, 2);
+    ball.position = create_vec3(0.0f, -23.5f, 2);
     scene->golfball.glow = false;
     ball.speed = 1;
-    ball.velocity = 0.0f;
-    ball.direction_vector = create_vec3(1.0f, 0.0f, 0.0f);
+    ball.velocity = 10.0f;
+    ball.direction_vector = create_vec3(0.0f, -1.0f, 0.0f);
     ball.still = false;
     ambient_material = create_color(0.05f, 0.05f, 0.05f, 1);
     diffuse_material = create_color(0.5f, 0.5f, 0.5f, 1);
@@ -483,7 +483,7 @@ void update_game(Scene *scene, double delta)
     }
 
     //Check if we are standing still
-    if (scene->golfball.velocity == 0.0 && brick_we_are_standing_on > -1 )
+    if (scene->golfball.velocity == 0.0 && brick_we_are_standing_on > -1)
     {
         scene->golfball.still = true;
 
@@ -497,79 +497,8 @@ void update_game(Scene *scene, double delta)
         scene->golfball.still = false;
     }
 
-    int colliding_brick = is_going_to_collide_with_brick(scene);
-    if (colliding_brick > -1)
-    {
-        float distance[6];
-        distance[0] = scene->golfball.position.x - scene->bricks[colliding_brick].position.x;
-        distance[1] = scene->golfball.position.x - (scene->bricks[colliding_brick].position.x + scene->bricks[colliding_brick].size.x);
-        distance[2] = scene->golfball.position.y - scene->bricks[colliding_brick].position.y;
-        distance[3] = scene->golfball.position.y - (scene->bricks[colliding_brick].position.y + scene->bricks[colliding_brick].size.y);
-        distance[4] = scene->golfball.position.z - scene->bricks[colliding_brick].position.z;
-        distance[5] = scene->golfball.position.z - (scene->bricks[colliding_brick].position.z + scene->bricks[colliding_brick].size.z);
-
-        int min_distance = fmin(abs(distance[0]), abs(distance[1]));
-
-        int i;
-        for (i = 2; i < 6; ++i)
-        {
-            min_distance = fmin(min_distance, abs(distance[i]));
-        }
-
-        if (min_distance == abs(distance[0]) || min_distance == abs(distance[1]))
-        {
-            // Collission on left side
-            // Collission on right side
-
-            scene->golfball.direction_vector.x *= -1.0f;
-
-            if (scene->golfball.direction_vector.x < 0)
-            {
-                scene->golfball.position.x = scene->bricks[colliding_brick].position.x - 1.0f;
-                printf("Colliding with %d on LEFT\n", colliding_brick);
-            }
-            else
-            {
-                scene->golfball.position.x = scene->bricks[colliding_brick].position.x + scene->bricks[colliding_brick].size.x + 1.0f;
-                printf("Colliding with %d on RIGHT\n", colliding_brick);
-            }
-        }
-        else if (min_distance == abs(distance[2]) || min_distance == abs(distance[3]))
-        {
-            //Collission on front side
-            //Collission on back side
-
-            scene->golfball.direction_vector.y *= -1.0f;
-
-            if (scene->golfball.direction_vector.y < 0)
-            {
-                scene->golfball.position.y = scene->bricks[colliding_brick].position.y - 1.0f;
-                printf("Colliding with %d on FRONT\n", colliding_brick);
-            }
-            else
-            {
-                scene->golfball.position.y = scene->bricks[colliding_brick].position.y + scene->bricks[colliding_brick].size.y + 1.0f;
-                printf("Colliding with %d on BACK\n", colliding_brick);
-            }
-        }
-        else
-        {
-            //Collision on bottom side
-            //Collision on top side
-            scene->golfball.direction_vector.z *= 0.0f;
-
-            if (scene->golfball.direction_vector.z < 0)
-            {
-                scene->golfball.position.z = scene->bricks[colliding_brick].position.z - 1.0f;
-                printf("Colliding with %d on BOTTOM\n", colliding_brick);
-            }
-            else
-            {
-                scene->golfball.position.z = scene->bricks[colliding_brick].position.z + scene->bricks[colliding_brick].size.z + 1.0f;
-                printf("Colliding with %d on TOP\n", colliding_brick);
-            }
-        }
-    }
+    stop_colliding(scene);
+    prevent_colliding(scene);
 }
 
 int is_colliding_with_brick(Scene *scene)
@@ -599,12 +528,13 @@ int is_going_to_collide_with_brick(Scene *scene)
     for (i = N_BRICKS - 1; i >= 0; --i)
     {
         if (
-            ball->position.x + (ball->speed * ball->velocity) + 1.0f > scene->bricks[i].position.x &&
-            ball->position.x + (ball->speed * ball->velocity) - 1.0f < scene->bricks[i].position.x + scene->bricks[i].size.x &&
-            ball->position.y + (ball->speed * ball->velocity) + 1.0f > scene->bricks[i].position.y &&
-            ball->position.y + (ball->speed * ball->velocity) - 1.0f < scene->bricks[i].position.y + scene->bricks[i].size.y &&
-            ball->position.z + (ball->speed * ball->velocity) + 1.0f > scene->bricks[i].position.z &&
-            ball->position.z + (ball->speed * ball->velocity) - 1.0f < scene->bricks[i].position.z + scene->bricks[i].size.z)
+            ball->position.x + (ball->speed * ball->direction_vector.x) >= scene->bricks[i].position.x &&
+            ball->position.x + (ball->speed * ball->direction_vector.x) <= scene->bricks[i].position.x + scene->bricks[i].size.x &&
+            ball->position.y + (ball->speed * ball->direction_vector.y) >= scene->bricks[i].position.y &&
+            ball->position.y + (ball->speed * ball->direction_vector.y) <= scene->bricks[i].position.y + scene->bricks[i].size.y &&
+            ball->position.z + (ball->speed * ball->direction_vector.z) >= scene->bricks[i].position.z &&
+            ball->position.z + (ball->speed * ball->direction_vector.z) <= scene->bricks[i].position.z + scene->bricks[i].size.z &&
+            ball->velocity != 0)
         {
             return i;
         }
@@ -687,4 +617,101 @@ int on_ground(Scene *scene)
         }
     }
     return -1;
+}
+
+void prevent_colliding(Scene *scene)
+{
+    int colliding_brick = is_going_to_collide_with_brick(scene);
+    if (colliding_brick > -1)
+    {
+        float distance[6];
+        calc_distances_from_brick(scene, colliding_brick, distance);
+        float min_distance = calc_min_distance(distance);
+        kick_from_brick(scene, min_distance, distance, colliding_brick);
+    }
+}
+
+void stop_colliding(Scene *scene)
+{
+    int colliding_brick = is_colliding_with_brick(scene);
+    if (colliding_brick > -1)
+    {
+        float distance[6];
+        calc_distances_from_brick(scene, colliding_brick, distance);
+        float min_distance = calc_min_distance(distance);
+        kick_from_brick(scene, min_distance, distance, colliding_brick);
+    }
+}
+
+void calc_distances_from_brick(Scene *scene, int colliding_brick, float *distance)
+{
+    distance[0] = scene->golfball.position.x - scene->bricks[colliding_brick].position.x;
+    distance[1] = scene->golfball.position.x - (scene->bricks[colliding_brick].position.x + scene->bricks[colliding_brick].size.x);
+    distance[2] = scene->golfball.position.y - scene->bricks[colliding_brick].position.y;
+    distance[3] = scene->golfball.position.y - (scene->bricks[colliding_brick].position.y + scene->bricks[colliding_brick].size.y);
+    distance[4] = scene->golfball.position.z - scene->bricks[colliding_brick].position.z;
+    distance[5] = scene->golfball.position.z - (scene->bricks[colliding_brick].position.z + scene->bricks[colliding_brick].size.z);
+}
+
+float calc_min_distance(float *distance)
+{
+    float min_distance = fmin(abs(distance[0]), abs(distance[1]));
+
+    int i;
+    for (i = 2; i < 6; ++i)
+    {
+        min_distance = fmin(min_distance, abs(distance[i]));
+    }
+    return min_distance;
+}
+
+void kick_from_brick(Scene *scene, float min_distance, float *distance, int colliding_brick)
+{
+    if (min_distance == abs(distance[0]) || min_distance == abs(distance[1]))
+    {
+        // Collission on left side
+        // Collission on right side
+
+        scene->golfball.direction_vector.x *= -1.0f;
+
+        if (scene->golfball.direction_vector.x < 0)
+        {
+            scene->golfball.position.x = scene->bricks[colliding_brick].position.x - 1.0f;
+        }
+        else
+        {
+            scene->golfball.position.x = scene->bricks[colliding_brick].position.x + scene->bricks[colliding_brick].size.x + 1.0f;
+        }
+    }
+    else if (min_distance == abs(distance[2]) || min_distance == abs(distance[3]))
+    {
+        //Collission on front side
+        //Collission on back side
+
+        scene->golfball.direction_vector.y *= -1.0f;
+
+        if (scene->golfball.direction_vector.y < 0)
+        {
+            scene->golfball.position.y = scene->bricks[colliding_brick].position.y - 1.0f;
+        }
+        else
+        {
+            scene->golfball.position.y = scene->bricks[colliding_brick].position.y + scene->bricks[colliding_brick].size.y + 1.0f;
+        }
+    }
+    else
+    {
+        //Collision on bottom side
+        //Collision on top side
+        scene->golfball.direction_vector.z *= 0.0f;
+
+        if (scene->golfball.direction_vector.z < 0)
+        {
+            scene->golfball.position.z = scene->bricks[colliding_brick].position.z - 1.0f;
+        }
+        else
+        {
+            scene->golfball.position.z = scene->bricks[colliding_brick].position.z + scene->bricks[colliding_brick].size.z + 1.0f;
+        }
+    }
 }

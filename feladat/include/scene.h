@@ -118,4 +118,29 @@ void reset_ball(GolfBall* ball);
  */
 int on_ground(Scene* scene);
 
+/**
+ * Prevents us from colliding with a brick
+ */
+void prevent_colliding(Scene* scene);
+
+/**
+ * Stop colliding with a currently colliding brick
+ */
+void stop_colliding(Scene* scene);
+
+/**
+ * Calculate the distances from the sides of the brick
+ */
+void calc_distances_from_brick(Scene* scene, int colliding_brick, float* distance);
+
+/**
+ * Calculate the minimum distance
+ */
+float calc_min_distance(float* distance);
+
+/**
+ * Kick the ball out from the brick
+ */
+void kick_from_brick(Scene *scene, float min_distance, float *distance, int colliding_brick);
+
 #endif /* SCENE_H */
