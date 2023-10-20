@@ -31,3 +31,12 @@ GLuint load_texture(char* filename)
     return texture_name;
 }
 
+GLuint load_ogl_texture(const char* filename)
+{
+    GLuint texID = SOIL_load_OGL_texture(filename, 4, 0, SOIL_FLAG_MULTIPLY_ALPHA | SOIL_FLAG_MIPMAPS);
+    if (!texID)
+    {
+        printf("Failed to load texture: %s\n", filename);
+    }
+    return texID;
+}

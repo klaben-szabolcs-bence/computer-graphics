@@ -106,7 +106,7 @@ void init_scene(Scene *scene)
     wooden_brick.size = create_vec3(1, 26, 1);
     scene->bricks[5] = wooden_brick;
 
-    scene->ascii_texture = load_texture("ascii.png");
+    scene->ascii_texture = load_ogl_texture("ascii.png");
     
 }
 
@@ -593,6 +593,8 @@ void write_char_to_screen(char character, GLuint ascii_map, int x, int y, int si
 {
     glPushMatrix();
     glBindTexture(GL_TEXTURE_2D, ascii_map);
+    float sd2 = size / 2;
+    glTranslatef(x, y, 0);
 
     ArrayUV4 uv4;
     ArrayUV tiles, index;
@@ -606,16 +608,17 @@ void write_char_to_screen(char character, GLuint ascii_map, int x, int y, int si
     printf("Printing character at (%d; %d)\n", (int)index.uv[0], (int)index.uv[1]);
 
     uv4 = get_uv(tiles, index);
+    glColor3f(0, 0, 1);
     glBegin(GL_QUADS);
 
     glTexCoord2f(uv4.uv[0], uv4.uv[1]);
-    glVertex2f(x, y + size);
+    glVertex2f(-sd2, -sd2);
     glTexCoord2f(uv4.uv[2], uv4.uv[3]);
-    glVertex2f(x + size, y + size);
+    glVertex2f(sd2, -sd2);
     glTexCoord2f(uv4.uv[4], uv4.uv[5]);
-    glVertex2f(x + size, y);
+    glVertex2f(sd2, sd2);
     glTexCoord2f(uv4.uv[6], uv4.uv[7]);
-    glVertex2f(x, y);
+    glVertex2f(-sd2, sd2);
     glEnd();
 
     glBindTexture(GL_TEXTURE_2D, 0);
