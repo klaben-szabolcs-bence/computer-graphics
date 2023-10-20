@@ -81,6 +81,10 @@ void keyboard(unsigned char key, int x, int y)
         break;
     case 'k':
         set_camera_vertical_rotation_speed(&camera, -10);
+        break;
+    case 'p':
+        print_camera_info(&camera);
+        break;
     }
 
     glutPostRedisplay();

@@ -69,5 +69,10 @@ void set_camera_horizontal_rotation_speed(Camera* camera, double speed);
  */
 void set_camera_vertical_rotation_speed(Camera* camera, double speed);
 
+/**
+ * @brief Print the camera's position and rotation to the terminal.
+ */
+void print_camera_info(Camera* camera);
+
 #endif /* CAMERA_H */
 

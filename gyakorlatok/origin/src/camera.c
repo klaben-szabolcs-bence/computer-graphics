@@ -6,12 +6,12 @@
 
 void init_camera(Camera* camera)
 {
-    camera->position.x = 0.0;
-    camera->position.y = 0.0;
-    camera->position.z = 0.0;
+    camera->position.x = -0.06;
+    camera->position.y = -0.08;
+    camera->position.z = 0.02;
     camera->rotation.x = 0.0;
     camera->rotation.y = 0.0;
-    camera->rotation.z = 0.0;
+    camera->rotation.z = 30.0;
     camera->speed.x = 0.0;
     camera->speed.y = 0.0;
     camera->speed.z = 0.0;
@@ -36,6 +36,7 @@ void update_camera(Camera* camera, double time)
 
     rotate_camera_horizontally(camera, camera->rotation_speed.z * time);
     rotate_camera_vertically(camera, camera->rotation_speed.x * time);
+
 }
 
 void set_view(const Camera* camera)
@@ -105,4 +106,10 @@ void set_camera_horizontal_rotation_speed(Camera* camera, double speed)
 void set_camera_vertical_rotation_speed(Camera* camera, double speed)
 {
     camera->rotation_speed.x = speed;
+}
+
+void print_camera_info(Camera* camera)
+{
+    printf("Camera Position: %.4f %.4f %.4f\n", camera->position.x, camera->position.y, camera->position.z);
+    printf("Camera Rotation: %.4f %.4f %.4f\n", camera->rotation.x, camera->rotation.y, camera->rotation.z);
 }
