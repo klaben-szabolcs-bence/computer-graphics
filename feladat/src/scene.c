@@ -18,7 +18,7 @@ void init_scene(Scene *scene)
     create_material(ambient_material, diffuse_material, specular_material, 32.0, emission_material);
 
     GolfBall ball;
-    ball.position = create_vec3(10, 0, 0);
+    ball.position = create_vec3(10, 0, 5);
     scene->golfball = ball;
     scene->golfball.glow = false;
     ambient_material = create_color(0, 0, 0, 1);
@@ -53,6 +53,24 @@ void init_scene(Scene *scene)
     scene->bricks[0] = unplayable_ground;
 
     scene->playable_ground_texture = load_texture("playable_ground.jpg");
+
+    TexturedBrick playable_ground;
+    playable_ground.rotation_angle = 0;
+    playable_ground.position = create_vec3(-25, -25, 0);
+    playable_ground.size = create_vec3(50, 50, 1);
+    playable_ground.texture = scene->playable_ground_texture;
+    ambient_material = create_color(0.1215f,0.2745f,0.1215f,1.0f);
+    diffuse_material = create_color(0.17568f,0.71424f,0.17568f,1.0f);
+    specular_material = create_color(0.733f,0.827811f,0.733f,1.0f);
+    playable_ground.material =
+    create_material(ambient_material, diffuse_material, specular_material, 76.8f, emission_material);
+
+    playable_ground.wrap_3d = false;
+    playable_ground.tiled_texture = true;
+    playable_ground.texture_size[0] = 500;
+    playable_ground.texture_size[1] = 500;
+    
+    scene->bricks[1] = playable_ground;
 
 }
 

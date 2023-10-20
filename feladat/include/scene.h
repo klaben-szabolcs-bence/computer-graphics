@@ -26,7 +26,7 @@ typedef struct GolfBall
     bool glow;
 } GolfBall;
 
-#define N_BRICKS 1
+#define N_BRICKS 2
 
 typedef struct Scene
 {
