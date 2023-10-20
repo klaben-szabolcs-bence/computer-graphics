@@ -91,8 +91,13 @@ void update_game(Scene* scene, double delta);
 int is_colliding_with_brick(Scene* scene);
 
 /**
- * Writes teh character to the screen
+ * Writes the character to the screen
  */
 void write_char_to_screen(char character, GLuint ascii_map, int x, int y, int size);
+
+/**
+ * Writes the text on the screen
+ */
+void write_text_to_screen(const char* text, GLuint ascii_map, int x, int y, int size);
 
 #endif /* SCENE_H */

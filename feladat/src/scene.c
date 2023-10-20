@@ -624,3 +624,12 @@ void write_char_to_screen(char character, GLuint ascii_map, int x, int y, int si
     glBindTexture(GL_TEXTURE_2D, 0);
     glPopMatrix();
 }
+
+void write_text_to_screen(const char* text, GLuint ascii_map, int x, int y, int size)
+{
+    unsigned int i;
+    for(i = 0; i < strlen(text) - 1; ++i)
+    {
+        write_char_to_screen(text[i], ascii_map, x + (i * size), y, size);
+    }
+}
