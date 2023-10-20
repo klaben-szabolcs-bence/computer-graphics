@@ -12,7 +12,7 @@ void init_zero_matrix(float matrix[3][3]);
 void print_matrix(const float matrix[3][3]);
 
 /**
- * Add matrices.
+ * Adds a matrix and b matrix together and puts the result in c.
  */
 void add_matrices(const float a[3][3], const float b[3][3], float c[3][3]);
 
