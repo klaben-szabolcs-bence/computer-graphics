@@ -9,15 +9,13 @@
 void init_scene(Scene* scene)
 {
     //load_model(&(scene->cube), "golf_ball.obj");
-    //scene->texture_id = load_texture("cube.png"); 
-
-    //glBindTexture(GL_TEXTURE_2D, scene->texture_id);
+    scene->skybox_texture = load_texture("tutorial_skybox.png"); 
 
     Color ambient_material = create_color(0.55, 0, 0.55, 1);
     Color diffuse_material = create_color(0.755, 0.755, 0, 1);
     Color specular_material = create_color(0, 0.755, 0.755, 1);
     Color emission_material = create_color(0, 0, 0, 1);
-    scene->material = create_material(ambient_material, diffuse_material, specular_material, 32.0, emission_material);
+    scene->invalid_material = create_material(ambient_material, diffuse_material, specular_material, 32.0, emission_material);
 
     GolfBall ball;
     ball.position = create_vec3(10, 0, 0);
@@ -27,7 +25,14 @@ void init_scene(Scene* scene)
     diffuse_material = create_color(0.55, 0.55, 0.55, 1);
     specular_material = create_color(0.77, 0.77, 0.77, 1);
     emission_material = create_color(0, 0, 0, 1);
-    scene->golfball.material = create_material(ambient_material, diffuse_material, specular_material, 32.0, emission_material);
+    scene->golfball.material = create_material(ambient_material, diffuse_material, specular_material, 1.0, emission_material);
+
+    ambient_material = create_color(1, 1, 1, 1);
+    diffuse_material = create_color(0, 0, 0, 1);
+    specular_material = create_color(0, 0, 0, 1);
+    emission_material = create_color(0, 0, 0, 1);
+    scene->null_material = create_material(ambient_material, diffuse_material, specular_material, 0.0, emission_material);
+    
 }
 
 void set_lighting(const Scene* scene)
@@ -66,7 +71,10 @@ void set_material(const Material* material)
 
 void draw_scene(const Scene* scene)
 {
+
+    set_material(&(scene->null_material));
     draw_origin();
+    draw_skybox(scene);
     set_lighting(scene);
     //draw_model(&(scene->cube));
 
@@ -76,7 +84,7 @@ void draw_scene(const Scene* scene)
     glutSolidSphere(1, 36, 36);
     glPopMatrix();
     
-    set_material(&(scene->material));
+    set_material(&(scene->invalid_material));
 
     glPushMatrix();
     glTranslatef(0, 5, 0);
@@ -106,4 +114,107 @@ void draw_origin()
     glVertex3f(0, 0, 1);
 
     glEnd();
+}
+
+void draw_skybox(const Scene* scene)
+{
+    glPushMatrix();
+    glBindTexture(GL_TEXTURE_2D, scene->skybox_texture);
+    const int D = 900 * 4;
+    ArrayUV4 uv4;
+    ArrayUV tiles, index;
+    tiles.uv[0] = 4.0;
+    tiles.uv[1] = 3.0;
+    
+    
+
+    // All of them go clockwise, and from top-left
+
+    // Top
+    index.uv[0] = 1;
+    index.uv[1] = 0;
+    uv4 = get_uv(tiles, index);
+    glBegin(GL_QUADS);
+    glTexCoord2f(uv4.uv[0], uv4.uv[1]);
+    glVertex3f(-D, D, -D);
+    glTexCoord2f(uv4.uv[2], uv4.uv[3]);
+    glVertex3f(D, D, -D);
+    glTexCoord2f(uv4.uv[4], uv4.uv[5]);
+    glVertex3f(D, -D, -D);
+    glTexCoord2f(uv4.uv[6], uv4.uv[7]);
+    glVertex3f(-D, -D, -D);
+    glEnd();
+    
+    //Bottom
+    index.uv[1] = 2;
+    uv4 = get_uv(tiles, index);
+    glBegin(GL_QUADS);
+    glTexCoord2f(uv4.uv[0], uv4.uv[1]);
+    glVertex3f(-D, -D, D);
+    glTexCoord2f(uv4.uv[2], uv4.uv[3]);
+    glVertex3f(D, -D, D);
+    glTexCoord2f(uv4.uv[4], uv4.uv[5]);
+    glVertex3f(D, D, D);
+    glTexCoord2f(uv4.uv[6], uv4.uv[7]);
+    glVertex3f(-D, D, D);
+    glEnd();
+
+    //Front
+    index.uv[1] = 1;
+    uv4 = get_uv(tiles, index);
+    glBegin(GL_QUADS);
+    glTexCoord2f(uv4.uv[0], uv4.uv[1]);
+    glVertex3f(-D, -D, -D);
+    glTexCoord2f(uv4.uv[2], uv4.uv[3]);
+    glVertex3f(D, -D, -D);
+    glTexCoord2f(uv4.uv[4], uv4.uv[5]);
+    glVertex3f(D, -D, D);
+    glTexCoord2f(uv4.uv[6], uv4.uv[7]);
+    glVertex3f(-D, -D, D);
+    glEnd();
+
+    //Left
+    index.uv[0] = 0;
+    uv4 = get_uv(tiles, index);
+    glBegin(GL_QUADS);
+    glTexCoord2f(uv4.uv[0], uv4.uv[1]);
+    glVertex3f(-D, D, -D);
+    glTexCoord2f(uv4.uv[2], uv4.uv[3]);
+    glVertex3f(-D, -D, -D);
+    glTexCoord2f(uv4.uv[4], uv4.uv[5]);
+    glVertex3f(-D, -D, D);
+    glTexCoord2f(uv4.uv[6], uv4.uv[7]);
+    glVertex3f(-D, D, D);
+    glEnd();
+
+    //Right
+    index.uv[0] = 2;
+    uv4 = get_uv(tiles, index);
+    glBegin(GL_QUADS);
+    glTexCoord2f(uv4.uv[0], uv4.uv[1]);
+    glVertex3f(D, -D, -D);
+    glTexCoord2f(uv4.uv[2], uv4.uv[3]);
+    glVertex3f(D, D, -D);
+    glTexCoord2f(uv4.uv[4], uv4.uv[5]);
+    glVertex3f(D, D, D);
+    glTexCoord2f(uv4.uv[6], uv4.uv[7]);
+    glVertex3f(D, -D, D);
+    glEnd();
+
+    //Back
+    index.uv[0] = 3;
+    uv4 = get_uv(tiles, index);
+    glBegin(GL_QUADS);
+    glTexCoord2f(uv4.uv[0], uv4.uv[1]);
+    glVertex3f(D, D, -D);
+    glTexCoord2f(uv4.uv[2], uv4.uv[3]);
+    glVertex3f(-D, D, -D);
+    glTexCoord2f(uv4.uv[4], uv4.uv[5]);
+    glVertex3f(-D, D, D);
+    glTexCoord2f(uv4.uv[6], uv4.uv[7]);
+    glVertex3f(D, D, D);
+    glEnd();
+
+    glBindTexture(GL_TEXTURE_2D, 0); //Unbind texture
+    glPopMatrix();
 }

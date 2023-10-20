@@ -16,8 +16,10 @@ typedef struct GolfBall
 
 typedef struct Scene
 {
-    Material material;
+    Material invalid_material;
+    Material null_material;
     GolfBall golfball;
+    GLuint skybox_texture;
 } Scene;
 
 /**
@@ -44,5 +46,10 @@ void draw_scene(const Scene* scene);
  * Draw the origin of the world coordinate system.
  */
 void draw_origin();
+
+/**
+ * Draws a skybox.
+ */
+void draw_skybox(const Scene* scene);
 
 #endif /* SCENE_H */
