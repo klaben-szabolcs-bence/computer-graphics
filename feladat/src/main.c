@@ -34,6 +34,7 @@ int main(int argc, char* argv[])
 
     window = glutCreateWindow("Scene with a camera");
     glutSetWindow(window);
+    glutSetCursor(GLUT_CURSOR_NONE);
 
     init_opengl();
     init_scene(&scene);
