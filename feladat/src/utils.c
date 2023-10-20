@@ -84,3 +84,22 @@ ArrayUV4 get_uv(ArrayUV tiles, ArrayUV index)
 	uv4.uv[7] = bottom_V;
 	return uv4;
 }
+
+ArrayUV4 get_uv2(ArrayUV tiles, ArrayUV index)
+{
+	float left_U = index.uv[0] / tiles.uv[0];
+	float right_U = (index.uv[0] + 1.0f) / tiles.uv[0];
+	float top_V = (index.uv[1]) / tiles.uv[1];
+	float bottom_V = (index.uv[1] + 1.0f) / tiles.uv[1];
+
+	ArrayUV4 uv4;
+	uv4.uv[0] = left_U;
+	uv4.uv[1] = top_V;
+	uv4.uv[2] = right_U;
+	uv4.uv[3] = top_V;
+	uv4.uv[4] = right_U;
+	uv4.uv[5] = bottom_V;
+	uv4.uv[6] = left_U;
+	uv4.uv[7] = bottom_V;
+	return uv4;
+}

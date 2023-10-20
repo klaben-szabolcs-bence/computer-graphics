@@ -96,8 +96,13 @@ ArrayColor color_to_array(Color color);
 Material create_material(Color ambient, Color diffuse, Color specular, float shininess, Color emission);
 
 /**
- * Generetaes the UV coordinates required for simple mapping.
+ * Generetaes the UV coordinates required for mapping. (Goes from bottom to top)
  */
 ArrayUV4 get_uv(ArrayUV tiles, ArrayUV index);
+
+/**
+ * Generates the UV coodinates required for mapping. (Goes from top to bottom)
+ */
+ArrayUV4 get_uv2(ArrayUV tiles, ArrayUV index);
 
 #endif /* UTILS_H */

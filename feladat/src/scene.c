@@ -598,7 +598,7 @@ void write_char_to_screen(char character, GLuint ascii_map, int x, int y, int si
     index.uv[0] = character % (int)tiles.uv[0];
     index.uv[1] = character / (int)tiles.uv[0];
 
-    uv4 = get_uv(tiles, index);
+    uv4 = get_uv2(tiles, index);
     glColor3f(0, 0, 1);
     glBegin(GL_QUADS);
 
