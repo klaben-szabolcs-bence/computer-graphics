@@ -109,10 +109,9 @@ void keyboard(unsigned char key, int x, int y)
 
         if (scene.golfball.glow) glEnable(GL_LIGHT1);
         else glDisable(GL_LIGHT1);
-
         
-        if (scene.golfball.glow) scene.material.emission.alpha = 1;
-        else scene.material.emission.alpha = 0;
+        if (scene.golfball.glow) scene.material.emission = create_color(1, 1, 1, 1);
+        else scene.material.emission = create_color(0, 0, 0, 1);
         break;
     }
     

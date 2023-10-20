@@ -16,7 +16,7 @@ void init_scene(Scene* scene)
     Color ambient_material = create_color(0, 0, 0, 1);
     Color diffuse_material = create_color(0.55, 0.55, 0.55, 1);
     Color specular_material = create_color(0.77, 0.77, 0.77, 1);
-    Color emission_material = create_color(0, 0, 0, 0);
+    Color emission_material = create_color(0, 0, 0, 1);
     scene->material = create_material(ambient_material, diffuse_material, specular_material, 32.0, emission_material);
 
     GolfBall ball;
@@ -56,7 +56,7 @@ void set_material(const Material* material)
     glMaterialfv(GL_FRONT_AND_BACK, GL_DIFFUSE, color_to_array(material->diffuse).color);
     glMaterialfv(GL_FRONT_AND_BACK, GL_SPECULAR, color_to_array(material->specular).color);
     glMaterialfv(GL_FRONT_AND_BACK, GL_SHININESS, &(material->shininess));
-    glMaterialfv(GL_FRONT, GL_EMISSION, color_to_array(material->emission).color);
+    glMaterialfv(GL_FRONT_AND_BACK, GL_EMISSION, color_to_array(material->emission).color);
 }
 
 void draw_scene(const Scene* scene)
