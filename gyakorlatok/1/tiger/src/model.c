@@ -475,11 +475,6 @@ void apply_triangle_normals(struct Model* model)
     }
 }
 
-void apply_quad_normals(struct Model* model)
-{
-
-}
-
 void normalize_vertex_normals(struct Model* model)
 {
     int i;
