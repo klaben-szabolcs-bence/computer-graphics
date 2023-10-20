@@ -30,7 +30,7 @@ typedef struct GolfBall
     bool still;
 } GolfBall;
 
-#define N_BRICKS 6
+#define N_BRICKS 9
 
 typedef struct Scene
 {

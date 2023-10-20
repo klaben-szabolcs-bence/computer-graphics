@@ -70,8 +70,8 @@ void init_scene(Scene *scene)
 
     TexturedBrick playable_ground;
     playable_ground.rotation_angle = 0;
-    playable_ground.position = create_vec3(-25, -25, 0);
-    playable_ground.size = create_vec3(50, 50, 1);
+    playable_ground.position = create_vec3(-21, -25, 0);
+    playable_ground.size = create_vec3(46, 50, 1);
     playable_ground.texture = scene->playable_ground_texture;
     playable_ground.material = scene->playable_ground_material;
     playable_ground.wrap_3d = false;
@@ -79,6 +79,18 @@ void init_scene(Scene *scene)
     playable_ground.texture_size[0] = 500;
     playable_ground.texture_size[1] = 500;
     scene->bricks[1] = playable_ground;
+
+    playable_ground.position = create_vec3(-25, -25, 0);
+    playable_ground.size = create_vec3(4, 23.5f, 1);
+    scene->bricks[2] = playable_ground;
+
+    playable_ground.position = create_vec3(-25, -1.5f, 0);
+    playable_ground.size = create_vec3(1, 3, 1);
+    scene->bricks[3] = playable_ground;
+
+    playable_ground.position = create_vec3(-25, 1.5f, 0);
+    playable_ground.size = create_vec3(4, 23.5f, 1);
+    scene->bricks[4] = playable_ground;
 
     TexturedBrick wooden_brick;
     wooden_brick.rotation_angle = 0;
@@ -90,20 +102,20 @@ void init_scene(Scene *scene)
     wooden_brick.tiled_texture = true;
     wooden_brick.texture_size[0] = 4096;
     wooden_brick.texture_size[1] = 4096;
-    scene->bricks[2] = wooden_brick;
+    scene->bricks[5] = wooden_brick;
 
     wooden_brick.position = create_vec3(25, -26, 0);
     wooden_brick.size = create_vec3(1, 51, 3);
-    scene->bricks[3] = wooden_brick;
+    scene->bricks[6] = wooden_brick;
 
     wooden_brick.position = create_vec3(-26, -26, 0);
     wooden_brick.size = create_vec3(51, 1, 3);
-    scene->bricks[4] = wooden_brick;
+    scene->bricks[7] = wooden_brick;
 
     wooden_brick.position = create_vec3(-26, -25, 0);
     // Direkt 1 magasságú, hogy tesztelni lehessen, mi van ha OOB a labda.
     wooden_brick.size = create_vec3(1, 51, 1);
-    scene->bricks[5] = wooden_brick;
+    scene->bricks[8] = wooden_brick;
 
     scene->ascii_texture = load_ogl_texture("ascii.png");
     glBindTexture(GL_TEXTURE_2D, 0);
