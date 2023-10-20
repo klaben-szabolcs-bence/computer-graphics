@@ -267,7 +267,7 @@ void make_ball_move()
     //Add it to the velocity vector of the ball
     scene.golfball.velocity.x += look.x;
     scene.golfball.velocity.y += look.y;
-    //scene.golfball.speed.z += look.z;
+    //scene.golfball.velocity.z += look.z;
 }
 
 void draw_powerbar(int x, int y, int width, int height)
