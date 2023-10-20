@@ -14,6 +14,7 @@ typedef struct Game
     Pad right_pad;
     int width;
     int height;
+    int score[2];
 } Game;
 
 /**
@@ -25,6 +26,11 @@ void resize_game(Game* game, int width, int height);
  * Restart the game.
  */
 void restart_game(Game* game);
+
+/**
+ * Starts a new round.
+ */
+void new_round(Game* game);
 
 /**
  * Update the state of the game.
