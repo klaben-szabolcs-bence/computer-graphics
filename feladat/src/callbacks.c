@@ -51,6 +51,12 @@ void draw_hud()
         write_text_to_screen("c: Toggle free-cam mode", scene.ascii_texture, 8, 56, 16);
         
     }
+    char pos_text[64];
+    char vel_text[64];
+    sprintf(pos_text,"Pos: %6.3f %6.3f %6.3f", scene.golfball.position.x, scene.golfball.position.y, scene.golfball.position.z);
+    sprintf(vel_text,"Vel: %6.3f %6.3f %6.3f", scene.golfball.velocity.x, scene.golfball.velocity.y, scene.golfball.velocity.z);
+    write_text_to_screen(pos_text,scene.ascii_texture, screen.width - 32 * 12, screen.height - 2*12, 12);
+    write_text_to_screen(vel_text,scene.ascii_texture, screen.width - 32 * 12, screen.height - 12, 12);
     draw_powerbar(10, screen.height - 60, 100, 50);
     glPopMatrix();
     glEnable(GL_LIGHTING);
@@ -255,9 +261,9 @@ void make_ball_move()
     //Multiply it, by drag distance
     look = create_vec3(look.x * drag_distance, look.y * drag_distance, look.z * drag_distance);
 
-    //Add it to the speed vector of the ball
-    scene.golfball.speed.x += look.x;
-    scene.golfball.speed.y += look.y;
+    //Add it to the velocity vector of the ball
+    scene.golfball.velocity.x += look.x;
+    scene.golfball.velocity.y += look.y;
     //scene.golfball.speed.z += look.z;
 }
 
